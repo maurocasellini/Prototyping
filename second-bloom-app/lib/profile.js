@@ -9,7 +9,7 @@ export const GOAL_OPTS = ["Mehr Energie", "Besser schlafen", "Stimmung stabilisi
 export const DIET_OPTS = [["all", "Alles"], ["pesc", "Pescetarisch"], ["veg", "Vegetarisch"]];
 export const INTOL_OPTS = [["laktose", "Laktose"], ["gluten", "Gluten"], ["nuesse", "Nüsse"], ["soja", "Soja"], ["ei", "Ei"], ["fisch", "Fisch & Meeresfrüchte"], ["sesam", "Sesam"], ["huelsen", "Hülsenfrüchte"], ["histamin", "Histamin"]];
 export const COUNTRY_OPTS = [["CH", "Schweiz"], ["LI", "Liechtenstein"], ["DE", "Deutschland"], ["AT", "Österreich"], ["other", "Anderes Land"]];
-export const LANG_OPTS = [["de", "Deutsch"], ["en", "English"], ["fr", "Français"], ["es", "Español"], ["pt", "Português"]];
+export const LANG_OPTS = [["de", "Deutsch"], ["en", "English"], ["pt", "Português"], ["es", "Español"], ["fr", "Français"]];
 
 export function ageOn(birth, now = new Date()) {
   const b = new Date(birth + "T00:00:00Z");

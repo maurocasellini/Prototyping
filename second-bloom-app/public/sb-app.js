@@ -3,7 +3,7 @@
 /* ---------- Sprache (Übersetzung der Oberfläche: public/i18n.js) ---------- */
 const LANG = document.documentElement.dataset.lang || 'de';
 const LOC = ({de:'de-CH', en:'en-GB', fr:'fr-CH', es:'es-ES', pt:'pt-PT'})[LANG] || 'de-CH';
-const LANG_NAMES = {de:'Deutsch', en:'English', fr:'Français', es:'Español', pt:'Português'};
+const LANG_NAMES = {de:'Deutsch', en:'English', pt:'Português', es:'Español', fr:'Français'};
 
 /* ---------- Content ---------- */
 const PHASES = {
