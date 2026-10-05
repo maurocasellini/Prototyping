@@ -27,7 +27,7 @@ export default async function SiteShell({ children }) {
         </nav>
       </header>
       <main className="site-main">{children}</main>
-      <footer className="foot">Second Bloom ist ein Lifestyle-Begleiter und kein Medizinprodukt. Die App ersetzt keine ärztliche Beratung. · <Link href="/datenschutz">Datenschutzerklärung</Link> · <Link href="/quellen">Quellen & Studienlage</Link></footer>
+      <footer className="foot">Second Bloom ist ein Lifestyle-Begleiter und kein Medizinprodukt. Die App ersetzt keine ärztliche Beratung. · <Link href="/impressum">Impressum</Link> · <Link href="/datenschutz">Datenschutzerklärung</Link>{me && <> · <Link href="/quellen">Quellen & Studienlage</Link></>}</footer>
     </>
   );
 }

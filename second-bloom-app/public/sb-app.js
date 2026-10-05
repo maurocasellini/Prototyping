@@ -215,10 +215,10 @@ const EVID_KEYS = {d3k2:['vitd','k2'], mag:['magnesium'], omega3:['omega3'], kre
 let EVID = null;
 // Evidenz je Sprache (evidence.en.json …), sonst Deutsch
 async function loadEvidence(){ if(EVID) return EVID; for(const f of LANG==='de' ? ['/evidence.json'] : ['/evidence.'+LANG+'.json','/evidence.json']){ try{ const r = await fetch(f); if(r.ok){ EVID = await r.json(); break; } }catch(e){} } return EVID; }
-const LEVEL = {hoch:['Hoch','t-sage'], moderat:['Moderat','t-sky'], niedrig:['Niedrig','t-sun'], unzureichend:['Unzureichend','t-accent']};
-const lvl = (e) => { const x = LEVEL[e] || ['Offen','t-accent']; return `<span class="tag ${x[1]}">${x[0]}</span>`; };
+const LEVEL = {hoch:['Hoch','ev-hoch'], moderat:['Moderat','ev-moderat'], niedrig:['Niedrig','ev-niedrig'], unzureichend:['Unzureichend','ev-unzureichend']};
+const lvl = (e) => { const x = LEVEL[e] || ['Offen','ev-unzureichend']; return `<span class="tag ${x[1]}">${x[0]}</span>`; };
 function srcList(list){
-  return `<ol class="srcs">${(list||[]).map(q => `<li><span class="tag t-sky">${esc(q.type||'Quelle')}</span> <span translate="no">${esc(q.authors||'')}${q.year ? ' ('+esc(q.year)+')' : ''}. <i>${esc(q.title||'')}</i>. ${esc(q.journal||'')}.</span>
+  return `<ol class="srcs">${(list||[]).map(q => `<li><span class="tag t-src">${esc(q.type||'Quelle')}</span> <span translate="no">${esc(q.authors||'')}${q.year ? ' ('+esc(q.year)+')' : ''}. <i>${esc(q.title||'')}</i>. ${esc(q.journal||'')}.</span>
     ${q.pmid ? `<a href="https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(q.pmid)}/" target="_blank" rel="noopener">PubMed ${esc(q.pmid)}</a>` : ''}
     ${q.doi ? ` · <a href="https://doi.org/${encodeURI(q.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}
     ${!q.pmid && !q.doi && q.url ? `<a href="${esc(q.url)}" target="_blank" rel="noopener">Quelle öffnen</a>` : ''}</li>`).join('')}</ol>`;
@@ -658,7 +658,7 @@ function renderFoodToday(){
         <div class="li"><div class="grow small"><b>Phytoöstrogene.</b> Leinsamen, Soja und Hülsenfrüchte können Beschwerden bei manchen Frauen etwas lindern.</div></div>
         <div class="li"><div class="grow small"><b>Blutzucker ruhig halten.</b> Wenig Zucker und Alkohol. Beides verstärkt Hitzewallungen, Schlafprobleme und Stimmungstiefs.</div></div>
       </div>
-      <p class="small muted">Studienlage: <a href="/quellen#protein" target="_blank">Protein</a> · <a href="/quellen#isoflavones" target="_blank">Phytoöstrogene</a></p>
+      ${USER ? `<p class="small muted">Studienlage: <a href="/quellen#protein" target="_blank">Protein</a> · <a href="/quellen#isoflavones" target="_blank">Phytoöstrogene</a></p>` : ''}
     </div>`;
 }
 
@@ -1001,7 +1001,7 @@ function renderBody(){
     </div>
     <div class="card flat">
       <h3>Mikronährstoffe für deine Phase</h3>
-      <p class="small muted">Passend zur ${PHASES[S.profile.phase].name}. Jede Angabe beruht auf geprüften Studien und Leitlinien mit Evidenzstufe und Quellen. Keine Verordnung: Lass Blutwerte bestimmen und sprich die Einnahme mit Ärztin, Arzt oder Apotheke ab. <a href="/quellen" target="_blank">Alle Quellen</a></p>
+      <p class="small muted">Passend zur ${PHASES[S.profile.phase].name}. Jede Angabe beruht auf geprüften Studien und Leitlinien mit Evidenzstufe und Quellen. Keine Verordnung: Lass Blutwerte bestimmen und sprich die Einnahme mit Ärztin, Arzt oder Apotheke ab. ${USER ? `<a href="/quellen" target="_blank">Alle Quellen</a>` : ''}</p>
       <div>${SUPPS.filter(s=>s.phases.includes(S.profile.phase)).map(s=>`<div class="supp"><div class="grow"><b>${s.n}</b><div class="small muted">${s.for}</div><button class="link" data-a="supp-info" data-v="${s.id}">Studienlage & Quellen</button></div><button class="btn sm ${S.mySupps.includes(s.id)?'ghost':'line'}" data-a="supp-mine" data-v="${s.id}">${S.mySupps.includes(s.id)?'Entfernen':'Hinzufügen'}</button></div>`).join('')}</div>
     </div>
     <div class="card">
@@ -1009,7 +1009,7 @@ function renderBody(){
       <h2>Hormonersatztherapie verstehen</h2>
       <p class="small">Second Bloom gibt keine Therapieempfehlung. Hier findest du verständliches Wissen, damit du gut vorbereitet ins Gespräch mit deiner Gynäkologin oder deinem Gynäkologen gehst.</p>
       <div>${HRT.map(([q,a])=>`<details class="faq"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
-      <p class="small muted">Studienlage zu nicht-hormonellen Möglichkeiten bei Hitzewallungen: <a href="/quellen#nonhormonal" target="_blank">Quellen &amp; Evidenz</a></p>
+      ${USER ? `<p class="small muted">Studienlage zu nicht-hormonellen Möglichkeiten bei Hitzewallungen: <a href="/quellen#nonhormonal" target="_blank">Quellen &amp; Evidenz</a></p>` : ''}
     </div>
     <div class="card flat">
       <h3>Profil</h3>
@@ -1035,7 +1035,7 @@ function openSupp(id){
     return `
     <p class="small"><span>${esc(s.for)}</span>. <span>${esc(s.note)}</span></p>
     ${ev === null ? '<p class="small muted">Studienlage wird geladen …</p>' : ev.length ? ev.map(evidenceBlock).join('') : '<p class="small muted">Für dieses Mittel ist die Auswertung noch nicht hinterlegt.</p>'}
-    <div class="card flat"><p class="small"><b>Evidenzstufen:</b> Hoch = mehrere gute Studien oder Meta-Analysen kommen übereinstimmend zum Ergebnis. Moderat = gute Hinweise, aber Einschränkungen. Niedrig = wenige oder widersprüchliche Studien. Unzureichend = kein belastbarer Nutzen gezeigt. <a href="/quellen" target="_blank">Alle Quellen und Methodik</a></p></div>
+    <div class="card flat"><p class="small"><b>Evidenzstufen:</b> Hoch = mehrere methodisch solide Studien oder Meta-Analysen kommen zum selben Ergebnis. Moderat = belastbare Hinweise mit Einschränkungen. Niedrig = wenige oder widersprüchliche Studien. Unzureichend = kein Nutzen belegt. ${USER ? `<a href="/quellen" target="_blank">Alle Quellen und Methodik</a>` : ''}</p></div>
     <p class="small muted">Keine Dosierungsempfehlung für dich persönlich. Bitte Einnahme mit Ärztin, Arzt oder Apotheke abstimmen, vor allem bei Medikamenten oder Vorerkrankungen.</p>`;
   };
   openSheet(s.n, body);
