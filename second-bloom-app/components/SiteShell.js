@@ -2,10 +2,12 @@ import Link from "next/link";
 import Mark from "./Mark";
 import { currentUser } from "@/lib/auth";
 import { logout } from "@/app/actions";
+import LangSwitch from "./LangSwitch";
+import { getLang } from "@/lib/lang";
 
 // Rahmen für die Website-Seiten (Start, Anmeldung, Konto, Admin)
 export default async function SiteShell({ children }) {
-  const me = await currentUser().catch(() => null);
+  const [me, lang] = await Promise.all([currentUser().catch(() => null), getLang()]);
   return (
     <>
       <header className="site-top">
@@ -21,6 +23,7 @@ export default async function SiteShell({ children }) {
             <Link href="/login">Anmelden</Link>
             <Link href="/register">Konto erstellen</Link>
           </>)}
+          <LangSwitch lang={lang} />
         </nav>
       </header>
       <main className="site-main">{children}</main>

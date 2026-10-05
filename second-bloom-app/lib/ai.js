@@ -94,28 +94,36 @@ export function parseJson(text) {
   try { return JSON.parse(s.slice(a, b + 1)); } catch { throw new AiError("Die KI-Antwort war unvollständig. Bitte nochmals versuchen.", 502); }
 }
 
-const STYLE = "Sprache: Deutsch mit Schweizer Rechtschreibung (ss statt ß). Kurze, klare Sätze, direkte Du-Anrede, keine Ausrufezeichen, keine Emojis.";
+// Ausgabesprache folgt der Sprache der Oberfläche; Anweisungen bleiben deutsch, JSON-Schlüssel unverändert
+const LANG_STYLE = {
+  de: "Sprache: Deutsch mit Schweizer Rechtschreibung (ss statt ß). Kurze, klare Sätze, direkte Du-Anrede",
+  en: "Antworte auf Englisch (britische Schreibweise). Kurze, klare Sätze, direkte Anrede mit you",
+  fr: "Antworte auf Französisch. Kurze, klare Sätze, Anrede mit tu, Leserin weiblich (z. B. prête)",
+  es: "Antworte auf Spanisch (Spanien). Kurze, klare Sätze, Anrede mit tú, Leserin weiblich",
+  pt: "Antworte auf europäischem Portugiesisch. Kurze, klare Sätze, Anrede mit tu, Leserin weiblich",
+};
+const style = (lang) => `${LANG_STYLE[lang] || LANG_STYLE.de}, keine Ausrufezeichen, keine Emojis. Alle Texte in den JSON-Werten in dieser Sprache, die JSON-Schlüssel und Rezept-IDs unverändert.`;
 const DIETS = { all: "alles", pesc: "pescetarisch", veg: "vegetarisch" };
 // Unverträglichkeiten strikt, Abneigungen meiden, Vorlieben bevorzugen
 const prefsText = (p) => [p?.avoid?.length ? `Unverträglichkeiten, strikt meiden (bei Laktose oder Gluten sind laktose- bzw. glutenfreie Varianten erlaubt): ${p.avoid.join(", ")}.` : "", p?.dislike?.length ? `Mag nicht, bitte nicht verwenden: ${p.dislike.join(", ")}.` : "", p?.like?.length ? `Isst gern, wenn passend bevorzugen: ${p.like.join(", ")}.` : ""].filter(Boolean).join("\n");
 
 // ---------- Rezept aus Zutaten oder Foto ----------
-const COOK_SYSTEM = `Du bist Ernährungscoach für Frauen in der Perimenopause und Menopause. ${STYLE}
+const COOK_SYSTEM = (lang) => `Du bist Ernährungscoach für Frauen in der Perimenopause und Menopause. ${style(lang)}
 Regeln für jedes Rezept: mindestens 25 g Protein pro Portion; hormonfreundlich (Ballaststoffe, wenn passend Phytoöstrogene wie Leinsamen, Soja oder Hülsenfrüchte, gesunde Fette, wenig Zucker, kein Alkohol). Nutze möglichst nur Vorhandenes; Öl, Salz, Pfeffer und Grundgewürze sind immer da. Fehlende Zutaten markierst du mit "have": false. Mengen gelten für alle Personen zusammen.
 Antworte NUR mit JSON: {"title":"…","minutes":20,"proteinPerServing":30,"why":"1–2 Sätze, warum hormonfreundlich","detected":["…"],"ingredients":[{"item":"Eier","amount":"6 Stk","have":true}],"steps":["…"],"tip":"ein kurzer Tipp"}`;
 
-export async function cookRecipe({ who, words, meal, time, servings, diet, prefs, image }) {
+export async function cookRecipe({ who, words, meal, time, servings, diet, prefs, image, lang }) {
   const text = `Mahlzeit: ${meal}. Personen: ${servings}. Zeit: höchstens ${time} Minuten. Ernährungsweise: ${DIETS[diet] || "alles"}.
 ${prefsText(prefs)}
 Vorhandene Zutaten: ${words || "keine Angabe"}.${image ? "\nDas Foto zeigt Kühlschrank oder Vorrat. Erkenne die Lebensmittel und nutze sie bevorzugt; trage sie unter detected ein." : ""}`;
   const content = image ? [{ type: "image", source: { type: "base64", media_type: "image/jpeg", data: image } }, { type: "text", text }] : text;
-  return parseJson(await ask({ kind: image ? "cook_photo" : "cook", who, system: COOK_SYSTEM, content, vision: Boolean(image), maxTokens: 1200 }));
+  return parseJson(await ask({ kind: image ? "cook_photo" : "cook", who, system: COOK_SYSTEM(lang), content, vision: Boolean(image), maxTokens: 1200 }));
 }
 
 // ---------- Wochenplan aus der Rezeptbibliothek ----------
-export async function weekPlan({ who, phase, household, diet, prefs, goal, wishes, recipes }) {
+export async function weekPlan({ who, phase, household, diet, prefs, goal, wishes, recipes, lang }) {
   const list = recipes.map((r) => `${r.id}|${r.type}|${r.n}|${r.p}g|${r.min}min|${r.tags.join(",")}`).join("\n");
-  const system = `Du planst Essenswochen für Frauen in der ${phase}. ${STYLE}
+  const system = `Du planst Essenswochen für Frauen in der ${phase}. ${style(lang)}
 Nutze ausschliesslich die gegebenen Rezept-IDs. B ist immer ein Frühstück (Typ B), L und D sind Hauptgerichte (Typ M). Kein Rezept zweimal am selben Tag, viel Abwechslung.
 Antworte NUR mit JSON: {"days":[{"B":"id","L":"id","D":"id"} … genau 7 Einträge, Montag bis Sonntag],"note":"ein Satz, wie du die Wünsche umgesetzt hast"}`;
   const text = `Haushalt: ${household} Personen. Ernährungsweise: ${DIETS[diet] || "alles"}. Proteinziel: ${goal} g pro Tag.
@@ -127,8 +135,8 @@ ${list}`;
 }
 
 // ---------- Tageseinordnung (ein kurzer Text pro Tag) ----------
-export async function dayNote({ who, ctx }) {
-  const system = `Du bist eine ruhige, kompetente Begleiterin für Frauen in der Perimenopause und Menopause. ${STYLE}
+export async function dayNote({ who, ctx, lang }) {
+  const system = `Du bist eine ruhige, kompetente Begleiterin für Frauen in der Perimenopause und Menopause. ${style(lang)}
 Schreibe 3 bis 4 Sätze: wie der Tag einzuordnen ist (Check-in und Gerätewerte zusammen), was heute am meisten hilft (Bewegung, Essen, Erholung, eine mentale Übung) und ein freundlicher Schlusssatz. Keine Diagnosen, keine Medikamente. Bei anhaltend sehr tiefer Stimmung den Hinweis auf ärztliche oder psychotherapeutische Hilfe geben. Nur Fliesstext, keine Überschriften, keine Listen.`;
   return (await ask({ kind: "day_note", who, system, content: JSON.stringify(ctx), maxTokens: 350 })).trim();
 }

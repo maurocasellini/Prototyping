@@ -1,4 +1,5 @@
 import { Playfair_Display, Inter } from "next/font/google";
+import { getLang, HTML_LANG, I18N_VERSION } from "@/lib/lang";
 import "./globals.css";
 
 const display = Playfair_Display({ subsets: ["latin"], weight: ["400", "500", "700"], style: ["normal", "italic"], variable: "--fd" });
@@ -12,9 +13,11 @@ export const metadata = {
 };
 export const viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#F6F1EE" };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const lang = await getLang();
   return (
-    <html lang="de-CH" className={`${display.variable} ${body.variable}`}>
+    <html lang={HTML_LANG[lang]} data-lang={lang} data-i18n-v={I18N_VERSION} className={`${display.variable} ${body.variable}${lang !== "de" ? " i18n-wait" : ""}`}>
+      <head>{lang !== "de" && <script src={`/i18n.js?v=${I18N_VERSION}`} defer />}</head>
       <body>{children}</body>
     </html>
   );

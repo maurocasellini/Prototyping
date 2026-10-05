@@ -1,5 +1,10 @@
 /* Second Bloom – App (Client). Zustand wird im Konto gespeichert (/api/state), in der Demo im Browser. */
 
+/* ---------- Sprache (Übersetzung der Oberfläche: public/i18n.js) ---------- */
+const LANG = document.documentElement.dataset.lang || 'de';
+const LOC = ({de:'de-CH', en:'en-GB', fr:'fr-CH', es:'es-ES', pt:'pt-PT'})[LANG] || 'de-CH';
+const LANG_NAMES = {de:'Deutsch', en:'English', fr:'Français', es:'Español', pt:'Português'};
+
 /* ---------- Content ---------- */
 const PHASES = {
   peri:{name:'Perimenopause', desc:'Zyklus wird unregelmässig, erste Beschwerden'},
@@ -113,7 +118,8 @@ const RECIPES = [
 ];
 const DIETS = [['all','Alles'],['pesc','Pescetarisch'],['veg','Vegetarisch']];
 const MEALS = {B:'Morgen', L:'Mittag', D:'Abend'};
-const WD = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+// Wochentage in der Sprache der Oberfläche (1.1.2024 war ein Montag)
+const WD = [1,2,3,4,5,6,7].map(i => { const w = new Date(Date.UTC(2024,0,i)).toLocaleDateString(LOC,{weekday:'long', timeZone:'UTC'}); return w.charAt(0).toUpperCase() + w.slice(1); });
 const PICKS = ['Eier','Magerquark','Skyr','Feta','Tofu','Linsen','Kichererbsen','Lachs','Hähnchen','Spinat','Brokkoli','Tomaten','Paprika','Zucchini','Haferflocken','Quinoa'];
 
 const WORKOUTS = {
@@ -142,7 +148,7 @@ const WORKOUTS = {
     {n:'Brustwirbelsäule rotieren', v:'thoracic_rotation', how:["Seitlage, Knie angewinkelt, Arme gestreckt übereinander vor der Brust.", "Oberen Arm wie ein Buch nach hinten öffnen, Blick folgt der Hand, Knie bleiben zusammen.", "Kurz halten, ausatmen, zurückführen. Seite wechseln."], s:2, r:'8 / Seite', cue:'In Seitlage, Blick folgt der Hand.'}]}
 };
 const WEEKPLAN = {1:'A',2:'M',3:'B',4:'walk',5:'C',6:'walk',0:'rest'};
-const DAYNAMES = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const DAYNAMES = [7,1,2,3,4,5,6].map(i => new Date(Date.UTC(2024,0,i)).toLocaleDateString(LOC,{weekday:'short', timeZone:'UTC'}).replace('.','').slice(0,3));
 const EXERCISES = {
   box:{n:'Box-Atmung', v:'box_breathing', min:4, for:'Akuter Stress, vor Meetings, bei einer Hitzewelle', breath:[['Einatmen',4],['Halten',4],['Ausatmen',4],['Halten',4]], cycles:6,
     intro:'Ein gleichmässiger Rhythmus beruhigt das Nervensystem in wenigen Minuten. Atme durch die Nase, lass die Schultern sinken.'},
@@ -207,22 +213,23 @@ const SUPPS = [
 // Evidenz: Schlüssel je Mittel in /evidence.json (geprüfte Quellen aus PubMed, Leitlinien und Behörden)
 const EVID_KEYS = {d3k2:['vitd','k2'], mag:['magnesium'], omega3:['omega3'], kreatin:['creatine'], calcium:['calcium'], b12:['b12'], eisen:['iron'], isoflavone:['isoflavones'], traubensilberkerze:['black_cohosh']};
 let EVID = null;
-async function loadEvidence(){ if(EVID) return EVID; try{ const r = await fetch('/evidence.json'); if(r.ok) EVID = await r.json(); }catch(e){} return EVID; }
+// Evidenz je Sprache (evidence.en.json …), sonst Deutsch
+async function loadEvidence(){ if(EVID) return EVID; for(const f of LANG==='de' ? ['/evidence.json'] : ['/evidence.'+LANG+'.json','/evidence.json']){ try{ const r = await fetch(f); if(r.ok){ EVID = await r.json(); break; } }catch(e){} } return EVID; }
 const LEVEL = {hoch:['Hoch','t-sage'], moderat:['Moderat','t-sky'], niedrig:['Niedrig','t-sun'], unzureichend:['Unzureichend','t-accent']};
 const lvl = (e) => { const x = LEVEL[e] || ['Offen','t-accent']; return `<span class="tag ${x[1]}">${x[0]}</span>`; };
 function srcList(list){
-  return `<ol class="srcs">${(list||[]).map(q => `<li><span class="tag t-sky">${esc(q.type||'Quelle')}</span> ${esc(q.authors||'')} (${esc(q.year||'')}). <i>${esc(q.title||'')}</i>. ${esc(q.journal||'')}.
+  return `<ol class="srcs">${(list||[]).map(q => `<li><span class="tag t-sky">${esc(q.type||'Quelle')}</span> <span translate="no">${esc(q.authors||'')}${q.year ? ' ('+esc(q.year)+')' : ''}. <i>${esc(q.title||'')}</i>. ${esc(q.journal||'')}.</span>
     ${q.pmid ? `<a href="https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(q.pmid)}/" target="_blank" rel="noopener">PubMed ${esc(q.pmid)}</a>` : ''}
     ${q.doi ? ` · <a href="https://doi.org/${encodeURI(q.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}
     ${!q.pmid && !q.doi && q.url ? `<a href="${esc(q.url)}" target="_blank" rel="noopener">Quelle öffnen</a>` : ''}</li>`).join('')}</ol>`;
 }
 function evidenceBlock(e){
   return `<div class="card" style="gap:10px">
-    <div class="row between wrap"><h3>${esc(e.name)}</h3></div>
-    <div class="list">${(e.claims||[]).map(c => `<div class="li small"><div class="grow">${esc(c.claim_de)}</div>${lvl(c.evidence)}</div>`).join('')}</div>
-    <p class="small">${esc(e.summary_de||'')}</p>
-    ${e.dose_de ? `<div class="small"><span class="eyebrow">Dosis laut Studien und Fachstellen</span><p>${esc(e.dose_de)}</p></div>` : ''}
-    ${e.safety_de ? `<div class="small"><span class="eyebrow">Sicherheit</span><p>${esc(e.safety_de)}</p></div>` : ''}
+    <div class="row between wrap"><h3 translate="no">${esc(e.name)}</h3></div>
+    <div class="list">${(e.claims||[]).map(c => `<div class="li small"><div class="grow" translate="no">${esc(c.claim_de)}</div>${lvl(c.evidence)}</div>`).join('')}</div>
+    <p class="small" translate="no">${esc(e.summary_de||'')}</p>
+    ${e.dose_de ? `<div class="small"><span class="eyebrow">Dosis laut Studien und Fachstellen</span><p translate="no">${esc(e.dose_de)}</p></div>` : ''}
+    ${e.safety_de ? `<div class="small"><span class="eyebrow">Sicherheit</span><p translate="no">${esc(e.safety_de)}</p></div>` : ''}
     <details class="faq"><summary>Quellen (${(e.sources||[]).length})</summary>${srcList(e.sources)}</details>
   </div>`;
 }
@@ -534,7 +541,7 @@ function seedExamples(){
 function renderToday(){
   const c = S.checkins[today()], h = new Date().getHours();
   const greet = h<11?'Guten Morgen':h<17?'Hallo':'Guten Abend';
-  const dateStr = new Date().toLocaleDateString('de-CH',{weekday:'long', day:'numeric', month:'long'});
+  const dateStr = new Date().toLocaleDateString(LOC,{weekday:'long', day:'numeric', month:'long'});
   const imp = IMPULSES[Math.floor(Date.now()/864e5) % IMPULSES.length];
   const p = proteinToday(), g = proteinGoal(), water = S.water[today()]||0;
   const mine = S.mySupps, taken = (S.supps[today()]||[]).filter(x=>mine.includes(x)).length;
@@ -891,7 +898,7 @@ function renderMental(){
       <p class="small muted">Was war heute gut, auch wenn es klein war? Regelmässig geübt, lenkt das den Blick nachweislich stärker auf das, was trägt.</p>
       <textarea id="journal" placeholder="1. Der Kaffee in Ruhe am Morgen&#10;2. …&#10;3. …"></textarea>
       <button class="btn" data-a="journal-save">Speichern</button>
-      ${recent.length?`<div class="list">${recent.map(j=>`<div class="li"><div class="grow small"><span class="eyebrow">${new Date(j.d).toLocaleDateString('de-CH',{day:'numeric',month:'short'})}</span><div style="white-space:pre-wrap">${esc(j.t)}</div></div></div>`).join('')}</div>`:''}
+      ${recent.length?`<div class="list">${recent.map(j=>`<div class="li"><div class="grow small"><span class="eyebrow">${new Date(j.d).toLocaleDateString(LOC,{day:'numeric',month:'short'})}</span><div style="white-space:pre-wrap">${esc(j.t)}</div></div></div>`).join('')}</div>`:''}
     </div>
     <div class="card">
       <h2>Fragen, die viele Frauen stellen</h2>
@@ -1014,6 +1021,7 @@ function renderBody(){
         <div class="li"><div class="grow">Essen<div class="small muted">${esc(prefsSummary() || 'Keine Unverträglichkeiten oder Vorlieben hinterlegt')}</div></div><button class="link" data-a="prefs">Bearbeiten</button></div>
       </div>
       <div class="chips">${Object.entries(PHASES).map(([k,p])=>chip('phase', k, S.profile.phase===k, p.name)).join('')}</div>
+      <div class="stack" style="gap:6px"><b class="small">Sprache</b><div class="chips" translate="no">${Object.entries(LANG_NAMES).map(([k,n])=>`<a class="chip ${LANG===k?'on':''}" href="/api/lang?l=${k}&next=${encodeURIComponent(location.pathname)}" hreflang="${k}">${n}</a>`).join('')}</div></div>
       <div class="row wrap">
         ${hasEx?`<button class="btn sm line" data-a="clear-ex">Beispieldaten löschen</button>`:''}
         <button class="btn sm ${confirmReset?'accent':'line'}" data-a="reset">${confirmReset?'Wirklich alles löschen?':'Demo zurücksetzen'}</button>
@@ -1121,7 +1129,7 @@ document.addEventListener('click', e => {
     case 'ci-scale': { const [k,n] = v.split(':'); draft[k] = +n; rerenderSheet(); break; }
     case 'ci-sym': draft.symptoms = draft.symptoms.includes(v) ? draft.symptoms.filter(s=>s!==v) : [...draft.symptoms, v]; rerenderSheet(); break;
     case 'ci-period': draft.period = el.checked; break;
-    case 'ci-save': delete draft.ex; S.checkins[tk] = draft; if(S.coach) delete S.coach[tk]; save(); closeSheet(); S.tab = 'heute'; render(); toast('Gespeichert. Dein Tagesplan ist angepasst.'); if(USER) setTimeout(refreshWear, 1200); break;
+    case 'ci-save': delete draft.ex; S.checkins[tk] = draft; if(S.coach) Object.keys(S.coach).forEach(k => { if(k.startsWith(tk)) delete S.coach[k]; }); save(); closeSheet(); S.tab = 'heute'; render(); toast('Gespeichert. Dein Tagesplan ist angepasst.'); if(USER) setTimeout(refreshWear, 1200); break;
     case 'food-add': { const f = FOODS[+v]; logFood(f.n+' ('+f.a+')', f.p); render(); toast('+'+f.p+' g Protein'); break; }
     case 'food-del': S.food[tk].splice(+v,1); save(); render(); break;
     case 'recipe': openRecipe(v); break;
@@ -1223,11 +1231,11 @@ function wearCard(){
   const t = w.today;
   const m = (lbl, val, sub) => `<div class="metric" style="background:var(--surface-2)"><span class="lbl">${lbl}</span><b style="font-family:var(--font-display);font-weight:500;color:var(--head);font-size:20px">${val}</b><span class="small muted">${sub || '&nbsp;'}</span></div>`;
   return `<div class="card wear">
-    <div class="row between wrap"><div><span class="eyebrow">${esc(w.provider || 'Uhr')}${w.lastSync ? ' · ' + new Date(w.lastSync).toLocaleDateString('de-CH', {day:'numeric', month:'short'}) : ''}</span><h2>Erholung & <em>Schlaf</em></h2></div>
+    <div class="row between wrap"><div><span class="eyebrow">${esc(w.provider || 'Uhr')}${w.lastSync ? ' · ' + new Date(w.lastSync).toLocaleDateString(LOC, {day:'numeric', month:'short'}) : ''}</span><h2>Erholung & <em>Schlaf</em></h2></div>
       ${t && t.recovery != null ? ring(t.recovery/100, t.recovery, t.recovery >= 65 ? 'var(--salbei)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)') : ''}</div>
     ${w.error ? `<p class="msg err small">${esc(w.error)}</p>` : ''}
     ${t ? `
-      ${t.stale ? `<p class="small muted">Letzte Werte vom ${new Date(t.day + 'T12:00:00').toLocaleDateString('de-CH', {day:'numeric', month:'long'})}.</p>` : ''}
+      ${t.stale ? `<p class="small muted">Letzte Werte vom ${new Date(t.day + 'T12:00:00').toLocaleDateString(LOC, {day:'numeric', month:'long'})}.</p>` : ''}
       <div class="metrics" style="grid-template-columns:repeat(4,1fr)">
         ${m('Schlaf', t.sleep ? fmt1(t.sleep.h) + ' h' : '–', t.sleep && t.sleep.deltaMin != null ? (t.sleep.deltaMin >= 0 ? '+' : '−') + Math.abs(t.sleep.deltaMin) + ' min' : '')}
         ${m('HRV', t.hrv ? t.hrv.v : '–', t.hrv ? pctTxt(t.hrv.pct) : '')}
@@ -1256,12 +1264,13 @@ function wearReportLines(){
 
 /* ---------- Tageseinordnung (KI, ein Text pro Tag) ---------- */
 let noteBusy = false;
+const noteKey = () => today() + (LANG === 'de' ? '' : ':' + LANG);
 function dayNoteCard(c){
   if(!sampleFn || !c) return '';
-  const txt = S.coach && S.coach[today()];
+  const txt = S.coach && S.coach[noteKey()];
   return `<div class="card note">
     <span class="eyebrow">Kurz eingeordnet</span>
-    ${txt ? `<p class="small" style="white-space:pre-wrap">${esc(txt)}</p>` : `<p class="small muted">Check-in und Uhr zusammen in drei Sätzen.</p><button class="btn sm line" data-a="day-note" ${noteBusy ? 'disabled' : ''}>${noteBusy ? 'Einen Moment …' : 'Tag einordnen'}</button>`}
+    ${txt ? `<p class="small" style="white-space:pre-wrap" translate="no">${esc(txt)}</p>` : `<p class="small muted">Check-in und Uhr zusammen in drei Sätzen.</p><button class="btn sm line" data-a="day-note" ${noteBusy ? 'disabled' : ''}>${noteBusy ? 'Einen Moment …' : 'Tag einordnen'}</button>`}
   </div>`;
 }
 async function dayNoteGo(){
@@ -1276,7 +1285,7 @@ async function dayNoteGo(){
       training: w ? (lowDay(c) ? 'sanfte Version: ' : '') + WORKOUTS[w].n : 'Erholung oder Spaziergang',
       dinner: d ? R(d.D).n : '', protein: proteinToday(), goal: proteinGoal(), lowStreak: lowMoodStreak(),
     }});
-    (S.coach ||= {})[today()] = r.text;
+    (S.coach ||= {})[noteKey()] = r.text;
     const keys = Object.keys(S.coach).sort().slice(-14); S.coach = Object.fromEntries(keys.map(k => [k, S.coach[k]]));
     save();
   }catch(e){

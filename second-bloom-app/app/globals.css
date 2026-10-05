@@ -409,3 +409,10 @@ nav.tabs button[aria-current="page"] svg{color:var(--sage)}
 .chipc span{display:inline-block;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
 .chipc input:checked + span{background:var(--rosa-soft);border-color:var(--rosa);color:var(--accent)}
 .chipc input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Übersetzung: Seite kurz ausblenden, bis die Texte ersetzt sind (höchstens 2,5 s, siehe public/i18n.js) */
+html.i18n-wait body{visibility:hidden}
+.lang-switch{display:flex;gap:2px;align-items:center}
+.lang-switch a{font-size:10px;letter-spacing:.12em;padding:4px 5px;color:var(--muted);text-decoration:none;border-radius:var(--r-sm)}
+.lang-switch a.on{color:var(--accent);background:var(--rosa-soft)}
+a.chip{text-decoration:none}

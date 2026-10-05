@@ -8,6 +8,7 @@ import { encrypt } from "@/lib/crypto";
 import { PRIVACY_VERSION } from "@/lib/privacy";
 import { readProfile } from "@/lib/profile";
 import { needsConsent } from "@/lib/consent";
+import { setLangCookie } from "@/lib/lang";
 
 const s = (form, k) => String(form.get(k) || "").trim();
 
@@ -19,6 +20,8 @@ export async function login(_prev, form) {
   if (u.username === "ADMIN" && u.must_change && (await repo.listUsers()).some((x) => x.id !== u.id && x.role === "admin" && !x.must_change))
     return { error: "Dieses Start-Konto ist aus Sicherheitsgründen gesperrt. Bitte mit deinem eigenen Admin-Konto anmelden." };
   await createSession(u);
+  const lang = (await repo.getState(u.id))?.profile?.lang;
+  if (lang) await setLangCookie(lang);
   redirect(u.must_change ? "/konto?neu=1" : (await needsConsent(u.id)) ? "/einwilligung" : "/app");
 }
 
@@ -36,6 +39,7 @@ export async function register(_prev, form) {
   if (c) return { error: c };
   let u;
   try { u = await repo.createUser({ name, email, password: pw }); } catch (e) { return { error: e.message }; }
+  await setLangCookie(p.profile.lang);
   await repo.saveState(u.id, { profile: p.profile, household: p.household, diet: p.diet, prefs: p.prefs, ...consentRecord() });
   await createSession(u);
   redirect("/app");
