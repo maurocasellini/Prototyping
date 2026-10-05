@@ -361,3 +361,27 @@ nav.tabs button[aria-current="page"]{background:var(--rosa-soft)}
 .feat .card:nth-child(3n+2){border-top:3px solid var(--rosa)}
 .feat .card:nth-child(3n){border-top:3px solid var(--copper)}
 .auth-side li::before{color:var(--sage)}
+
+/* Übungsanleitung und Video */
+.howto{display:flex;flex-direction:column;gap:10px;background:var(--rosa-soft);border:1px solid var(--rosa);border-radius:var(--r);padding:12px 14px}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.video{position:relative;width:100%;aspect-ratio:16/9;max-width:100%;border-radius:var(--r);overflow:hidden;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cover{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:var(--r);border:1px dashed var(--salbei);background:var(--salbei-soft);color:var(--sage);text-align:left}
+.video-cover b{color:var(--sage)}
+.video-cover .small{color:var(--ink)}
+
+/* Salbeigrün und Pastellrosa deutlicher sichtbar */
+.metric{background:var(--rosa-soft)}
+.btn.ghost{background:var(--salbei-soft);border-color:var(--salbei);color:var(--sage)}
+.card.wear,.card.recovery{background:linear-gradient(180deg,var(--salbei-soft),var(--surface) 70%);border-color:#D6E2D0}
+.card.note{background:var(--salbei-soft);border-color:#D6E2D0}
+.prog{background:var(--rosa-soft);border-color:var(--rosa)}
+.tile{background:linear-gradient(180deg,var(--rosa-soft),var(--surface));border-color:var(--rosa)}
+.tile:nth-child(even){background:linear-gradient(180deg,var(--salbei-soft),var(--surface));border-color:#D6E2D0}
+.tile:nth-child(even) svg{color:var(--sage)}
+.week .day{background:var(--rosa-soft)}
+.seg button[aria-selected="true"]{border-bottom-color:var(--salbei)}
+nav.tabs button[aria-current="page"] svg{color:var(--sage)}
+.impulse::after{background:linear-gradient(90deg,var(--salbei),var(--rosa))}
+.foot{background:var(--rosa-soft)}

@@ -118,43 +118,43 @@ const PICKS = ['Eier','Magerquark','Skyr','Feta','Tofu','Linsen','Kichererbsen',
 
 const WORKOUTS = {
   A:{n:'Ganzkörper Kraft A', min:40, focus:'Beine, Rücken, Rumpf', ex:[
-    {n:'Goblet Squat', s:3, r:'10', cue:'Kurzhantel vor der Brust, Knie folgen den Zehen.'},
-    {n:'Rumänisches Kreuzheben', s:3, r:'10', cue:'Hüfte nach hinten schieben, Rücken lang.'},
-    {n:'Liegestütz erhöht', s:3, r:'8', cue:'Hände auf Bank oder Tisch, Körper in einer Linie.'},
-    {n:'Einarmiges Rudern', s:3, r:'10 / Seite', cue:'Ellbogen nah am Körper zur Hüfte ziehen.'},
-    {n:'Unterarmstütz', s:3, r:'30 s', cue:'Beckenboden sanft aktivieren, ruhig atmen.'}]},
+    {n:'Goblet Squat', v:'goblet_squat', how:["Füsse etwas breiter als hüftbreit, Zehen leicht nach aussen. Kurzhantel senkrecht vor der Brust halten.", "Hüfte nach hinten und unten schieben, Knie zeigen in Richtung Zehen, Brust bleibt aufrecht.", "So tief, wie es mit geradem Rücken geht. Über die ganze Fusssohle nach oben drücken, oben Gesäss anspannen."], s:3, r:'10', cue:'Kurzhantel vor der Brust, Knie folgen den Zehen.'},
+    {n:'Rumänisches Kreuzheben', v:'rdl', how:["Hüftbreit stehen, Kurzhanteln vor den Oberschenkeln, Knie ganz leicht gebeugt.", "Hüfte nach hinten schieben, Hanteln nah an den Beinen nach unten gleiten lassen, Rücken bleibt lang.", "Wenn die Rückseite der Beine deutlich zieht, über die Hüfte wieder aufrichten. Nicht ins Hohlkreuz."], s:3, r:'10', cue:'Hüfte nach hinten schieben, Rücken lang.'},
+    {n:'Liegestütz erhöht', v:'incline_pushup', how:["Hände etwas breiter als schulterbreit auf eine Bank, einen Tisch oder die Küchenablage.", "Körper von Kopf bis Ferse in einer Linie, Bauch und Gesäss leicht anspannen.", "Brust kontrolliert zur Kante senken, Ellbogen etwa 45 Grad vom Körper, dann kraftvoll wegdrücken. Je höher die Ablage, desto leichter."], s:3, r:'8', cue:'Hände auf Bank oder Tisch, Körper in einer Linie.'},
+    {n:'Einarmiges Rudern', v:'one_arm_row', how:["Eine Hand und ein Knie auf der Bank abstützen oder mit Ausfallschritt an einen Stuhl lehnen. Rücken gerade.", "Kurzhantel hängt unter der Schulter. Ellbogen nah am Körper Richtung Hüfte ziehen.", "Oben kurz das Schulterblatt zur Wirbelsäule ziehen, langsam ablassen. Seite wechseln."], s:3, r:'10 / Seite', cue:'Ellbogen nah am Körper zur Hüfte ziehen.'},
+    {n:'Unterarmstütz', v:'plank', how:["Unterarme unter den Schultern, Beine gestreckt, auf den Zehen.", "Körper in einer Linie, Gesäss weder hoch noch durchhängend. Beckenboden und Bauch sanft aktivieren.", "Ruhig weiteratmen. Zu schwer? Knie am Boden lassen."], s:3, r:'30 s', cue:'Beckenboden sanft aktivieren, ruhig atmen.'}]},
   B:{n:'Ganzkörper Kraft B', min:40, focus:'Gesäss, Schultern, Rumpf', ex:[
-    {n:'Hip Thrust', s:3, r:'12', cue:'Schultern auf der Bank, oben 2 s halten.'},
-    {n:'Ausfallschritt rückwärts', s:3, r:'8 / Seite', cue:'Oberkörper aufrecht, vorderes Knie stabil.'},
-    {n:'Schulterdrücken sitzend', s:3, r:'10', cue:'Rippen unten lassen, nicht ins Hohlkreuz.'},
-    {n:'Latzug mit Band', s:3, r:'12', cue:'Schulterblätter nach unten ziehen.'},
-    {n:'Dead Bug', s:3, r:'10', cue:'Lendenwirbelsäule bleibt am Boden.'}]},
+    {n:'Hip Thrust', v:'hip_thrust', how:["Schulterblätter an eine Bank oder ein Sofa, Füsse hüftbreit flach am Boden, Gewicht auf der Hüfte.", "Über die Fersen das Becken heben, bis Oberschenkel und Oberkörper eine Linie bilden. Kinn leicht zur Brust.", "Oben 2 Sekunden das Gesäss anspannen, kontrolliert absenken."], s:3, r:'12', cue:'Schultern auf der Bank, oben 2 s halten.'},
+    {n:'Ausfallschritt rückwärts', v:'reverse_lunge', how:["Hüftbreit stehen, bei Bedarf an einer Wand festhalten.", "Einen grossen Schritt nach hinten, beide Knie beugen, bis das hintere Knie knapp über dem Boden ist.", "Vorderes Knie bleibt über dem Fuss. Über die vordere Ferse zurück in den Stand drücken. Seite wechseln."], s:3, r:'8 / Seite', cue:'Oberkörper aufrecht, vorderes Knie stabil.'},
+    {n:'Schulterdrücken sitzend', v:'seated_press', how:["Aufrecht auf eine Bank oder einen stabilen Stuhl setzen, Kurzhanteln auf Schulterhöhe.", "Rippen unten halten, Bauch leicht anspannen, Hanteln nach oben drücken, bis die Arme fast gestreckt sind.", "Langsam zurück auf Schulterhöhe. Nicht ins Hohlkreuz ausweichen."], s:3, r:'10', cue:'Rippen unten lassen, nicht ins Hohlkreuz.'},
+    {n:'Latzug mit Band', v:'band_pulldown', how:["Widerstandsband oben an einer Tür oder Stange befestigen, kniend oder sitzend greifen.", "Schultern zuerst nach unten ziehen, dann die Ellbogen Richtung Hüfte führen.", "Unten kurz halten, Band kontrolliert zurücklassen."], s:3, r:'12', cue:'Schulterblätter nach unten ziehen.'},
+    {n:'Dead Bug', v:'dead_bug', how:["Rückenlage, Arme zur Decke, Beine angewinkelt in der Luft (Knie über der Hüfte).", "Lendenwirbelsäule sanft in den Boden drücken. Gegengleich einen Arm nach hinten und das andere Bein nach vorne strecken.", "Nur so weit, wie der Rücken am Boden bleibt. Zurück zur Mitte, Seite wechseln, dabei ausatmen."], s:3, r:'10', cue:'Lendenwirbelsäule bleibt am Boden.'}]},
   C:{n:'Kraft & Knochenimpuls', min:35, focus:'Kraft plus Stossbelastung für die Knochen', ex:[
-    {n:'Step-ups', s:3, r:'10 / Seite', cue:'Ganzen Fuss auf die Stufe setzen.'},
-    {n:'Kettlebell-Kreuzheben', s:3, r:'10', cue:'Gewicht aus der Hüfte heben, nicht aus dem Rücken.'},
-    {n:'Kurzhantel-Bankdrücken', s:3, r:'10', cue:'Kontrolliert ablassen, 2 s nach unten.'},
-    {n:'Farmer’s Walk', s:3, r:'40 m', cue:'Schwere Gewichte, aufrechter Gang.'},
-    {n:'Kleine Sprünge', s:3, r:'10', cue:'Weich landen. Bei Beckenbodenbeschwerden durch Fersenfallen ersetzen.'}]},
+    {n:'Step-ups', v:'step_up', how:["Vor eine stabile Stufe oder Bank stellen, ganzen Fuss daraufsetzen.", "Über die Ferse des oberen Beins hochdrücken, ohne mit dem unteren Bein abzustossen.", "Oben aufrecht stehen, kontrolliert wieder absteigen. Seite wechseln. Mit Hanteln schwerer machen."], s:3, r:'10 / Seite', cue:'Ganzen Fuss auf die Stufe setzen.'},
+    {n:'Kettlebell-Kreuzheben', v:'kb_deadlift', how:["Kettlebell zwischen den Füssen, etwas breiter als hüftbreit stehen.", "Hüfte nach hinten, Knie leicht beugen, Griff fassen, Rücken lang, Schultern über der Kugel.", "Aus Beinen und Hüfte aufstehen, oben Gesäss anspannen, mit geradem Rücken wieder abstellen."], s:3, r:'10', cue:'Gewicht aus der Hüfte heben, nicht aus dem Rücken.'},
+    {n:'Kurzhantel-Bankdrücken', v:'db_bench', how:["Rücklings auf eine Bank (oder den Boden), Füsse fest am Boden, Hanteln über der Brust.", "Hanteln kontrolliert seitlich zur Brust senken, Ellbogen etwa 45 Grad vom Körper.", "In 2 Sekunden ablassen, kraftvoll nach oben drücken."], s:3, r:'10', cue:'Kontrolliert ablassen, 2 s nach unten.'},
+    {n:'Farmer’s Walk', v:'farmers_walk', how:["Zwei schwere Kurzhanteln oder Taschen seitlich greifen.", "Aufrecht stehen, Schultern weg von den Ohren, Bauch fest.", "Mit kurzen, ruhigen Schritten gehen. Stärkt Griff, Rumpf und Haltung."], s:3, r:'40 m', cue:'Schwere Gewichte, aufrechter Gang.'},
+    {n:'Kleine Sprünge', v:'jumps', how:["Hüftbreit stehen, leicht in die Knie gehen.", "Kleine, federnde Sprünge auf dem Vorfuss, weich landen. Der kurze Stoss setzt einen Reiz für die Knochen.", "Bei Beckenboden- oder Gelenkbeschwerden stattdessen Fersenfallen: auf die Zehenspitzen gehen und die Fersen fallen lassen."], s:3, r:'10', cue:'Weich landen. Bei Beckenbodenbeschwerden durch Fersenfallen ersetzen.'}]},
   M:{n:'Mobilität & Beckenboden', min:20, focus:'Beweglichkeit, Haltung, Beckenboden', ex:[
-    {n:'Katze-Kuh', s:2, r:'10', cue:'Mit dem Atem bewegen.'},
-    {n:'Hüftbeuger-Dehnung', s:2, r:'45 s / Seite', cue:'Becken leicht aufrichten.'},
-    {n:'Beckenboden-Aktivierung', s:3, r:'8 × 5 s', cue:'Beim Ausatmen sanft nach innen-oben ziehen, vollständig lösen.'},
-    {n:'Brustwirbelsäule rotieren', s:2, r:'8 / Seite', cue:'In Seitlage, Blick folgt der Hand.'}]}
+    {n:'Katze-Kuh', v:'cat_cow', how:["Vierfüsslerstand, Hände unter den Schultern, Knie unter der Hüfte.", "Ausatmen: Rücken rund machen, Kinn zur Brust.", "Einatmen: Brustbein nach vorne schieben, Blick leicht nach vorne. Langsam im Atemrhythmus wechseln."], s:2, r:'10', cue:'Mit dem Atem bewegen.'},
+    {n:'Hüftbeuger-Dehnung', v:'hip_flexor', how:["Halber Kniestand, ein Knie am Boden (Kissen unterlegen), anderer Fuss vorne.", "Becken leicht aufrichten (Schambein Richtung Bauchnabel), Gesäss des hinteren Beins anspannen.", "Leicht nach vorne schieben, bis es vorne in der Hüfte zieht. Halten, ruhig atmen, Seite wechseln."], s:2, r:'45 s / Seite', cue:'Becken leicht aufrichten.'},
+    {n:'Beckenboden-Aktivierung', v:'pelvic_floor', how:["Bequem liegen oder sitzen, Atem fliessen lassen.", "Beim Ausatmen den Beckenboden sanft nach innen und oben ziehen, als würdest du Wasser halten. Gesäss und Bauch bleiben locker.", "5 Sekunden halten, dann bewusst vollständig lösen. Das Loslassen ist genauso wichtig wie das Anspannen."], s:3, r:'8 × 5 s', cue:'Beim Ausatmen sanft nach innen-oben ziehen, vollständig lösen.'},
+    {n:'Brustwirbelsäule rotieren', v:'thoracic_rotation', how:["Seitlage, Knie angewinkelt, Arme gestreckt übereinander vor der Brust.", "Oberen Arm wie ein Buch nach hinten öffnen, Blick folgt der Hand, Knie bleiben zusammen.", "Kurz halten, ausatmen, zurückführen. Seite wechseln."], s:2, r:'8 / Seite', cue:'In Seitlage, Blick folgt der Hand.'}]}
 };
 const WEEKPLAN = {1:'A',2:'M',3:'B',4:'walk',5:'C',6:'walk',0:'rest'};
 const DAYNAMES = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 const EXERCISES = {
-  box:{n:'Box-Atmung', min:4, for:'Akuter Stress, vor Meetings, bei einer Hitzewelle', breath:[['Einatmen',4],['Halten',4],['Ausatmen',4],['Halten',4]], cycles:6,
+  box:{n:'Box-Atmung', v:'box_breathing', min:4, for:'Akuter Stress, vor Meetings, bei einer Hitzewelle', breath:[['Einatmen',4],['Halten',4],['Ausatmen',4],['Halten',4]], cycles:6,
     intro:'Ein gleichmässiger Rhythmus beruhigt das Nervensystem in wenigen Minuten. Atme durch die Nase, lass die Schultern sinken.'},
-  478:{n:'4-7-8-Atmung', min:3, for:'Einschlafen, nächtliches Aufwachen', breath:[['Einatmen',4],['Halten',7],['Ausatmen',8]], cycles:4,
+  478:{n:'4-7-8-Atmung', v:'breathing_478', min:3, for:'Einschlafen, nächtliches Aufwachen', breath:[['Einatmen',4],['Halten',7],['Ausatmen',8]], cycles:4,
     intro:'Das lange Ausatmen aktiviert den Parasympathikus, den „Ruhenerv“. Ideal im Bett oder wenn du nachts wach liegst.'},
-  stopp:{n:'STOPP-Technik', min:2, for:'Reizbarkeit, wenn es hochkocht',
+  stopp:{n:'STOPP-Technik', v:'stopp', min:2, for:'Reizbarkeit, wenn es hochkocht',
     intro:'Für Momente, in denen die Reaktion schneller ist als du. Je öfter du übst, desto früher greift sie.',
     steps:[['S','Stopp. Halte inne, bevor du antwortest.'],['T','Tief durchatmen. Einmal langsam ein und noch langsamer aus.'],['O','Observieren. Was fühle ich gerade? Was denke ich? Wo spüre ich es im Körper?'],['P','Perspektive. Wie wichtig ist das in einer Woche? Spielt Müdigkeit oder Hormonlage mit?'],['P','Passend handeln. Was ist jetzt die hilfreichste Reaktion für mich?']]},
-  erdung:{n:'5-4-3-2-1 Erdung', min:3, for:'Unruhe, Gedankenkarussell, Herzklopfen',
+  erdung:{n:'5-4-3-2-1 Erdung', v:'grounding', min:3, for:'Unruhe, Gedankenkarussell, Herzklopfen',
     intro:'Holt dich über die Sinne zurück ins Hier und Jetzt.',
     steps:[['5','Dinge, die du sehen kannst. Benenne sie leise.'],['4','Dinge, die du fühlen kannst: Stuhl, Kleidung, Füsse am Boden.'],['3','Geräusche, die du hören kannst.'],['2','Dinge, die du riechen kannst.'],['1','Eine Sache, die du schmecken kannst, oder ein freundlicher Satz an dich selbst.']]},
-  scan:{n:'Mini-Körperscan', min:3, for:'Erschöpfung, Mittagstief, Anspannung',
+  scan:{n:'Mini-Körperscan', v:'body_scan', min:3, for:'Erschöpfung, Mittagstief, Anspannung',
     intro:'Wandere mit der Aufmerksamkeit durch den Körper, ohne etwas verändern zu müssen.',
     steps:[['1','Füsse und Beine: Wo liegen sie auf, wo ist Spannung?'],['2','Bauch und Becken: Lass den Bauch beim Einatmen weich werden.'],['3','Schultern und Kiefer: Bewusst lösen, Zunge vom Gaumen nehmen.'],['4','Gesicht und Stirn: Glätten, als würdest du lächeln wollen.'],['5','Ein ganzer Atemzug für den ganzen Körper.']]}
 };
@@ -214,7 +214,7 @@ const HRT = [
 const BOOT = (() => { try{ return JSON.parse(document.getElementById('sb-boot').dataset.boot); }catch(e){ return {mode:'demo', wear:null, ai:false}; } })();
 const USER = BOOT.mode === 'user';
 const KEY = 'second-bloom.demo.v2';
-const fresh = () => ({profile:null, checkins:{}, food:{}, water:{}, supps:{}, mySupps:['d3k2','mag','omega3','kreatin'], workouts:{}, journal:[], lessons:{}, mental:{}, tab:'heute', foodTab:'heute', household:2, diet:'all', plan:null, shop:[], coach:{}});
+const fresh = () => ({profile:null, checkins:{}, food:{}, water:{}, supps:{}, mySupps:['d3k2','mag','omega3','kreatin'], workouts:{}, journal:[], lessons:{}, mental:{}, tab:'heute', foodTab:'heute', household:2, diet:'all', prefs:{avoid:[], dislike:[], like:[]}, plan:null, shop:[], coach:{}});
 let S = (()=>{
   if(USER) return Object.assign(fresh(), BOOT.state || {});
   try{ const s = localStorage.getItem(KEY); return s ? Object.assign(fresh(), JSON.parse(s)) : fresh(); }catch(e){ return fresh(); }
@@ -331,10 +331,54 @@ function copyText(text, onFail){
 }
 
 /* ---------- Plan & shopping list ---------- */
-function dietOK(r){ return S.diet==='veg' ? r.diet==='veg' : S.diet==='pesc' ? r.diet!=='meat' : true; }
+/* Unverträglichkeiten und Vorlieben: wirken auf Wochenplan, Tauschen, Rezepte, Einkaufsliste und KI */
+const INTOL = {
+  laktose:{n:'Laktose', re:/quark|skyr|joghurt|feta|hüttenkäse|milch|rahm/i, swap:(n)=>n.replace(/ \(.*\)$/,'') + ' (laktosefrei)', hint:'Laktosefreie Milchprodukte passen in alle Rezepte.'},
+  gluten:{n:'Gluten', re:/haferflocken|vollkornbrot/i, swap:(n)=>/brot/i.test(n) ? 'Glutenfreies Brot' : n + ' (glutenfrei)', hint:'Brot und Haferflocken werden durch glutenfreie Varianten ersetzt.'},
+  nuesse:{n:'Nüsse', re:/mandel|nuss|nüsse/i},
+  soja:{n:'Soja', re:/tofu|edamame|soja/i},
+  ei:{n:'Ei', re:/\beier\b/i},
+  fisch:{n:'Fisch', re:/lachs|thunfisch|fisch/i},
+  sesam:{n:'Sesam', re:/sesam/i},
+  huelsen:{n:'Hülsenfrüchte', re:/linsen|kichererbsen|bohnen|edamame/i},
+  histamin:{n:'Histamin', re:/feta|thunfisch|tomaten|spinat|avocado|sojasauce/i},
+};
+const prefs = () => (S.prefs ||= {avoid:[], dislike:[], like:[]});
+const termHit = (terms, text) => terms.some(t => t.length >= 3 && text.toLowerCase().includes(t.toLowerCase()));
+function prefsOK(r){
+  const p = prefs(), text = r.n + ' ' + r.ing.map(i=>i.n).join(' ');
+  for(const k of p.avoid){ const x = INTOL[k]; if(x && !x.swap && x.re.test(text)) return false; }
+  return !termHit(p.dislike, text);
+}
+function dietOnly(r){ return S.diet==='veg' ? r.diet==='veg' : S.diet==='pesc' ? r.diet!=='meat' : true; }
+function dietOK(r){ return dietOnly(r) && prefsOK(r); }
+const liked = (r) => termHit(prefs().like, r.n + ' ' + r.ing.map(i=>i.n).join(' '));
+// Zutat anpassen (laktosefrei, glutenfrei)
+function ingName(n){ for(const k of prefs().avoid){ const x = INTOL[k]; if(x && x.swap && x.re.test(n)) return x.swap(n); } return n; }
+function prefsSummary(){
+  const p = prefs(), parts = [];
+  if(p.avoid.length) parts.push('Ohne ' + p.avoid.map(k=>INTOL[k]?.n).filter(Boolean).join(', '));
+  if(p.dislike.length) parts.push('nicht: ' + p.dislike.join(', '));
+  if(p.like.length) parts.push('gern: ' + p.like.join(', '));
+  return parts.join(' · ');
+}
+function aiPrefs(){ const p = prefs(); return {avoid: p.avoid.map(k=>INTOL[k]?.n).filter(Boolean), dislike: p.dislike, like: p.like}; }
+function openPrefs(){
+  openSheet('Unverträglichkeiten & Vorlieben', () => { const p = prefs(); return `
+    <p class="small muted">Gilt für Wochenplan, Rezeptvorschläge, Kochen mit dem, was da ist, und die Einkaufsliste.</p>
+    <div class="stack" style="gap:8px"><b>Ich vertrage nicht oder esse nicht</b>
+      <div class="chips">${Object.entries(INTOL).map(([k,x])=>chip('pref-avoid', k, p.avoid.includes(k), x.n)).join('')}</div>
+      ${p.avoid.filter(k=>INTOL[k].hint).map(k=>`<p class="small muted">${INTOL[k].hint}</p>`).join('')}
+    </div>
+    <label class="f">Mag ich nicht (mit Komma trennen)<input type="text" id="pref-dislike" value="${esc(p.dislike.join(', '))}" placeholder="z. B. Pilze, Koriander, Avocado"></label>
+    <label class="f">Esse ich gern (mit Komma trennen)<input type="text" id="pref-like" value="${esc(p.like.join(', '))}" placeholder="z. B. Lachs, Linsen, Beeren"></label>
+    <button class="btn accent block" data-a="pref-save">Speichern und Plan anpassen</button>`; });
+}
 function shuffle(a){ a = [...a]; for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
 function generatePlan(){
-  const B = shuffle(RECIPES.filter(r=>r.type==='B' && dietOK(r))), M = shuffle(RECIPES.filter(r=>r.type==='M' && dietOK(r)));
+  const pick = (t) => { let x = RECIPES.filter(r=>r.type===t && dietOK(r)); if(x.length < (t==='M' ? 2 : 1)) { x = RECIPES.filter(r=>r.type===t && dietOnly(r)); generatePlan.relaxed = true; } return shuffle(x).sort((a,b)=>liked(b)-liked(a)); };
+  generatePlan.relaxed = false;
+  const B = pick('B'), M = pick('M');
   S.plan = {days:[...Array(7)].map((_,i)=>({B:B[i%B.length].id, L:M[(2*i)%M.length].id, D:M[(2*i+1)%M.length].id})), note:''};
 }
 function swapMeal(i, k){
@@ -352,8 +396,8 @@ function addToShop(items){
 function buildShop(){
   const n = S.household, m = {};
   S.plan.days.forEach(d=>['B','L','D'].forEach(k=>R(d[k]).ing.forEach(i=>{
-    const key = i.n+'|'+i.u;
-    m[key] = m[key] || {name:i.n, qty:0, unit:i.u, cat:i.c, src:'plan'};
+    const nm = ingName(i.n), key = nm+'|'+i.u;
+    m[key] = m[key] || {name:nm, qty:0, unit:i.u, cat:i.c, src:'plan'};
     m[key].qty += i.q*n;
   })));
   S.shop = S.shop.filter(x=>x.src!=='plan');
@@ -442,6 +486,9 @@ function renderOnboarding(){
   return `
     <div class="stack"><span class="eyebrow">Schritt 2 von 2</span><h1>Was ist dir gerade am wichtigsten?</h1><p class="muted small">Wähle so viele, wie du möchtest.</p></div>
     <div class="chips">${GOALS.map(g=>chip('ob-goal', g, ob.goals.includes(g))).join('')}</div>
+    <div class="stack" style="gap:8px"><b class="small">Unverträglichkeiten oder was du nicht isst</b>
+      <div class="chips">${Object.entries(INTOL).map(([k,x])=>chip('ob-avoid', k, prefs().avoid.includes(k), x.n)).join('')}</div>
+      <p class="small muted">Vorlieben und Abneigungen kannst du später unter Ernährung ergänzen.</p></div>
     <div class="card flat">
       <h3>Gut zu wissen</h3>
       <p class="small">Second Bloom ist ein Lifestyle-Begleiter und ersetzt keine ärztliche Beratung. Fragen zu Hormonersatztherapie, Medikamenten und Nahrungsergänzung besprich bitte immer mit deiner Ärztin oder deinem Arzt.</p>
@@ -594,6 +641,7 @@ function renderCook(){
       <label class="f">${sampleFn && imgOK ? 'Zusätzlich oder statt Foto' : 'Zutaten'}<textarea id="cook-text" placeholder="z. B. 3 Eier, halbe Zucchini, Feta, Rest Linsen">${esc(cook.text)}</textarea></label>
       <div class="chips">${PICKS.map(p=>chip('cook-pick', p, cook.picks.includes(p))).join('')}</div>
       <div class="row between"><b class="small">Für wie viele Personen?</b>${stepper('cook-n', n, 'Personen')}</div>
+      <div class="row between wrap"><span class="small muted">${esc(prefsSummary() || 'Keine Unverträglichkeiten hinterlegt.')}</span><button class="link" data-a="prefs">Anpassen</button></div>
       <div class="stack" style="gap:6px"><b class="small">Mahlzeit</b><div class="chips">${['Frühstück','Mittag','Abend','Snack'].map(m=>chip('cook-meal', m, cook.meal===m)).join('')}</div></div>
       <div class="stack" style="gap:6px"><b class="small">Zeit</b><div class="chips">${[15,30,45].map(t=>chip('cook-time', t, cook.time===t, 'bis '+t+' Min.')).join('')}</div></div>
       <button class="btn accent block" data-a="cook-go" ${cook.busy?'disabled':''}>${cook.busy?'Einen Moment …':'Mahlzeit vorschlagen'}</button>
@@ -627,13 +675,13 @@ const toks = s => s.toLowerCase().split(/[^a-zäöüéèàß]+/).filter(t=>t.len
 function has(words, name){ const a = toks(words), b = toks(name); return b.some(x=>a.some(y=>x.startsWith(y.slice(0,5)) || y.startsWith(x.slice(0,5)))); }
 function libResult(r, n, words){
   return {source:'lib', libId:r.id, title:r.n, minutes:r.min, servings:n, protein:r.p, why:r.why, tip:'', detected:[], steps:r.steps,
-    ingredients:r.ing.map(i=>({item:i.n, amount:fmtQty(i.q*n,i.u), q:i.q*n, u:i.u, have: !i.q || (words===null ? true : has(words, i.n)), cat:i.c}))};
+    ingredients:r.ing.map(i=>({item:ingName(i.n), amount:fmtQty(i.q*n,i.u), q:i.q*n, u:i.u, have: !i.q || (words===null ? true : has(words, i.n)), cat:i.c}))};
 }
 function localCook(words, n, avoid){
   const type = cook.meal==='Mittag' || cook.meal==='Abend' ? 'M' : 'B';
   let best = null, score = -1;
   RECIPES.filter(r=>r.type===type && dietOK(r) && r.min<=cook.time+5 && r.id!==avoid).forEach(r=>{
-    const s = r.ing.filter(i=>i.q && has(words, i.n)).length + Math.random()*0.6;
+    const s = r.ing.filter(i=>i.q && has(words, i.n)).length + (liked(r) ? 0.8 : 0) + Math.random()*0.6;
     if(s>score){ best = r; score = s; }
   });
   return libResult(best || RECIPES.find(r=>r.type===type && r.id!==avoid) || RECIPES[0], n, words);
@@ -665,7 +713,7 @@ async function cookGo(again){
   cook.busy = true; cook.result = null; cook.ctl = new AbortController(); render();
   try{
     const image = cook.photo && imgOK ? await shrink(cook.photo) : null;
-    const r = await api('cook', {words, meal: cook.meal, time: cook.time, servings: n, diet: S.diet, image, again: Boolean(again)}, cook.ctl.signal);
+    const r = await api('cook', {words, meal: cook.meal, time: cook.time, servings: n, diet: S.diet, prefs: aiPrefs(), image, again: Boolean(again)}, cook.ctl.signal);
     cook.result = normalizeAI(r, n);
   }catch(e){
     if(e && e.name === 'AbortError'){ }
@@ -685,6 +733,8 @@ function renderWeek(){
       <div><span class="eyebrow">Wochenplan</span><h2>Deine Woche auf dem <em>Teller</em></h2></div>
       <div class="row between"><b class="small">Personen im Haushalt</b>${stepper('hh', n, 'Personen')}</div>
       <div class="chips">${DIETS.map(([k,l])=>chip('diet', k, S.diet===k, l)).join('')}</div>
+      <div class="row between wrap"><span class="small muted">${esc(prefsSummary() || 'Keine Unverträglichkeiten hinterlegt.')}</span><button class="link" data-a="prefs">Unverträglichkeiten & Vorlieben</button></div>
+      ${generatePlan.relaxed ? '<p class="small" style="color:var(--sun)">Mit deinen Einschränkungen gibt es zu wenige Rezepte. Einige Gerichte enthalten deshalb Zutaten, die du meiden möchtest. Tausche sie oder plane mit Claude.</p>' : ''}
       <div class="row wrap"><button class="btn sm line" data-a="plan-new">${I.swap.replace('<svg','<svg width="15" height="15"')} Neu mischen</button><button class="btn sm accent" data-a="shop-build">Einkaufsliste erstellen</button></div>
       ${sampleFn?`<details class="faq" ${planWish?'open':''}><summary>Mit Claude persönlich planen</summary><div class="stack" style="margin-top:10px"><textarea id="plan-wish" placeholder="z. B. Unter der Woche schnell, Freitag Fisch, am Sonntag etwas Besonderes, kein Koriander">${esc(planWish)}</textarea><button class="btn sm accent" data-a="plan-ai" ${planBusy?'disabled':''}>${planBusy?'Claude plant …':'Plan erstellen lassen'}</button></div></details>`:''}
       ${S.plan.note?`<p class="ai-note">${esc(S.plan.note)}</p>`:''}
@@ -700,7 +750,7 @@ async function planAI(){
   const pool = RECIPES.filter(dietOK);
   planBusy = true; render();
   try{
-    const r = await api('plan', {phase: PHASES[S.profile.phase].name, household: S.household, diet: S.diet, goal: proteinGoal(), wishes: planWish.trim(), recipes: pool.map(x=>({id:x.id, type:x.type, n:x.n, p:x.p, min:x.min, tags:x.tags}))});
+    const r = await api('plan', {phase: PHASES[S.profile.phase].name, household: S.household, diet: S.diet, prefs: aiPrefs(), goal: proteinGoal(), wishes: planWish.trim(), recipes: pool.map(x=>({id:x.id, type:x.type, n:x.n, p:x.p, min:x.min, tags:x.tags}))});
     const okId = (id, t) => pool.some(x=>x.id===id && x.type===t);
     const ok = r && Array.isArray(r.days) && r.days.length>=7 && r.days.slice(0,7).every(d=>d && okId(d.B,'B') && okId(d.L,'M') && okId(d.D,'M'));
     if(!ok) throw {message:'Der Plan war unvollständig. Bitte nochmals versuchen oder neu mischen.'};
@@ -736,7 +786,7 @@ function openRecipe(id){
     <div class="row wrap"><span class="tag t-sage">${r.p} g Protein p. P.</span><span class="tag t-sun">${r.min} Min.</span>${r.tags.map(t=>`<span class="tag t-sky">${t}</span>`).join('')}</div>
     <p class="small">${r.why}</p>
     <div class="card"><div class="row between"><h3>Zutaten</h3>${stepper('rec-n', recN, 'Personen')}</div>
-      <div class="list">${r.ing.map(i=>`<div class="li small"><div class="grow">${i.n}</div><span class="num muted">${fmtQty(i.q*recN,i.u)||'nach Geschmack'}</span></div>`).join('')}</div></div>
+      <div class="list">${r.ing.map(i=>`<div class="li small"><div class="grow">${esc(ingName(i.n))}</div><span class="num muted">${fmtQty(i.q*recN,i.u)||'nach Geschmack'}</span></div>`).join('')}</div></div>
     <div class="card"><h3>Zubereitung</h3><div class="list">${r.steps.map((s,i)=>`<div class="li small"><b class="num" style="color:var(--accent);font-family:var(--font-display);font-size:17px">${i+1}</b><div class="grow">${s}</div></div>`).join('')}</div></div>
     <div class="row wrap"><button class="btn line" data-a="recipe-shop" data-v="${r.id}">Auf die Einkaufsliste</button><button class="btn accent" style="flex:1" data-a="recipe-log" data-v="${r.id}">Gegessen: ${r.p} g</button></div>`);
 }
@@ -781,7 +831,7 @@ function renderTraining(){
 }
 function openWorkout(id){
   const w = WORKOUTS[id], c = S.checkins[today()];
-  wDraft = {id, light: lowDay(c) && id!=='M', done:{}};
+  wDraft = {id, light: lowDay(c) && id!=='M', done:{}, info:{}};
   openSheet(w.n, ()=>{
     const sets = s => wDraft.light ? Math.max(2, s-1) : s;
     const total = w.ex.reduce((a,e)=>a+sets(e.s),0), done = Object.values(wDraft.done).filter(Boolean).length;
@@ -792,6 +842,8 @@ function openWorkout(id){
       <div class="card" style="gap:0">${w.ex.map((e,i)=>`<div class="ex">
         <div class="row between"><b>${e.n}</b><span class="small muted num">${sets(e.s)} × ${e.r}</span></div>
         <p class="small muted">${e.cue}</p>
+        ${e.how ? `<button class="link" data-a="ex-info" data-v="${i}">${wDraft.info[i] ? 'Anleitung schliessen' : 'Anleitung & Video'}</button>` : ''}
+        ${e.how && wDraft.info[i] ? `<div class="howto"><ol>${e.how.map(h => `<li>${h}</li>`).join('')}</ol>${videoBlock(e.v, e.n)}</div>` : ''}
         <div class="sets">${[...Array(sets(e.s))].map((_,j)=>`<button class="set ${wDraft.done[i+':'+j]?'on':''}" data-a="w-set" data-v="${i}:${j}">${j+1}</button>`).join('')}</div>
       </div>`).join('')}</div>
       <button class="btn accent block" data-a="w-done" ${done?'':'disabled'}>Training abschliessen</button>`;
@@ -831,10 +883,12 @@ function openExercise(id){
       <div class="orb" id="orb"><span id="orb-label">Bereit?<small>${e.cycles} Runden · ${e.breath.map(b=>b[1]).join('-')}</small></span></div>
       <button class="btn accent" id="breath-btn" data-a="breath" data-v="${id}">Starten</button>
     </div>
-    <p class="small muted">Gut für: ${e.for}</p>` : `
+    <p class="small muted">Gut für: ${e.for}</p>
+    ${videoBlock(e.v, e.n)}` : `
     <p class="small">${e.intro}</p>
     <div class="card" style="gap:0">${e.steps.map(([k,t])=>`<div class="li"><b style="font-family:var(--font-display);font-weight:500;color:var(--head);font-size:24px;color:var(--accent);width:24px">${k}</b><div class="grow small">${t}</div></div>`).join('')}</div>
     <p class="small muted">Gut für: ${e.for}</p>
+    ${videoBlock(e.v, e.n)}
     <button class="btn accent block" data-a="ex-done" data-v="${id}">Übung gemacht</button>`);
 }
 function stopBreath(){ if(breathTimer){ clearTimeout(breathTimer); breathTimer = null; } }
@@ -931,6 +985,7 @@ function renderBody(){
         <div class="li"><div class="grow">Alter · Gewicht</div><b class="num">${S.profile.age} · ${S.profile.weight} kg</b></div>
         <div class="li"><div class="grow">Proteinziel</div><b class="num">${proteinGoal()} g pro Tag</b></div>
         <div class="li"><div class="grow">Haushalt</div><b class="num">${S.household} ${S.household===1?'Person':'Personen'}</b></div>
+        <div class="li"><div class="grow">Essen<div class="small muted">${esc(prefsSummary() || 'Keine Unverträglichkeiten oder Vorlieben hinterlegt')}</div></div><button class="link" data-a="prefs">Bearbeiten</button></div>
       </div>
       <div class="chips">${Object.entries(PHASES).map(([k,p])=>chip('phase', k, S.profile.phase===k, p.name)).join('')}</div>
       <div class="row wrap">
@@ -1042,7 +1097,7 @@ document.addEventListener('click', e => {
     case 'food-del': S.food[tk].splice(+v,1); save(); render(); break;
     case 'recipe': openRecipe(v); break;
     case 'recipe-log': { const r = R(v); logFood(r.n, r.p); closeSheet(); render(); toast('+'+r.p+' g Protein eingetragen'); break; }
-    case 'recipe-shop': { const r = R(v); addToShop(r.ing.filter(i=>i.q).map(i=>({name:i.n, qty:i.q*recN, unit:i.u, cat:i.c, src:'manual'}))); save(); closeSheet(); render(); toast('Zutaten auf der Einkaufsliste'); break; }
+    case 'recipe-shop': { const r = R(v); addToShop(r.ing.filter(i=>i.q).map(i=>({name:ingName(i.n), qty:i.q*recN, unit:i.u, cat:i.c, src:'manual'}))); save(); closeSheet(); render(); toast('Zutaten auf der Einkaufsliste'); break; }
     case 'cook-pick': { const t = document.getElementById('cook-text'); if(t) cook.text = t.value; cook.picks = cook.picks.includes(v) ? cook.picks.filter(p=>p!==v) : [...cook.picks, v]; render(); break; }
     case 'cook-meal': { const t = document.getElementById('cook-text'); if(t) cook.text = t.value; cook.meal = v; render(); break; }
     case 'cook-time': { const t = document.getElementById('cook-text'); if(t) cook.text = t.value; cook.time = +v; render(); break; }
@@ -1082,6 +1137,15 @@ document.addEventListener('click', e => {
       if(!confirmReset){ confirmReset = true; render(); setTimeout(()=>{ if(confirmReset){ confirmReset = false; if(S.profile && S.tab==='koerper') render(); } }, 4000); break; }
       confirmReset = false; S = fresh(); ob.step = 0; ob.agree = false; save(); render(); break;
     case 'day-note': dayNoteGo(); break;
+    case 'prefs': openPrefs(); break;
+    case 'ob-avoid': { const a = prefs().avoid; S.prefs.avoid = a.includes(v) ? a.filter(x=>x!==v) : [...a, v]; render(); break; }
+    case 'pref-avoid': { const a = prefs().avoid; S.prefs.avoid = a.includes(v) ? a.filter(x=>x!==v) : [...a, v]; rerenderSheet(); break; }
+    case 'pref-save': {
+      const split = (id) => (document.getElementById(id)?.value || '').split(',').map(x=>x.trim()).filter(x=>x.length>=2).slice(0,15);
+      S.prefs.dislike = split('pref-dislike'); S.prefs.like = split('pref-like');
+      generatePlan(); buildShop(); save(); closeSheet(); render(); toast('Gespeichert. Wochenplan und Einkaufsliste sind angepasst.'); break; }
+    case 'ex-info': wDraft.info[v] = !wDraft.info[v]; rerenderSheet(); break;
+    case 'video': videoOn.add(v); if(sheetRender) rerenderSheet(); else render(); break;
     case 'sheet-close': closeSheet(); break;
   }
 });
@@ -1106,7 +1170,7 @@ function recoveryMini(){
   const t = wt();
   if(!t || t.recovery == null) return '';
   const col = t.recovery >= 65 ? 'var(--salbei)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)';
-  return `<div class="card">
+  return `<div class="card recovery">
     <div class="row between"><div><span class="eyebrow">${WEAR.demo ? 'Uhr · Beispieldaten' : 'Deine Uhr'}</span><h2>Erholung <em>${esc(t.label || '')}</em></h2></div>
       <button class="ringbtn" data-a="tab" data-v="koerper" aria-label="Details zur Erholung">${ring(t.recovery/100, t.recovery, col)}</button></div>
     ${t.reasons.length ? `<p class="small muted">${t.reasons.map(esc).join(' · ')}</p>` : `<p class="small muted">Alles im Bereich deiner eigenen Normalität.</p>`}
@@ -1129,7 +1193,7 @@ function wearCard(){
   </div>`;
   const t = w.today;
   const m = (lbl, val, sub) => `<div class="metric" style="background:var(--surface-2)"><span class="lbl">${lbl}</span><b style="font-family:var(--font-display);font-weight:500;color:var(--head);font-size:20px">${val}</b><span class="small muted">${sub || '&nbsp;'}</span></div>`;
-  return `<div class="card">
+  return `<div class="card wear">
     <div class="row between wrap"><div><span class="eyebrow">${esc(w.provider || 'Uhr')}${w.lastSync ? ' · ' + new Date(w.lastSync).toLocaleDateString('de-CH', {day:'numeric', month:'short'}) : ''}</span><h2>Erholung & <em>Schlaf</em></h2></div>
       ${t && t.recovery != null ? ring(t.recovery/100, t.recovery, t.recovery >= 65 ? 'var(--salbei)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)') : ''}</div>
     ${w.error ? `<p class="msg err small">${esc(w.error)}</p>` : ''}
@@ -1166,7 +1230,7 @@ let noteBusy = false;
 function dayNoteCard(c){
   if(!sampleFn || !c) return '';
   const txt = S.coach && S.coach[today()];
-  return `<div class="card flat">
+  return `<div class="card note">
     <span class="eyebrow">Kurz eingeordnet</span>
     ${txt ? `<p class="small" style="white-space:pre-wrap">${esc(txt)}</p>` : `<p class="small muted">Check-in und Uhr zusammen in drei Sätzen.</p><button class="btn sm line" data-a="day-note" ${noteBusy ? 'disabled' : ''}>${noteBusy ? 'Einen Moment …' : 'Tag einordnen'}</button>`}
   </div>`;
@@ -1191,6 +1255,27 @@ async function dayNoteGo(){
     toast((e && e.message) || 'Das hat nicht geklappt.');
   }
   noteBusy = false; render();
+}
+
+
+/* ---------- Videos zu den Übungen (YouTube, erst auf Klick geladen) ---------- */
+// Geprüfte Videos; bevorzugt von Frauen gezeigt und auf Deutsch. Fehlt eines, führt der Link zur YouTube-Suche.
+let VIDEOS = {}, videosAsked = false;
+// Verfügbare Videos einmal laden (vom Server täglich bei YouTube geprüft)
+async function loadVideos(){
+  if(videosAsked) return; videosAsked = true;
+  try{ const r = await fetch('/api/videos'); if(r.ok){ VIDEOS = await r.json(); if(sheetRender) rerenderSheet(); } }catch(e){}
+}
+const videoOn = new Set();
+const play = '<svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor" opacity=".12"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg>';
+function videoBlock(key, name){
+  loadVideos();
+  const v = key && VIDEOS[key];
+  if(!v) return `<a class="link" href="https://www.youtube.com/results?search_query=${encodeURIComponent(name + ' Anleitung')}" target="_blank" rel="noopener">Videos zu „${esc(name)}“ auf YouTube</a>`;
+  const meta = `<p class="small muted">${esc(v.channel || 'YouTube')} · <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">auf YouTube öffnen</a></p>`;
+  if(videoOn.has(key)) return `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1&playsinline=1" title="${esc(v.title)}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>${meta}`;
+  return `<button class="video-cover" data-a="video" data-v="${key}">${play}<span><b>Video ansehen</b><br><span class="small">${esc(v.title)}</span></span></button>
+    <p class="small muted">Beim Abspielen lädt YouTube (Google) das Video. Erst dann werden Daten an YouTube übertragen.</p>`;
 }
 
 render();

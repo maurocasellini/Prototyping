@@ -9,6 +9,8 @@ export const maxDuration = 60;
 const str = (v, max) => String(v ?? "").slice(0, max);
 const int = (v, a, b, d) => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.max(a, Math.min(b, n)) : d; };
 const DIET = (v) => (["all", "pesc", "veg"].includes(v) ? v : "all");
+const list = (v, n = 12) => (Array.isArray(v) ? v : []).slice(0, n).map((x) => str(x, 40)).filter(Boolean);
+const PREFS = (p) => ({ avoid: list(p?.avoid), dislike: list(p?.dislike), like: list(p?.like) });
 
 export async function POST(req, { params }) {
   const { task } = await params;
@@ -21,13 +23,13 @@ export async function POST(req, { params }) {
     if (task === "cook") {
       const image = b.image ? str(b.image, 2_000_000) : null;
       if (image && !/^[A-Za-z0-9+/=]+$/.test(image)) return NextResponse.json({ error: "Das Foto konnte nicht gelesen werden." }, { status: 400 });
-      const r = await cookRecipe({ who, words: str(b.words, 600), meal: str(b.meal, 20), time: int(b.time, 10, 90, 30), servings: int(b.servings, 1, 8, 2), diet: DIET(b.diet), image });
+      const r = await cookRecipe({ who, words: str(b.words, 600), meal: str(b.meal, 20), time: int(b.time, 10, 90, 30), servings: int(b.servings, 1, 8, 2), diet: DIET(b.diet), prefs: PREFS(b.prefs), image });
       return NextResponse.json(r);
     }
     if (task === "plan") {
       const recipes = (Array.isArray(b.recipes) ? b.recipes : []).slice(0, 40).map((r) => ({ id: str(r.id, 20), type: r.type === "B" ? "B" : "M", n: str(r.n, 70), p: int(r.p, 0, 99, 0), min: int(r.min, 0, 180, 0), tags: (Array.isArray(r.tags) ? r.tags : []).slice(0, 3).map((t) => str(t, 24)) }));
       if (recipes.length < 3) return NextResponse.json({ error: "Zu wenige Rezepte." }, { status: 400 });
-      const r = await weekPlan({ who, phase: str(b.phase, 30) || "Perimenopause", household: int(b.household, 1, 8, 2), diet: DIET(b.diet), goal: int(b.goal, 40, 200, 95), wishes: str(b.wishes, 400), recipes });
+      const r = await weekPlan({ who, phase: str(b.phase, 30) || "Perimenopause", household: int(b.household, 1, 8, 2), diet: DIET(b.diet), prefs: PREFS(b.prefs), goal: int(b.goal, 40, 200, 95), wishes: str(b.wishes, 400), recipes });
       return NextResponse.json(r);
     }
     if (task === "day") {

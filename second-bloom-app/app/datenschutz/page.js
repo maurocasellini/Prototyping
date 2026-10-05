@@ -17,6 +17,7 @@ const TOC = [
   ["gesundheit", "Gesundheitsdaten"],
   ["geraete", "Verbundene Uhren und Ringe"],
   ["ki", "KI-Funktionen"],
+  ["videos", "Übungsvideos (YouTube)"],
   ["auswertung", "Automatische Auswertungen"],
   ["empfaenger", "Empfänger und Auftragsverarbeiter"],
   ["drittland", "Übermittlung in Drittländer"],
@@ -52,7 +53,7 @@ export default function Datenschutz() {
           <div className="card flat">
             <ul>
               <li>Second Bloom verarbeitet <b>Gesundheitsdaten</b>. Das tun wir nur mit deiner <b>ausdrücklichen Einwilligung</b> und nur, um dir persönliche Empfehlungen zu geben.</li>
-              <li>Server und Datenspeicher stehen in der <b>EU (Frankfurt am Main)</b>. Betreiber der Infrastruktur ist ein US-Unternehmen, siehe Abschnitt 11 und 12.</li>
+              <li>Server und Datenspeicher stehen in der <b>EU (Frankfurt am Main)</b>. Betreiber der Infrastruktur ist ein US-Unternehmen, siehe Abschnitt 12 und 13.</li>
               <li>Die <b>KI-Funktionen sind freiwillig</b> und separat einschaltbar. Dabei geht ein knapper Auszug ohne Name und E-Mail an Anthropic.</li>
               <li><b>Keine Werbung, kein Verkauf von Daten, kein Tracking</b>, keine Analyse-Werkzeuge von Dritten.</li>
               <li>Du kannst jederzeit <b>alle Daten herunterladen</b> und dein <b>Konto mit allen Daten sofort löschen</b> (unter <Link href="/konto">Konto</Link>).</li>
@@ -113,21 +114,26 @@ export default function Datenschutz() {
           <p>Wir senden dabei <b>nie Name, E-Mail oder Kontokennung</b>. Anthropic verarbeitet die Daten als unser Auftragsverarbeiter. Nach den kommerziellen Bedingungen von Anthropic werden Eingaben über die API standardmässig nicht zum Training von KI-Modellen verwendet. Einzelheiten zur Aufbewahrung regelt die <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noreferrer">Datenschutzerklärung von Anthropic</a>. Die Antworten der KI sind Vorschläge, keine medizinischen Empfehlungen. Die Tageseinordnung speichern wir in deinem Konto für 14 Tage.</p>
           <p>Ohne eingeschaltete KI nutzt die App ausschliesslich ihre eigene Rezeptsammlung und Regeln. Es werden dann keine Daten an Anthropic übermittelt.</p>
 
-          <h2 id="auswertung">10. Automatische Auswertungen</h2>
+          <h2 id="videos">10. Übungsvideos (YouTube)</h2>
+          <p>Zu den Übungen zeigen wir Anleitungsvideos von YouTube. Die Videos werden erst geladen, wenn du auf „Video ansehen“ tippst. Vorher wird keine Verbindung zu YouTube aufgebaut, auch keine Vorschaubilder. Wir binden die Videos im erweiterten Datenschutzmodus über <code>youtube-nocookie.com</code> ein.</p>
+          <p>Sobald du ein Video startest, verbindet sich dein Browser direkt mit Servern von YouTube. Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Dabei erhält Google mindestens deine IP-Adresse, die aufgerufene Seite und technische Angaben zu deinem Gerät. Ein Zugriff durch die Google LLC in den USA ist möglich. YouTube kann beim Abspielen Daten in deinem Browser speichern. Rechtsgrundlage ist deine Einwilligung durch das Antippen (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG für Personen in Deutschland). Es werden dabei keine Gesundheitsdaten an YouTube übermittelt, nur welche Übung du dir ansiehst. Details: <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Datenschutzerklärung von Google</a>. Für die Inhalte der Videos sind die jeweiligen Kanäle verantwortlich.</p>
+
+          <h2 id="auswertung">11. Automatische Auswertungen</h2>
           <p>Die App berechnet aus deinen Eingaben und Gerätewerten Hinweise, zum Beispiel einen Erholungswert von 0 bis 100 aus HRV, Ruhepuls und Schlaf im Vergleich zu deinen eigenen letzten 28 Tagen, Hinweise auf unruhige Nächte, die Länge deiner Zyklen oder Zusammenhänge wie „nach Trainingstagen schläfst du länger“. Diese Auswertungen laufen nach festen, nachvollziehbaren Regeln. Sie dienen nur deiner Information und haben <b>keine rechtliche Wirkung</b> und keine vergleichbar erhebliche Beeinträchtigung für dich. Eine automatisierte Entscheidung im Sinne von Art. 22 DSGVO bzw. Art. 21 DSG findet nicht statt.</p>
 
-          <h2 id="empfaenger">11. Empfänger und Auftragsverarbeiter</h2>
+          <h2 id="empfaenger">12. Empfänger und Auftragsverarbeiter</h2>
           <p>Wir setzen folgende Dienstleister ein, die Daten in unserem Auftrag und nach unseren Weisungen bearbeiten (Art. 28 DSGVO, Art. 9 DSG). Mit ihnen bestehen Verträge zur Auftragsverarbeitung. <P>Abschluss der Auftragsverarbeitungsverträge (DPA) mit Vercel und Anthropic vor dem Start bestätigen.</P></p>
           <div className="scroll-x"><table className="t"><thead><tr><th>Empfänger</th><th>Aufgabe</th><th>Ort der Verarbeitung</th></tr></thead><tbody>
             <tr><td>Vercel Inc., USA</td><td>Hosting der App, Server-Funktionen, privater Datenspeicher (Vercel Blob), technische Protokolle</td><td>Server-Funktionen und Datenspeicher in Frankfurt am Main (EU). Auslieferung über das weltweite Netz von Vercel. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noreferrer">Datenschutz Vercel</a></td></tr>
+            <tr><td>Google Ireland Ltd. (YouTube)</td><td>Abspielen von Übungsvideos, nur nach deinem Klick; eigenständig verantwortlich</td><td>EU und USA. <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Datenschutz Google</a></td></tr>
             <tr><td>Anthropic, USA</td><td>KI-Vorschläge (nur bei eingeschalteter KI)</td><td>USA. <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noreferrer">Datenschutz Anthropic</a></td></tr>
           </tbody></table></div>
           <p><b>intervals.icu</b> ist kein Auftragsverarbeiter von uns, sondern ein Dienst, den du selbst nutzt. Wir rufen dort mit deinem Schlüssel deine Werte ab. Schriften werden von unserem eigenen Server ausgeliefert, es findet keine Verbindung zu Google statt. Darüber hinaus geben wir Daten nur weiter, wenn wir gesetzlich dazu verpflichtet sind, etwa auf behördliche Anordnung.</p>
 
-          <h2 id="drittland">12. Übermittlung in Drittländer</h2>
+          <h2 id="drittland">13. Übermittlung in Drittländer</h2>
           <p>Vercel und Anthropic haben ihren Sitz in den USA. Ein Zugriff aus den USA, etwa für Wartung, und die Verarbeitung der KI-Anfragen in den USA sind daher möglich. Die Übermittlung stützt sich, soweit der jeweilige Anbieter unter dem <b>EU-US Data Privacy Framework</b> und der <b>Swiss-US-Erweiterung</b> zertifiziert ist, auf den Angemessenheitsbeschluss der EU-Kommission (Art. 45 DSGVO) bzw. die Anerkennung durch den Bundesrat (Art. 16 Abs. 1 DSG). Andernfalls verwenden wir die <b>EU-Standardvertragsklauseln</b> (Art. 46 Abs. 2 lit. c DSGVO, Art. 16 Abs. 2 lit. d DSG) mit den für die Schweiz nötigen Anpassungen. Für die KI-Funktionen stützt sich die Übermittlung zusätzlich auf deine ausdrückliche Einwilligung (Art. 49 Abs. 1 lit. a DSGVO, Art. 17 Abs. 1 lit. a DSG). Eine Kopie der Garantien kannst du bei uns anfordern. <P>Zertifizierungsstatus der Anbieter beim Start prüfen und hier eintragen.</P></p>
 
-          <h2 id="dauer">13. Speicherdauer</h2>
+          <h2 id="dauer">14. Speicherdauer</h2>
           <div className="scroll-x"><table className="t"><thead><tr><th>Daten</th><th>Wie lange</th></tr></thead><tbody>
             <tr><td>Kontodaten, Profil, App-Einträge</td><td>bis du dein Konto löschst; dann sofort und vollständig</td></tr>
             <tr><td>Gerätewerte</td><td>höchstens die letzten 400 Tage (ältere werden automatisch entfernt), bei Trennung auf Wunsch sofort, bei Kontolöschung sofort</td></tr>
@@ -142,13 +148,13 @@ export default function Datenschutz() {
           </tbody></table></div>
           <p>Gesetzliche Aufbewahrungspflichten bleiben vorbehalten. Wir führen keine eigenen Sicherungskopien deiner Gesundheitsdaten.</p>
 
-          <h2 id="cookies">14. Cookies und lokale Speicherung</h2>
-          <p>Wir verwenden genau <b>ein Cookie</b>: <code>sb_session</code>. Es hält dich angemeldet, ist technisch notwendig, signiert, für Skripte nicht lesbar (httpOnly) und wird nur über verschlüsselte Verbindungen gesendet. Dafür ist keine Einwilligung nötig. Wir setzen keine Analyse-, Werbe- oder Tracking-Cookies und keine Pixel von Dritten ein.</p>
+          <h2 id="cookies">15. Cookies und lokale Speicherung</h2>
+          <p>Wir verwenden genau <b>ein Cookie</b>: <code>sb_session</code>. Es hält dich angemeldet, ist technisch notwendig, signiert, für Skripte nicht lesbar (httpOnly) und wird nur über verschlüsselte Verbindungen gesendet. Dafür ist keine Einwilligung nötig. Wir setzen keine Analyse-, Werbe- oder Tracking-Cookies und keine Pixel von Dritten ein. Erst wenn du ein Übungsvideo startest, kann YouTube eigene Daten in deinem Browser ablegen (siehe Abschnitt 10).</p>
 
-          <h2 id="demo">15. Demo ohne Konto</h2>
+          <h2 id="demo">16. Demo ohne Konto</h2>
           <p>In der öffentlichen <Link href="/demo">Demo</Link> speichern wir nichts auf unserem Server. Deine Eingaben bleiben im lokalen Speicher deines Browsers, bis du sie dort löschst. Die Gerätewerte in der Demo sind erfundene Beispieldaten. Nutzt du in der Demo eine KI-Funktion, gilt Abschnitt 9 sinngemäss. Wir empfehlen, in der Demo keine echten Gesundheitsangaben einzugeben.</p>
 
-          <h2 id="sicherheit">16. Datensicherheit</h2>
+          <h2 id="sicherheit">17. Datensicherheit</h2>
           <p>Wir treffen technische und organisatorische Massnahmen nach Art. 32 DSGVO und Art. 8 DSG, unter anderem:</p>
           <ul>
             <li>Verschlüsselte Übertragung (HTTPS/TLS) für alle Verbindungen.</li>
@@ -161,7 +167,7 @@ export default function Datenschutz() {
           </ul>
           <p>Kommt es trotzdem zu einer Verletzung des Schutzes deiner Daten, melden wir sie der zuständigen Aufsichtsbehörde und informieren dich, wenn dies gesetzlich vorgesehen ist (Art. 33 und 34 DSGVO, Art. 24 DSG).</p>
 
-          <h2 id="rechte">17. Deine Rechte</h2>
+          <h2 id="rechte">18. Deine Rechte</h2>
           <ul>
             <li><b>Auskunft</b> über deine gespeicherten Daten (Art. 15 DSGVO, Art. 25 DSG). Am schnellsten über den Export unter Konto.</li>
             <li><b>Berichtigung</b> unrichtiger Daten (Art. 16 DSGVO, Art. 32 DSG). Die meisten Angaben änderst du direkt in der App.</li>
@@ -173,7 +179,7 @@ export default function Datenschutz() {
           </ul>
           <p>Für alle Anliegen genügt eine E-Mail an <P>datenschutz@…</P>. Wir antworten in der Regel innerhalb eines Monats und können zur Sicherheit einen Nachweis verlangen, dass du die betroffene Person bist.</p>
 
-          <h2 id="beschwerde">18. Beschwerde bei einer Aufsichtsbehörde</h2>
+          <h2 id="beschwerde">19. Beschwerde bei einer Aufsichtsbehörde</h2>
           <p>Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO), insbesondere in deinem Wohnsitzland. Zuständig sind zum Beispiel:</p>
           <ul>
             <li>Liechtenstein: Datenschutzstelle Liechtenstein, Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -181,19 +187,19 @@ export default function Datenschutz() {
             <li>Deutschland und Österreich: die Aufsichtsbehörde deines Bundeslandes bzw. die österreichische Datenschutzbehörde</li>
           </ul>
 
-          <h2 id="pflicht">19. Pflicht zur Angabe von Daten</h2>
+          <h2 id="pflicht">20. Pflicht zur Angabe von Daten</h2>
           <p>Für ein Konto brauchen wir Vorname, E-Mail und Passwort sowie deine Einwilligung zu den Gesundheitsdaten. Alle weiteren Angaben, das Verbinden einer Uhr und die KI-Funktionen sind freiwillig. Ohne sie stehen einzelne Funktionen nicht oder nur eingeschränkt zur Verfügung.</p>
 
-          <h2 id="alter">20. Mindestalter</h2>
+          <h2 id="alter">21. Mindestalter</h2>
           <p>Second Bloom richtet sich an Erwachsene. Die Nutzung ist erst ab 18 Jahren erlaubt. Bei der Registrierung bestätigst du dein Alter.</p>
 
-          <h2 id="werbung">21. Keine Werbung, kein Verkauf, kein Tracking</h2>
+          <h2 id="werbung">22. Keine Werbung, kein Verkauf, kein Tracking</h2>
           <p>Wir zeigen keine Werbung, verkaufen keine Daten, erstellen keine Werbeprofile und nutzen keine Analyse-Werkzeuge von Dritten. Deine Daten werden nicht zum Trainieren von KI-Modellen verwendet.</p>
 
-          <h2 id="medizin">22. Kein Medizinprodukt</h2>
+          <h2 id="medizin">23. Kein Medizinprodukt</h2>
           <p>Second Bloom ist ein Lifestyle-Begleiter. Die App stellt keine Diagnosen, ersetzt keine ärztliche Beratung und gibt keine Therapieempfehlungen, insbesondere nicht zu Hormonersatztherapie, Medikamenten oder Nahrungsergänzung. Bei Beschwerden wende dich bitte an deine Ärztin oder deinen Arzt, in einer akuten Krise an die in der App genannten Notfallnummern.</p>
 
-          <h2 id="aenderungen">23. Änderungen dieser Erklärung</h2>
+          <h2 id="aenderungen">24. Änderungen dieser Erklärung</h2>
           <p>Wir passen diese Erklärung an, wenn sich die App oder die Rechtslage ändert. Die jeweils aktuelle Fassung findest du hier. Bei wesentlichen Änderungen, die eine neue Einwilligung erfordern, fragen wir dich in der App, bevor die Änderung für dich gilt.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>
