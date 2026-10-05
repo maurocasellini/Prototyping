@@ -1,5 +1,5 @@
-/* PDF-Engine im Browser: Pyodide (Python/WebAssembly) + PyMuPDF.
-   Beantwortet die gleichen /api-Anfragen wie der Desktop-Server – aber lokal im Tab. */
+/* PDF engine in the browser: Pyodide (Python/WebAssembly) + PyMuPDF.
+   Answers the same /api requests as the desktop server – but locally in the tab. */
 /* global importScripts, loadPyodide */
 const V = self.PDFW_VERSIONS || {};
 const base = new URL('./', self.location.href).href;
@@ -48,7 +48,7 @@ function ensureFonts() {
   return fontsLoaded;
 }
 
-// Python ist single-threaded: Anfragen nacheinander abarbeiten
+// Python is single-threaded: process requests one after another
 let queue = Promise.resolve();
 const serial = (fn) => (queue = queue.then(fn, fn));
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Baut die Web-Version der PDF Werkstatt nach web/dist/<base>/.
+"""Builds the web version of PDF Werkstatt into web/dist/<base>/.
 
-Alles läuft im Browser (Pyodide + PyMuPDF als WebAssembly). Die Engine-Dateien
-werden aus festen Quellen geladen und per SHA-256 geprüft, damit nur genau diese
-Versionen ausgeliefert werden. Nur Python-Standardbibliothek nötig (auch auf Vercel).
+Everything runs in the browser (Pyodide + PyMuPDF as WebAssembly). Engine files are
+downloaded from pinned sources and verified via SHA-256, so exactly these versions are
+shipped. Only the Python standard library is required (works on Vercel too).
 
-    python3 web/build.py            # Ausgabe unter web/dist/pdf/
+    python3 web/build.py            # output in web/dist/pdf/
     python3 web/build.py --base /tools/pdf/
 """
 import hashlib
@@ -69,13 +69,13 @@ def cached(name, digest, urls):
                 return path
     for url in urls:
         try:
-            log("lade", url)
+            log("downloading", url)
             data = fetch(url)
         except Exception as e:
-            log("  nicht erreichbar:", e)
+            log("  unreachable:", e)
             continue
         if sha256(data) != digest:
-            raise SystemExit(f"Prüfsumme falsch für {name} von {url}")
+            raise SystemExit(f"Checksum mismatch for {name} from {url}")
         with open(path, "wb") as fh:
             fh.write(data)
         return path
@@ -83,8 +83,8 @@ def cached(name, digest, urls):
 
 
 def wheels_from_full_release(missing):
-    """Fallback: benötigte Wheels aus dem vollständigen Pyodide-Release (GitHub) holen."""
-    log("lade", PYODIDE_FULL, "(Fallback)")
+    """Fallback: fetch the required wheels from the full Pyodide release (GitHub)."""
+    log("downloading", PYODIDE_FULL, "(fallback)")
     req = urllib.request.Request(PYODIDE_FULL, headers={"User-Agent": "pdf-werkstatt-build"})
     with urllib.request.urlopen(req, timeout=900) as r, tarfile.open(fileobj=r, mode="r|bz2") as tar:
         for m in tar:
@@ -92,14 +92,14 @@ def wheels_from_full_release(missing):
             if name in missing:
                 data = tar.extractfile(m).read()
                 if sha256(data) != WHEELS[name]:
-                    raise SystemExit(f"Prüfsumme falsch für {name}")
+                    raise SystemExit(f"Checksum mismatch for {name}")
                 with open(os.path.join(CACHE, name), "wb") as fh:
                     fh.write(data)
                 missing.discard(name)
                 if not missing:
                     break
     if missing:
-        raise SystemExit(f"Nicht gefunden: {missing}")
+        raise SystemExit(f"Not found: {missing}")
 
 
 def copytree(src, dst, ignore=()):
@@ -108,7 +108,7 @@ def copytree(src, dst, ignore=()):
 
 def replace_once(text, old, new):
     if old not in text:
-        raise SystemExit(f"Build: Textstelle nicht gefunden: {old[:60]!r}")
+        raise SystemExit(f"Build: text snippet not found: {old[:60]!r}")
     return text.replace(old, new, 1)
 
 
@@ -133,7 +133,7 @@ def build_index(version):
     h = replace_once(h, '<script src="static/i18n.js"></script>\n<script src="static/tools.js"></script>\n<script src="static/app.js"></script>\n<script src="static/editor.js"></script>',
                      '<script src="static/i18n.js"></script>\n<div id="engine" class="engine"><div class="spinner"></div><span id="engine-text">PDF-Engine wird geladen …</span></div>\n'
                      f'<script src="boot.js?v={version}"></script>')
-    # Texte für die Website
+    # Texts for the website
     h = replace_once(h, '<div class="eyebrow accent">Lokaler PDF-Werkzeugkasten</div>',
                      '<div class="eyebrow accent">PDF-Werkzeugkasten im Browser</div>')
     h = replace_once(h, '<span class="local-badge" title="Alle Dateien bleiben auf diesem Mac. Nichts wird hochgeladen.">100 % lokal</span>',
@@ -154,14 +154,14 @@ def build_index(version):
 
 def main():
     t0 = time.time()
-    print("PDF Werkstatt – Web-Build →", OUT)
+    print("PDF Werkstatt – web build →", OUT)
     shutil.rmtree(DIST, ignore_errors=True)
     os.makedirs(OUT)
 
-    # 1) Engine (Pyodide-Kern aus npm, Wheels aus PyPI / Pyodide-CDN)
+    # 1) Engine (Pyodide core from npm, wheels from PyPI / Pyodide CDN)
     tgz = cached(f"pyodide-{PYODIDE}.tgz", PYODIDE_TGZ[1], [PYODIDE_TGZ[0]])
     if not tgz:
-        raise SystemExit("Pyodide konnte nicht geladen werden.")
+        raise SystemExit("Could not download Pyodide.")
     vend = os.path.join(OUT, "vendor", "pyodide")
     os.makedirs(vend)
     with tarfile.open(tgz) as tar:
@@ -181,7 +181,7 @@ def main():
     for name in WHEELS:
         shutil.copy(os.path.join(CACHE, name), wdir)
 
-    # 2) App: gleiche Oberfläche wie die Mac-App + Web-Teile
+    # 2) App: same UI as the Mac app + web parts
     version = sha256("".join(sorted(WHEELS.values())).encode() + str(t0).encode())[:10]
     copytree(os.path.join(ROOT, "static"), os.path.join(OUT, "static"))
     os.makedirs(os.path.join(OUT, "py"))
@@ -198,7 +198,7 @@ def main():
     copytree(os.path.join(HERE, "icons"), os.path.join(OUT, "icons"))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as fh:
         fh.write(build_index(version))
-    # Startseite des Projekts → App
+    # project root → app
     with open(os.path.join(DIST, "index.html"), "w", encoding="utf-8") as fh:
         fh.write(f'<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
                  f'<meta http-equiv="refresh" content="0; url={BASE}"><a href="{BASE}">PDF Werkstatt</a>')
@@ -206,7 +206,7 @@ def main():
         fh.write("User-agent: *\nDisallow: /\n")
 
     size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(DIST) for f in fs)
-    print(f"Fertig in {time.time() - t0:.1f}s · {size / 1048576:.1f} MB · Version {version}")
+    print(f"Done in {time.time() - t0:.1f}s · {size / 1048576:.1f} MB · Version {version}")
 
 
 if __name__ == "__main__":

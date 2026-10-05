@@ -1,6 +1,6 @@
-"""Browser-Gegenstück zu app.py: dieselben Funktionen, aber ohne Server.
-Läuft in Pyodide (Python im Browser, WebAssembly). Dateien liegen nur im
-Arbeitsspeicher des Browser-Tabs (/work) und verlassen das Gerät nie."""
+"""Browser counterpart of app.py: the same functions, but without a server.
+Runs in Pyodide (Python in the browser, WebAssembly). Files live only in the
+browser tab's memory (/work) and never leave the device."""
 import json
 import os
 import uuid
@@ -13,7 +13,7 @@ WORK = "/work"
 os.makedirs(WORK, exist_ok=True)
 FILES = {}
 
-# Werkzeuge, die im Browser nicht verfügbar sind (externe Programme nötig)
+# Tools not available in the browser (they need external programs)
 UNAVAILABLE = {"ocr", "office_to_pdf", "pdf_to_word", "pdf_to_office"}
 
 
@@ -53,7 +53,7 @@ def file_entry(fid):
 
 
 def page_image(fid, n, width):
-    """Vorschaubild einer Seite (PNG klein, JPEG gross) – oder None."""
+    """Page thumbnail (PNG when small, JPEG when large) – or None."""
     e = FILES.get(fid)
     if not e:
         return None
@@ -76,7 +76,7 @@ def page_image(fid, n, width):
 
 
 def run_tool(tool, body_json):
-    """Wie POST /api/run/<tool> – gibt (status, json) zurück."""
+    """Like POST /api/run/<tool> – returns (status, json)."""
     if tool in UNAVAILABLE or tool not in pdftools.TOOLS:
         return 404, json.dumps({"error": "Dieses Werkzeug ist in der Web-Version nicht verfügbar."})
     body = json.loads(body_json or "{}")
@@ -106,7 +106,7 @@ def run_tool(tool, body_json):
 
 
 def forget(fid):
-    """Datei aus dem Speicher entfernen."""
+    """Remove a file from memory."""
     e = FILES.pop(fid, None)
     if e:
         try:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Lokaler Testserver für die Web-Version – verhält sich wie Vercel (Header aus vercel.json,
-/pdf → /pdf/index.html). Nur zum Testen:  python3 web/serve.py  → http://127.0.0.1:8800/pdf"""
+"""Local test server for the web version – behaves like Vercel (headers from vercel.json,
+/pdf → /pdf/index.html). Testing only:  python3 web/serve.py  → http://127.0.0.1:8800/pdf"""
 import http.server
 import json
 import os
@@ -36,9 +36,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def log_message(self, fmt, *a):
-        # Datei-Abrufe sind normal. Eine /api-Anfrage am Server hiesse: Daten hätten das Gerät verlassen.
+        # Static file requests are normal. An /api request reaching the server would mean data left the device.
         if "/api/" in self.path:
-            sys.stderr.write("!!! API-ANFRAGE HAT DEN SERVER ERREICHT: %s %s\n" % (self.command, self.path))
+            sys.stderr.write("!!! API REQUEST REACHED THE SERVER: %s %s\n" % (self.command, self.path))
 
 
 Handler.extensions_map[".wasm"] = "application/wasm"

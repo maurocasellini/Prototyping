@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------- PDF-Editor
+// ---------------------------------------------------------------- PDF editor
 const Editor = (() => {
   const S = { file: null, els: [], sel: null, tool: 'select', zoom: 1, history: [], editing: null, pendingSig: false };
   const box = $('#ed-pages');
@@ -24,7 +24,7 @@ const Editor = (() => {
   const defaults = { text: { size: 12, color: '#111111', font: 'helv' }, shape: { color: '#d00000', stroke: 1.5 }, mark: { color: '#1a3a9c' } };
   let uid = 1;
 
-  // ---------- Laden
+  // ---------- Loading
   function open(id, carry) {
     show('editor');
     S.pendingSig = !!TOOLS[id].openSignature;
@@ -62,7 +62,7 @@ const Editor = (() => {
     if (S.pendingSig) { S.pendingSig = false; setTimeout(openSig, 200); }
   }
 
-  // ---------- Seiten
+  // ---------- Pages
   function renderPages() {
     if (!S.file) return;
     box.innerHTML = '';
@@ -86,7 +86,7 @@ const Editor = (() => {
   const kOf = (i) => parseFloat(overlayOf(i).parentElement.style.getPropertyValue('--k'));
   const pageSize = (i) => S.file.sizes[i];
 
-  // ---------- Werkzeuge
+  // ---------- Tools
   function setTool(t) {
     if (t === 'signature') return openSig();
     if (t === 'image') return pickImage();
@@ -107,8 +107,8 @@ const Editor = (() => {
   const SIZES = { check: [16, 16], cross: [16, 16], whiteout: [140, 22], highlight: [140, 16], rect: [140, 60], ellipse: [110, 60], line: [140, 10], redact: [140, 18] };
 
   function onPageDown(e, page, overlay) {
-    if (e.target !== overlay) return; // Klick auf ein Element
-    e.preventDefault(); // Fokus nicht vom gerade bearbeiteten Text wegnehmen
+    if (e.target !== overlay) return; // click on an element
+    e.preventDefault(); // do not steal focus from the text being edited
     commitEditing();
     if (S.tool === 'select' || !S.file) { select(null); return; }
     const r = overlay.getBoundingClientRect();
@@ -146,7 +146,7 @@ const Editor = (() => {
     el.y = Math.min(Math.max(el.y, 0), Math.max(0, 1 - el.h));
   }
 
-  // ---------- Darstellung
+  // ---------- Rendering
   const svgMark = (type, color, w, hh) => {
     const sw = Math.max(1.5, Math.min(w, hh) * 0.12);
     const path = type === 'check' ? '<polyline points="10,55 40,85 90,15"/>' : '<line x1="15" y1="15" x2="85" y2="85"/><line x1="85" y1="15" x2="15" y2="85"/>';
@@ -219,7 +219,7 @@ const Editor = (() => {
     renderProps();
   }
 
-  // ---------- Text bearbeiten
+  // ---------- Text editing
   function startEditing(el) {
     select(el);
     S.editing = el;
@@ -252,10 +252,10 @@ const Editor = (() => {
     el.h = node.offsetHeight / ov.clientHeight;
   }
 
-  // ---------- Verschieben & Grösse ändern
+  // ---------- Move & resize
   function onElDown(e, el) {
     if (e.target.classList.contains('handle')) return;
-    if (S.editing === el) return; // Text markieren statt verschieben
+    if (S.editing === el) return; // select text instead of moving
     commitEditing();
     e.preventDefault();
     select(el);
@@ -304,7 +304,7 @@ const Editor = (() => {
     window.addEventListener('pointerup', up);
   }
 
-  // ---------- Verlauf
+  // ---------- History
   function pushHistory() {
     S.history.push(JSON.stringify(S.els));
     if (S.history.length > 80) S.history.shift();
@@ -321,7 +321,7 @@ const Editor = (() => {
   }
   $('#ed-undo').addEventListener('click', undo);
 
-  // ---------- Eigenschaften
+  // ---------- Properties
   function renderProps() {
     const p = $('#ed-props');
     p.innerHTML = '';
@@ -389,7 +389,7 @@ const Editor = (() => {
     toast(`Auf ${n} weitere Seite(n) kopiert.`);
   }
 
-  // ---------- Platzierung in sichtbarer Seite
+  // ---------- Placement on the visible page
   function visiblePage() {
     const vr = box.getBoundingClientRect();
     let best = 0, bestA = -1;
@@ -447,7 +447,7 @@ const Editor = (() => {
     setTool('select');
   }
 
-  // ---------- Tastatur & Zoom
+  // ---------- Keyboard & zoom
   document.addEventListener('keydown', (e) => {
     if ($('#editor').classList.contains('hidden') || $('#sig-dialog').open) return;
     if (e.target.matches('input, textarea, select, [contenteditable="true"]')) return;
@@ -478,7 +478,7 @@ const Editor = (() => {
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (!$('#editor').classList.contains('hidden') && S.file) { commitEditing(); renderPages(); } }, 250); });
 
-  // ---------- Speichern
+  // ---------- Saving
   $('#ed-scan').addEventListener('change', (e) => $('#ed-scan-opts').classList.toggle('hidden', !e.target.checked));
   $('#ed-save').addEventListener('click', async () => {
     if (!S.file) return toast('Bitte zuerst ein PDF öffnen.', 'error');
@@ -495,7 +495,7 @@ const Editor = (() => {
     busy(false);
   });
 
-  // ---------------------------------------------------------------- Unterschrift
+  // ---------------------------------------------------------------- Signature
   const dlg = $('#sig-dialog');
   const cv = $('#sig-canvas');
   const ctx = cv.getContext('2d');
@@ -503,7 +503,7 @@ const Editor = (() => {
   const SIG_FONTS = ['Great Vibes', 'Dancing Script', 'Allura', 'Snell Roundhand', 'Bradley Hand', 'Apple Chancery', 'Brush Script MT', 'Savoye LET', 'Zapfino', 'Noteworthy', 'Segoe Script', 'cursive'];
   const SIG_KEY = 'pdfw-signatures';
   const loadSigs = () => { try { return JSON.parse(localStorage.getItem(SIG_KEY)) || []; } catch { return []; } };
-  const saveSigs = (a) => { try { localStorage.setItem(SIG_KEY, JSON.stringify(a.slice(0, 8))); } catch { /* voll */ } };
+  const saveSigs = (a) => { try { localStorage.setItem(SIG_KEY, JSON.stringify(a.slice(0, 8))); } catch { /* storage full */ } };
 
   function openSig() {
     if (!S.file) { S.pendingSig = true; return toast('Bitte zuerst das PDF öffnen, das unterschrieben werden soll.'); }
@@ -528,7 +528,7 @@ const Editor = (() => {
     $$('.tab', dlg).forEach((x) => x.classList.toggle('hidden', x.dataset.tab !== sigTab));
   }));
 
-  // Zeichnen
+  // Draw
   function clearCanvas() { ctx.clearRect(0, 0, cv.width, cv.height); drawn = false; }
   $('#sig-clear').addEventListener('click', clearCanvas);
   $$('.swatch', dlg).forEach((s) => s.addEventListener('click', () => {
@@ -557,7 +557,7 @@ const Editor = (() => {
     ctx.stroke();
   });
   const endStroke = () => {
-    if (pts.length === 1 || pts.length === 2) { // Punkt
+    if (pts.length === 1 || pts.length === 2) { // dot
       ctx.fillStyle = penColor; ctx.beginPath(); ctx.arc(pts[0].x, pts[0].y, +$('#sig-width').value * 0.8, 0, 7); ctx.fill();
     }
     pts = [];
@@ -565,8 +565,8 @@ const Editor = (() => {
   cv.addEventListener('pointerup', endStroke);
   cv.addEventListener('pointercancel', endStroke);
 
-  // Tippen
-  // Nur Schriften zeigen, die es auf diesem Gerät wirklich gibt (sonst erscheint die Ersatzschrift mehrfach)
+  // Type
+  // Only offer fonts that actually exist on this device (otherwise the fallback font appears several times)
   const WEB_FONTS = new Set(['Great Vibes', 'Dancing Script', 'Allura', 'cursive']);
   let usableFonts = null;
   function fontAvailable(f) {
@@ -585,7 +585,7 @@ const Editor = (() => {
   }
   $('#sig-name').addEventListener('input', renderFonts);
 
-  // Hochladen
+  // Upload
   $('#sig-upload').addEventListener('change', (e) => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { uploaded = r.result; $('#sig-upload-img').src = uploaded; }; r.readAsDataURL(f); });
 
   function trim(canvas, pad = 8) {

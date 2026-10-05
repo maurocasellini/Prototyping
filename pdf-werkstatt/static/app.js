@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------- Grundlagen
+// ---------------------------------------------------------------- Basics
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const h = (tag, attrs = {}, ...kids) => {
@@ -49,7 +49,7 @@ function busy(on, text = 'Wird verarbeitet …') {
 
 let CAPS = {};
 
-// Natives Mac-Fenster: Download → „Sichern unter …“, Vorschau → App „Vorschau“
+// Native Mac window: download → “Save As…”, preview → Preview app
 const native = () => window.pywebview && window.pywebview.api;
 document.addEventListener('click', async (e) => {
   const a = e.target.closest('a[href^="api/file/"]');
@@ -62,13 +62,13 @@ document.addEventListener('click', async (e) => {
   if (r && r.ok) toast(`Gespeichert: ${r.name}`);
 }, true);
 
-// Lebenszeichen an den lokalen Server; „Beenden“-Knopf
+// Heartbeat to the local server; “Quit” button
 let APP_MODE = false;
 async function ping() {
   try {
     const r = await (await fetch('api/ping', { cache: 'no-store' })).json();
     APP_MODE = r.app;
-    // Im eigenen Fenster beendet man per ⌘Q / Fenster schliessen – kein Knopf nötig
+    // In the native window you quit with ⌘Q / closing the window – no button needed
     $('#quit').classList.toggle('hidden', !APP_MODE || r.window);
     $('#offline').classList.add('hidden');
   } catch { $('#offline').classList.remove('hidden'); }
@@ -113,7 +113,7 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('[data-home]')) { e.preventDefault(); location.hash = '#/'; }
 });
 
-// ---------------------------------------------------------------- Startseite
+// ---------------------------------------------------------------- Home
 function renderHome() {
   const grid = $('#tool-grid');
   grid.innerHTML = '';
@@ -143,7 +143,7 @@ function renderHome() {
 }
 $('#search').addEventListener('input', () => { if (location.hash.length > 2) location.hash = '#/'; renderHome(); });
 
-// ---------------------------------------------------------------- Werkzeugansicht
+// ---------------------------------------------------------------- Tool view
 function openTool(id) {
   const t = TOOLS[id];
   state.tool = id;
@@ -189,7 +189,7 @@ $('#file-input').addEventListener('change', (e) => { addFiles([...e.target.files
 ['dragenter', 'dragover'].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('over'); }));
 ['dragleave', 'drop'].forEach((ev) => dz.addEventListener(ev, () => dz.classList.remove('over')));
 dz.addEventListener('drop', (e) => { e.preventDefault(); addFiles([...e.dataTransfer.files]); });
-// Dateien auf das ganze Fenster ziehen
+// Allow dropping files anywhere in the window
 window.addEventListener('dragover', (e) => e.preventDefault());
 window.addEventListener('drop', (e) => {
   e.preventDefault();
@@ -223,7 +223,7 @@ function renderFiles() {
   renderOrganizer();
 }
 
-// Drag & Drop-Sortierung für Listen
+// Drag & drop sorting for lists
 let dragFrom = null;
 function dragSort(el, index, arr, rerender) {
   el.addEventListener('dragstart', (e) => { dragFrom = index; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', ''); });
@@ -240,7 +240,7 @@ function dragSort(el, index, arr, rerender) {
   });
 }
 
-// ---------------------------------------------------------------- Optionen
+// ---------------------------------------------------------------- Options
 function buildOptions(t) {
   const form = $('#options');
   form.innerHTML = '';
@@ -305,7 +305,7 @@ function updateShowIf(t) {
   }
 }
 
-// ---------------------------------------------------------------- Seitenauswahl
+// ---------------------------------------------------------------- Page picker
 function compressRanges(nums) {
   const s = [...nums].sort((a, b) => a - b).map((n) => n + 1);
   const out = [];
@@ -367,7 +367,7 @@ $('.picker-head').addEventListener('click', (e) => {
   syncPickToText();
 });
 
-// ---------------------------------------------------------------- Organisieren
+// ---------------------------------------------------------------- Organize
 function buildOrder() {
   state.order = [];
   state.files.forEach((f, fi) => {
@@ -404,7 +404,7 @@ $('.org-bar').addEventListener('click', (e) => {
   renderOrganizer();
 });
 
-// ---------------------------------------------------------------- Ausführen
+// ---------------------------------------------------------------- Run
 $('#run').addEventListener('click', async () => {
   const t = TOOLS[state.tool];
   if (!state.files.length) return toast('Bitte zuerst eine Datei hinzufügen.', 'error');

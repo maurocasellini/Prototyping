@@ -1,7 +1,7 @@
-/* Startet die Web-Version: Service Worker + PDF-Engine (Web Worker) verbinden,
-   dann die gleiche Oberfläche wie in der Mac-App laden. */
+/* Starts the web version: connects the service worker and the PDF engine (web worker),
+   then loads the same UI as the Mac app. */
 (async () => {
-  const BASE = document.baseURI; // z. B. https://cmventures.xyz/pdf/
+  const BASE = document.baseURI; // e.g. https://example.com/pdf/
   const scope = new URL(BASE).pathname.replace(/\/$/, ''); // /pdf
   const loader = document.getElementById('engine');
   const loaderText = document.getElementById('engine-text');
@@ -16,7 +16,7 @@
     return;
   }
 
-  // 1) PDF-Engine im Hintergrund starten (lädt beim ersten Besuch ca. 25 MB, danach aus dem Cache)
+  // 1) Start the PDF engine in the background (first visit downloads ~25 MB, then served from cache)
   const worker = new Worker(new URL('worker.js', BASE));
   let engineReady;
   const ready = new Promise((r) => { engineReady = r; });
@@ -36,7 +36,7 @@
     worker.postMessage({ ...msg, type: 'req', id: rid }, transfer);
   });
 
-  // 2) Anfragen des Service Workers an die Engine weiterreichen
+  // 2) Forward requests from the service worker to the engine
   navigator.serviceWorker.addEventListener('message', async (e) => {
     if (!e.data || e.data.type !== 'api') return;
     const res = await callEngine(e.data);
@@ -44,7 +44,7 @@
   });
   navigator.serviceWorker.startMessages();
 
-  // 3) Service Worker registrieren und warten, bis er diese Seite kontrolliert
+  // 3) Register the service worker and wait until it controls this page
   try {
     await navigator.serviceWorker.register(new URL('sw.js', BASE), { scope });
   } catch (err) {
@@ -55,7 +55,7 @@
     await new Promise((r) => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true }));
   }
 
-  // 4) Oberfläche laden (gleiche Dateien wie die Mac-App)
+  // 4) Load the UI (same files as the Mac app)
   window.PDFW_WEB = true;
   window.PDFW_ENGINE = ready;
   for (const src of ['static/tools.js', 'web-tools.js', 'static/app.js', 'static/editor.js']) {

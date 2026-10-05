@@ -1,4 +1,4 @@
-"""Lässt ein PDF aussehen, als wäre es ausgedruckt und wieder eingescannt worden."""
+"""Makes a PDF look as if it had been printed and scanned again."""
 import io
 import random
 
@@ -17,7 +17,7 @@ PRESETS = {
 
 
 def _lighting(h, w, strength, rng):
-    """Ungleichmässige Ausleuchtung: schräger Verlauf + leichte Vignette."""
+    """Uneven lighting: diagonal gradient + slight vignette."""
     yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
     yy /= h
     xx /= w
@@ -38,10 +38,10 @@ def scanify_image(img, preset="mittel", color="gray", rng=None):
     else:
         img = img.convert("L")
 
-    # Optik des Scanners: minimal unscharf
+    # scanner optics: very slightly blurred
     img = img.filter(ImageFilter.GaussianBlur(p["blur"]))
 
-    # Blatt liegt leicht schief und nicht ganz bündig
+    # sheet is slightly skewed and not perfectly aligned
     angle = rng.uniform(0.35, 1.0) * p["rot"] * rng.choice((-1, 1))
     dx = rng.uniform(-p["shift"], p["shift"])
     dy = rng.uniform(-p["shift"], p["shift"])
@@ -51,7 +51,7 @@ def scanify_image(img, preset="mittel", color="gray", rng=None):
     arr = np.asarray(img).astype(np.float32)
     h, w = arr.shape[:2]
 
-    # Tonwerte: Schwarz wird nie ganz schwarz, Papier nie ganz weiss
+    # tones: black is never fully black, paper never fully white
     black = p["black"]
     if arr.ndim == 3:
         paper = np.array([p["paper"], p["paper"] - 0.004, p["paper"] - 0.014]) * 255
@@ -62,11 +62,11 @@ def scanify_image(img, preset="mittel", color="gray", rng=None):
     light = _lighting(h, w, p["shading"], nrng)
     arr = arr * (light[..., None] if arr.ndim == 3 else light)
 
-    # Rauschen (Sensor + Papierstruktur)
+    # noise (sensor + paper texture)
     grain = nrng.normal(0, p["noise"], (h, w)).astype(np.float32)
     arr = arr + (grain[..., None] if arr.ndim == 3 else grain)
 
-    # Staub / Punkte
+    # dust / specks
     for _ in range(p["specks"]):
         cy, cx = nrng.integers(0, h), nrng.integers(0, w)
         r = max(1, int(nrng.integers(1, 3)))
@@ -74,7 +74,7 @@ def scanify_image(img, preset="mittel", color="gray", rng=None):
         y0, y1, x0, x1 = max(0, cy - r), min(h, cy + r), max(0, cx - r), min(w, cx + r)
         arr[y0:y1, x0:x1] = np.minimum(arr[y0:y1, x0:x1], val)
 
-    # Schatten am Rand (Scannerdeckel)
+    # shadow at the edge (scanner lid)
     if p["edge"]:
         side = rng.choice(("top", "left", "bottom", "right"))
         width = max(4, int(min(h, w) * 0.012))
@@ -97,7 +97,7 @@ def scanify_image(img, preset="mittel", color="gray", rng=None):
 
 
 def scanify_pdf(doc, preset="mittel", color="gray", dpi=150):
-    """Gibt ein neues Dokument zurück, in dem jede Seite ein 'gescanntes' Bild ist."""
+    """Returns a new document in which every page is a 'scanned' image."""
     p = PRESETS.get(preset, PRESETS["mittel"])
     rng = random.Random()
     out = pymupdf.open()

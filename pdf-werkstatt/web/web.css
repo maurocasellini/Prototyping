@@ -1,4 +1,4 @@
-/* Ladeanzeige der PDF-Engine (Web-Version) */
+/* PDF engine loading indicator (web version) */
 .engine { position: fixed; right: 20px; bottom: 20px; z-index: 95; display: flex; align-items: center; gap: 12px; max-width: 380px;
   background: var(--navy); color: var(--on-navy); padding: 14px 18px; border-left: 3px solid var(--accent);
   font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; box-shadow: 0 8px 30px rgba(0,0,0,.25); }

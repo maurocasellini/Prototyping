@@ -1,9 +1,9 @@
-/* Zweisprachigkeit (DE/EN). Die Oberfläche ist auf Deutsch geschrieben; ist Englisch gewählt,
-   übersetzt ein MutationObserver jeden angezeigten Text (auch dynamische Meldungen).
-   Nutzerinhalte (Dateinamen, Text im PDF, Unterschriften) werden nie angefasst. */
+/* Bilingual UI (DE/EN). The UI source text is German; when English is selected, a
+   MutationObserver translates every displayed text (including dynamic messages).
+   User content (file names, PDF text, signatures) is never touched. */
 (() => {
   const EN = {
-    // Kopf, Startseite, Fuss
+    // Header, home, footer
     'PDF Werkstatt': 'PDF Workshop', 'PDF-Werkstatt': 'PDF Workshop', 'WERKSTATT': 'WORKSHOP',
     '100 % lokal': '100% local', 'Kein Upload': 'No upload', 'Beenden': 'Quit', 'App beenden': 'Quit app',
     'Werkzeug suchen …': 'Search tools …',
@@ -28,10 +28,10 @@
     'Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.': 'You can close this window. To restart, open the “PDF Werkstatt” app.',
     'PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.': 'Quit PDF Workshop? Results you have not downloaded will be lost.',
     'Öffnen →': 'Open →', 'Zusatzprogramm nötig': 'Add-on required', 'Kein Werkzeug gefunden.': 'No tool found.',
-    // Kategorien
+    // Categories
     'Am häufigsten gebraucht': 'Most used', 'Bearbeiten & Unterschreiben': 'Edit & sign', 'Organisieren': 'Organize',
     'Optimieren': 'Optimize', 'In PDF umwandeln': 'Convert to PDF', 'Aus PDF umwandeln': 'Convert from PDF', 'Sicherheit & Prüfen': 'Security & review',
-    // Werkzeuge
+    // Tools
     'PDF bearbeiten': 'Edit PDF', 'Text, Bilder, Häkchen, Formen, Abdecken und Schwärzen – direkt auf der Seite.': 'Text, images, check marks, shapes, white-out and redaction – right on the page.',
     'PDF unterschreiben': 'Sign PDF', 'Unterschrift zeichnen, tippen oder als Bild einfügen – optional als „Scan“ ausgeben.': 'Draw, type or upload your signature – optionally export it as a “scan”.',
     'Wie gescannt': 'Make it look scanned', 'Lässt das PDF aussehen, als wäre es ausgedruckt und eingescannt worden (leicht schief, Rauschen, Papierton).': 'Makes the PDF look printed and scanned (slightly skewed, noise, paper tone).',
@@ -101,7 +101,7 @@
     'Benötigt Tesseract. Einmalig im Terminal:': 'Requires Tesseract. Run once in Terminal:', ', danach die App neu starten.': ', then restart the app.',
     'Benötigt das kostenlose LibreOffice:': 'Requires the free LibreOffice:', 'oder libreoffice.org.': 'or libreoffice.org.',
     'Python-Modul pdf2docx fehlt – start.command erneut ausführen.': 'Python module pdf2docx is missing – run start.command again.',
-    // Werkzeugansicht
+    // Tool view
     '← Alle Werkzeuge': '← All tools', 'Dateien hierher ziehen': 'Drop files here', 'oder': 'or', 'auswählen': 'browse',
     'Mehrere Dateien möglich': 'Multiple files allowed', 'Eine Datei': 'One file', 'Seiten anklicken zum Auswählen': 'Click pages to select them',
     'alle': 'all', 'keine': 'none', 'umkehren': 'invert', '·': '·',
@@ -135,19 +135,19 @@
     'z. B. für Initialen/Paraphe auf jeder Seite': 'e.g. for initials on every page', '⧉ Duplizieren': '⧉ Duplicate', '⇊ Auf allen Seiten': '⇊ On all pages', '🗑 Löschen': '🗑 Delete',
     'Bitte zuerst ein PDF öffnen.': 'Please open a PDF first.', 'Noch nichts eingefügt.': 'Nothing added yet.',
     'Wird gespeichert & „eingescannt“ …': 'Saving & “scanning” …', 'Wird gespeichert …': 'Saving …', 'Text eingeben': 'Enter text',
-    // Unterschrift
+    // Signature
     'Zeichnen': 'Draw', 'Tippen': 'Type', 'Bild hochladen': 'Upload image', 'Stift': 'Pen', 'Weissen Hintergrund entfernen': 'Remove white background',
     'Für nächstes Mal speichern (nur in diesem Browser)': 'Save for next time (only in this browser)', 'Abbrechen': 'Cancel', 'Einfügen': 'Insert',
     'Dein Name': 'Your name', 'Bitte zuerst das PDF öffnen, das unterschrieben werden soll.': 'Please open the PDF you want to sign first.',
     'Gespeicherte Unterschriften – anklicken zum Einfügen:': 'Saved signatures – click to insert:', 'Bitte zuerst unterschreiben.': 'Please sign first.',
     'Bitte Namen eingeben.': 'Please enter a name.', 'Bitte ein Bild wählen.': 'Please choose an image.', 'Die Unterschrift ist leer.': 'The signature is empty.',
-    // Web-Version
+    // Web version
     'PDF-Engine wird geladen …': 'Loading PDF engine …', 'PDF-Bibliotheken werden geladen …': 'Loading PDF libraries …',
     'Dieser Browser wird nicht unterstützt. Bitte eine aktuelle Version von Safari, Chrome, Edge oder Firefox verwenden.': 'This browser is not supported. Please use a current version of Safari, Chrome, Edge or Firefox.',
     'PDF Werkstatt ist in keinem Tab geöffnet.': 'PDF Workshop is not open in any tab.', 'Datei nicht gefunden': 'File not found', 'Unbekannte Anfrage': 'Unknown request',
     'Dieses Werkzeug ist in der Web-Version nicht verfügbar.': 'This tool is not available in the web version.',
     'Zu wenig Arbeitsspeicher im Browser für diese Datei.': 'Not enough browser memory for this file.',
-    // Meldungen der PDF-Engine
+    // PDF engine messages
     'Bitte mindestens zwei Dateien auswählen.': 'Please select at least two files.', 'Es können nicht alle Seiten entfernt werden.': 'You cannot remove all pages.',
     'Keine Seiten übrig.': 'No pages left.', 'Bitte Seiten angeben (z. B. 1-3, 5).': 'Please specify pages (e.g. 1-3, 5).',
     'Die Datei ist bereits optimal komprimiert – keine weitere Verkleinerung möglich.': 'This file is already optimally compressed – it cannot be made any smaller.',
@@ -161,7 +161,7 @@
     'Tesseract ist nicht installiert. Im Terminal: brew install tesseract tesseract-lang': 'Tesseract is not installed. In Terminal: brew install tesseract tesseract-lang',
   };
 
-  // Texte mit Zahlen/Namen: Regeln, die auf den ganzen Text angewendet werden
+  // Texts with numbers/names: rules applied to the whole text
   const RULES = [
     [/^(\d+) Unterschied\(e\) gefunden$/, '$1 difference(s) found'],
     [/^· Übereinstimmung ([\d.]+) %$/, '· $1% match'],
@@ -192,7 +192,7 @@
     [/^Fehler in der PDF-Engine: (.*)$/, 'Error in the PDF engine: $1'],
     [/^Die PDF-Engine konnte nicht geladen werden: (.*)$/, 'The PDF engine could not be loaded: $1'],
     [/^Start fehlgeschlagen \(Service Worker\): (.*)$/, 'Start failed (service worker): $1'],
-    // Teilstücke (global, in zusammengesetzten Texten)
+    // Fragments (global, inside composite texts)
     [/(\d+) Seiten\b/g, (m, n) => `${n} page${n === '1' ? '' : 's'}`],
     [/(\d+) Seite\b/g, '$1 page'],
     [/ gespart\b/g, ' saved'],
@@ -204,7 +204,7 @@
 
   const KEY = 'pdfw-lang';
   let lang;
-  try { lang = localStorage.getItem(KEY); } catch { /* privat */ }
+  try { lang = localStorage.getItem(KEY); } catch { /* private mode */ }
   if (lang !== 'de' && lang !== 'en') lang = (navigator.language || 'de').toLowerCase().startsWith('de') ? 'de' : 'en';
 
   function toEN(s) {
@@ -220,7 +220,7 @@
   }
   const tr = (s) => (lang === 'en' ? toEN(s) : s);
 
-  // Inhalte der Nutzer nie übersetzen
+  // Never translate user content
   const SKIP = '[data-no-i18n], .ed-overlay, .sig-font, .sig-saved img, .cmp-c, .cmp-h, .res-name, .file-meta strong, script, style, code';
   const ORIG = new WeakMap();
   const ATTRS = ['placeholder', 'title', 'aria-label'];
@@ -271,7 +271,7 @@
   }
   function setLang(l) {
     lang = l === 'en' ? 'en' : 'de';
-    try { localStorage.setItem(KEY, lang); } catch { /* privat */ }
+    try { localStorage.setItem(KEY, lang); } catch { /* private mode */ }
     walk(document.body);
     obs.takeRecords();
     renderSwitch();

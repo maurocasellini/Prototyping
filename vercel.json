@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "installCommand": "echo keine Abhängigkeiten",
-  "buildCommand": "python3 --version && echo \"Ordner: $(pwd)\" && python3 pdf-werkstatt/web/build.py",
+  "installCommand": "echo no dependencies",
+  "buildCommand": "python3 --version && echo \"Directory: $(pwd)\" && python3 pdf-werkstatt/web/build.py",
   "outputDirectory": "pdf-werkstatt/web/dist",
   "cleanUrls": false,
   "trailingSlash": false,

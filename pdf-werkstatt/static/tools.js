@@ -1,4 +1,4 @@
-// Werkzeug-Definitionen: daraus werden Startseite und Formulare generiert.
+// Tool definitions: the home page and all option forms are generated from these.
 const PDF = '.pdf,application/pdf';
 const IMG = 'image/*,.heic';
 const OFFICE = '.doc,.docx,.odt,.rtf,.txt,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.odp,.html,.htm';
@@ -232,8 +232,8 @@ const TOOLS = {
   },
 };
 
-// ---------------------------------------------------------------- Linien-Icons (24×24, Kontur)
-// Eine Zeichenkette = ein Pfad; Präfix „F:“ = gefüllte Fläche.
+// ---------------------------------------------------------------- Line icons (24×24, outline)
+// One string = one path; prefix “F:” = filled shape.
 const DOC = ['M6 2.5h8.5L19 7v14.5H6z', 'M14.5 2.5V7H19'];
 const ICONS = {
   edit: ['M5 21.5V2.5h9.5L19 7v3', 'M14.5 2.5V7H19', 'M5 21.5h5', 'M12.5 21.5l.6-2.9 6.4-6.4 2.3 2.3-6.4 6.4z'],

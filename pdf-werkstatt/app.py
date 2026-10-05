@@ -1,6 +1,5 @@
-"""PDF-Werkstatt – lokaler PDF-Werkzeugkasten. Startet einen Server auf 127.0.0.1
-(nur dieser Rechner). Mit --window erscheint die Oberfläche in einem eigenen Mac-Fenster,
-sonst im Browser."""
+"""PDF Werkstatt – a local PDF toolkit. Starts a server on 127.0.0.1 (this computer only).
+With --window the UI opens in its own native Mac window, otherwise in the browser."""
 import atexit
 import io
 import json
@@ -15,7 +14,7 @@ import traceback
 import uuid
 import webbrowser
 
-# Homebrew-Pfade (Tesseract, LibreOffice) auch beim Start per Doppelklick finden
+# Find Homebrew tools (Tesseract, LibreOffice) even when launched by double-click
 os.environ["PATH"] = os.pathsep.join(["/opt/homebrew/bin", "/usr/local/bin", os.environ.get("PATH", "")])
 
 try:
@@ -23,7 +22,7 @@ try:
     from flask import Flask, abort, jsonify, request, send_file, send_from_directory
 
     import pdftools
-except Exception as _err:  # bei Doppelklick-Start sonst unsichtbar
+except Exception as _err:  # otherwise invisible when launched by double-click
     if sys.platform == "darwin" and "--app" in sys.argv:
         import subprocess
         msg = str(_err).replace('"', "'")[:400]
@@ -159,10 +158,10 @@ def run(tool):
     return jsonify(result=info)
 
 
-# ---------------------------------------------------------------- App-Modus (Mac-App ohne Terminal)
+# ---------------------------------------------------------------- App mode (Mac app without Terminal)
 APP_MODE = "--app" in sys.argv
-WINDOW_MODE = [False]  # True, sobald das native Fenster läuft
-IDLE_LIMIT = 15 * 60  # Browser-Modus: ohne offenes Fenster nach 15 Minuten beenden
+WINDOW_MODE = [False]  # True once the native window is running
+IDLE_LIMIT = 15 * 60  # browser mode: quit after 15 minutes without an open window
 LAST_PING = [time.time()]
 PORT_FILE = os.path.expanduser("~/Library/Application Support/PDF-Werkstatt/port")
 
@@ -215,10 +214,10 @@ def wait_for_server(port, timeout=20):
 
 # ---------------------------------------------------------------- Natives Fenster (pywebview)
 class Bridge:
-    """Wird im Fenster als window.pywebview.api angeboten."""
+    """Exposed to the window as window.pywebview.api."""
 
     def save(self, fid):
-        """„Sichern unter …“-Dialog des Mac, dann Datei kopieren."""
+        """Show the macOS “Save As…” dialog, then copy the file."""
         import webview
         e = FILES.get(fid)
         if not e or not WINDOWS:
@@ -233,7 +232,7 @@ class Bridge:
         return {"ok": True, "path": target, "name": os.path.basename(target)}
 
     def preview(self, fid):
-        """PDF/Bild in der Mac-App „Vorschau“ öffnen."""
+        """Open a PDF/image in the macOS Preview app."""
         import subprocess
         e = FILES.get(fid)
         if not e:
@@ -251,7 +250,7 @@ WINDOWS = []
 
 
 def run_window(url):
-    """Öffnet die Oberfläche in einem eigenen Fenster. False, wenn pywebview fehlt."""
+    """Open the UI in its own window. Returns False if pywebview is missing."""
     try:
         import webview
     except Exception:
@@ -262,7 +261,7 @@ def run_window(url):
     WINDOWS.append(win)
 
     def on_start():
-        try:  # Name & Icon im Dock/Menü setzen
+        try:  # set name & icon in Dock/menu bar
             from AppKit import NSApplication, NSImage
             from Foundation import NSBundle
             info = NSBundle.mainBundle().infoDictionary()

@@ -1,10 +1,10 @@
-/* Service Worker der PDF Werkstatt (Web).
-   1) Fängt alle „api/…“-Anfragen ab, BEVOR sie das Netz erreichen, und beantwortet sie
-      über die PDF-Engine im Browser-Tab. Es wird nie etwas an einen Server gesendet.
-   2) Speichert die App im Cache, damit sie auch offline funktioniert. */
+/* Service worker of PDF Werkstatt (web).
+   1) Intercepts all “api/…” requests BEFORE they reach the network and answers them
+      via the PDF engine in the browser tab. Nothing is ever sent to a server.
+   2) Caches the app so it also works offline. */
 const VERSION = '__BUILD__';
 const CACHE = 'pdfw-' + VERSION;
-const SCOPE = new URL(self.registration.scope).pathname.replace(/\/?$/, '/'); // z. B. /pdf/
+const SCOPE = new URL(self.registration.scope).pathname.replace(/\/?$/, '/'); // e.g. /pdf/
 const API = SCOPE + 'api/';
 
 self.addEventListener('install', () => self.skipWaiting());
@@ -37,7 +37,7 @@ async function apiResponse(event) {
       msg.body = new Uint8Array(await req.arrayBuffer());
     }
   }
-  // Der Tab, der die Anfrage stellt – bei Downloads/neuen Tabs: alle offenen Tabs fragen
+  // The tab that made the request – for downloads/new tabs: ask all open tabs
   const own = event.clientId ? await self.clients.get(event.clientId) : null;
   const candidates = own ? [own] : await self.clients.matchAll({ type: 'window' });
   for (const client of candidates) {
@@ -52,10 +52,10 @@ async function apiResponse(event) {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return; // fremde Adressen sind per CSP ohnehin gesperrt
+  if (url.origin !== self.location.origin) return; // other origins are blocked by CSP anyway
   if (url.pathname.startsWith(API)) { event.respondWith(apiResponse(event)); return; }
   if (event.request.method !== 'GET' || !url.pathname.startsWith(SCOPE.replace(/\/$/, ''))) return;
-  // Engine-Dateien (gross, versioniert): Cache zuerst. Rest: Netz zuerst, offline aus dem Cache.
+  // Engine files (large, versioned): cache first. Everything else: network first, cache when offline.
   const vendor = url.pathname.includes('/vendor/') || url.pathname.includes('/pdf-fonts/') || url.pathname.includes('/fonts/');
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);

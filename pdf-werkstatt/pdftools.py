@@ -1,5 +1,5 @@
-"""Alle PDF-Operationen. Jede Funktion bekommt Eingabedateien + Parameter
-und liefert ein Ergebnis (Bytes + Dateiname) oder JSON-Daten."""
+"""All PDF operations. Each function takes input files + parameters
+and returns a result (bytes + file name) or JSON data."""
 import base64
 import difflib
 import io
@@ -40,7 +40,7 @@ NAME_EN = {"_zusammengefuegt": "_merged", "_geteilt": "_split", "_bereinigt": "_
 
 
 def localize_name(name, lang):
-    """Ergebnis-Dateinamen für englische Oberfläche: A_zusammengefuegt.pdf → A_merged.pdf"""
+    """Result file names for the English UI: A_zusammengefuegt.pdf → A_merged.pdf"""
     if lang != "en":
         return name
     base, ext = os.path.splitext(name)
@@ -148,7 +148,7 @@ def image_to_pdf_page(out, path, size="fit", orientation="auto", margin=0):
 
 
 def load_image_as_pdf_path(path):
-    """HEIC & Co. über Pillow in PNG umwandeln, falls MuPDF sie nicht kennt."""
+    """Convert HEIC & co. to PNG via Pillow if MuPDF cannot read them."""
     try:
         d = pymupdf.open(path)
         d.close()
@@ -279,7 +279,7 @@ COMPRESS = {
     "empfohlen": dict(dpi_threshold=150, dpi_target=110, quality=65),
     "extrem": dict(dpi_threshold=96, dpi_target=72, quality=45),
 }
-# Stufen für „Zielgrösse“: erst Bilder immer stärker verkleinern, zuletzt Seiten rastern
+# Steps for “target size”: downsample images more and more, finally rasterise pages
 TARGET_STEPS = [(170, 80), (150, 70), (130, 62), (110, 55), (96, 48), (85, 42), (72, 38), (60, 32), (50, 28)]
 RASTER_STEPS = [(110, 55), (96, 48), (80, 42), (68, 36), (56, 30)]
 
@@ -493,7 +493,7 @@ def watermark(files, p, image_bytes=None):
             else:
                 fargs, fobj = font_for("hebo")
                 tw = fobj.text_length(text, fontsize=size)
-                m = pymupdf.Matrix(angle)  # positiv = von links unten nach rechts oben
+                m = pymupdf.Matrix(angle)  # positive = from bottom left to top right
                 origin = pymupdf.Point(cx - tw / 2, cy + size * 0.35)
                 page.insert_text(origin, text, fontsize=size, color=color, **fargs,
                                  fill_opacity=opacity, stroke_opacity=opacity, overlay=not behind,
@@ -755,14 +755,14 @@ def pdf_to_word(files, p):
 
 
 def pdf_to_office(files, p):
-    """PDF → PowerPoint/Excel/ODT etc. über LibreOffice (Layout-Qualität begrenzt)."""
+    """PDF → PowerPoint/Excel/ODT etc. via LibreOffice (limited layout fidelity)."""
     exe = soffice_path()
     if not exe:
         raise ToolError("Dafür wird LibreOffice benötigt (brew install --cask libreoffice).")
     fmt = p.get("target", "pptx")
     f = files[0]
     if fmt == "pptx":
-        # Jede Seite als Folie (Bild) – sieht 1:1 aus wie das PDF
+        # every page as a slide (image) – looks exactly like the PDF
         return _pdf_to_pptx(f)
     tmp = tempfile.mkdtemp()
     src = os.path.join(tmp, "in.pdf")
@@ -805,8 +805,8 @@ def _pdf_to_pptx(f):
 
 BROWSER_METRICS = {"he": (0.905, 0.212), "ti": (0.891, 0.216), "co": (0.833, 0.300)}
 
-# Unicode-fähige Schriften (€, –, „“ …): zuerst die macOS-Systemschriften, die auch der
-# Editor im Browser anzeigt; Liberation (metrisch identisch) als Linux-Fallback.
+# Unicode-capable fonts (€, –, „“ …): first the macOS system fonts the editor shows in the
+# browser; Liberation (metric-compatible) as Linux/web fallback.
 _MAC = "/System/Library/Fonts/Supplemental/"
 _LIB = "/usr/share/fonts/truetype/liberation/"
 _STYLE = {"lv": ("", "Regular"), "ro": ("", "Regular"), "ur": ("", "Regular"),
@@ -817,7 +817,7 @@ _font_cache = {}
 
 
 def font_for(code):
-    """Base14-Kürzel (helv, tibo, …) -> (insert_text-Argumente, Font-Objekt für Breiten)."""
+    """Base14 code (helv, tibo, …) -> (insert_text kwargs, Font object for widths)."""
     if code in _font_cache:
         return _font_cache[code]
     fam_mac, fam_lib = _FAMILY.get(code[:2], _FAMILY["he"])
@@ -841,7 +841,7 @@ def _font_for(fontname, bold, italic):
 
 
 def apply_edits(files, p):
-    """Elemente (Text, Bilder/Unterschriften, Formen, Schwärzungen) einfügen."""
+    """Insert elements (text, images/signatures, shapes, redactions)."""
     f = files[0]
     doc = open_pdf(f)
     elements = p.get("elements") or []
@@ -867,7 +867,7 @@ def apply_edits(files, p):
             font = _font_for(e.get("font", "helv"), e.get("bold"), e.get("italic"))
             lines = (e.get("text") or "").split("\n")
             lh = size * float(e.get("lineHeight", 1.2))
-            # Grundlinie wie im Browser (CSS line-height, Arial / Times New Roman / Courier New)
+            # baseline as in the browser (CSS line-height, Arial / Times New Roman / Courier New)
             asc, desc = BROWSER_METRICS[font[:2]]
             base_off = (lh - (asc + desc) * size) / 2 + asc * size
             align = e.get("align", "left")
