@@ -61,7 +61,7 @@ export default async function Quellen() {
               <p translate="no">{e.summary_de}</p>
               {e.dose_de && <p className="small"><b>Dosis laut Studien und Fachstellen:</b> <span translate="no">{e.dose_de}</span></p>}
               {e.safety_de && <p className="small"><b>Sicherheit:</b> <span translate="no">{e.safety_de}</span></p>}
-              <ol className="srcs">{(e.sources || []).map((q, i) => <Src key={i} q={q} />)}</ol>
+              <details className="faq"><summary>{`Quellen (${(e.sources || []).length})`}</summary><ol className="srcs">{(e.sources || []).map((q, i) => <Src key={i} q={q} />)}</ol></details>
             </section>
           ))}
         </article>
