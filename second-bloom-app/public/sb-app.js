@@ -282,7 +282,9 @@ const shortDate = d => z(d.getDate())+'.'+z(d.getMonth()+1)+'.';
 const uid = () => Math.random().toString(36).slice(2,9);
 const R = id => RECIPES.find(r=>r.id===id) || RECIPES[0];
 
-let ob = {step:0, name:(BOOT.user && BOOT.user.name) || 'Sandra', age:49, weight:68, household:2, phase:'peri', goals:['Besser schlafen','Stimmung stabilisieren','Konzentration im Job'], agree:false};
+// Phase aus dem Alter vorschlagen (Menopause im Mittel um 51); eine selbst gewählte Phase bleibt
+const phaseForAge = (a) => a < 40 ? 'unsure' : a < 50 ? 'peri' : a < 53 ? 'meno' : 'post';
+let ob = {step:0, phaseManual:false, name:(BOOT.user && BOOT.user.name) || 'Sandra', age:49, weight:68, household:2, phase:'peri', goals:['Besser schlafen','Stimmung stabilisieren','Konzentration im Job'], agree:false};
 let draft = null, wDraft = null, breathTimer = null, sheetRender = null, confirmReset = false, recN = 2;
 let cook = {photo:null, photoUrl:'', text:'', picks:[], servings:null, meal:'Abend', time:30, busy:false, result:null, err:'', note:'', ctl:null};
 let planWish = '', planBusy = false;
@@ -510,7 +512,7 @@ function renderOnboarding(){
     </div>
     <p class="small muted">Das Gewicht brauche ich nur für dein Proteinziel (1,4 g pro kg Körpergewicht).</p>
     <div class="row between"><b class="small">Für wie viele Personen kochst du meistens?</b>${stepper('ob-hh', ob.household, 'Personen')}</div>
-    <div class="stack"><b class="small">In welcher Phase bist du?</b>
+    <div class="stack"><b class="small">In welcher Phase bist du?</b><span class="small muted">Vorschlag nach deinem Alter. Tippe an, was für dich passt.</span>
       ${Object.entries(PHASES).map(([k,p])=>`<button class="radio ${ob.phase===k?'on':''}" data-a="ob-phase" data-v="${k}"><b>${p.name}</b><span>${p.desc}</span></button>`).join('')}
     </div>
     <div class="row"><button class="btn ghost" data-a="ob-back">Zurück</button><button class="btn accent" style="flex:1" data-a="ob-next">Weiter</button></div>`;
@@ -1111,7 +1113,7 @@ document.addEventListener('click', e => {
     case 'go': go(v); break;
     case 'ob-next': readOb(); ob.step++; render(); break;
     case 'ob-back': readOb(); ob.step--; render(); break;
-    case 'ob-phase': readOb(); ob.phase = v; render(); break;
+    case 'ob-phase': readOb(); ob.phase = v; ob.phaseManual = true; render(); break;
     case 'ob-goal': ob.goals = ob.goals.includes(v) ? ob.goals.filter(g=>g!==v) : [...ob.goals, v]; render(); break;
     case 'ob-agree': ob.agree = el.checked; render(); break;
     case 'ob-finish':
@@ -1188,6 +1190,10 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => {
   if(e.target.id==='cook-text') cook.text = e.target.value;
+  if(e.target.id==='ob-age' && !ob.phaseManual){
+    const a = parseInt(e.target.value);
+    if(a >= 30 && a <= 90){ ob.age = a; ob.phase = phaseForAge(a); document.querySelectorAll('[data-a=ob-phase]').forEach(b => b.classList.toggle('on', b.dataset.v === ob.phase)); }
+  }
   if(e.target.id==='plan-wish') planWish = e.target.value;
 });
 document.addEventListener('change', e => {

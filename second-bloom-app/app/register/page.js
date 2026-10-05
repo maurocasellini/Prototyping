@@ -3,6 +3,7 @@ import SiteShell from "@/components/SiteShell";
 import AuthLayout from "@/components/AuthLayout";
 import Form from "@/components/Form";
 import ConsentFields from "@/components/ConsentFields";
+import AutoPhase from "@/components/AutoPhase";
 import { register } from "../actions";
 import { getLang } from "@/lib/lang";
 import { PHASE_OPTS, GOAL_OPTS, DIET_OPTS, INTOL_OPTS, COUNTRY_OPTS, LANG_OPTS } from "@/lib/profile";
@@ -40,6 +41,8 @@ export default async function Register() {
             <label>Sprache<select name="lang" defaultValue={lang} translate="no">{LANG_OPTS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
           </fieldset>
           <fieldset className="fs"><legend>Deine Phase</legend>
+            <AutoPhase />
+            <p className="small muted">Wird nach deinem Geburtsdatum vorgeschlagen. Wähle, was für dich passt.</p>
             <div className="opts">{PHASE_OPTS.map(([k, n, d]) => <label key={k} className="opt"><input type="radio" name="phase" value={k} required /> <span><b>{n}</b><small>{d}</small></span></label>)}</div>
           </fieldset>
           <fieldset className="fs"><legend>Was dir gerade wichtig ist (optional)</legend>
