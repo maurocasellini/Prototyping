@@ -4,14 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PDF-Werkstatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400;1,8..60,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="#" data-home>
-    <span class="logo">PDF</span><span>Werkstatt</span>
+    <span class="logo-mark">PDF</span><span class="logo-word">WERKSTATT</span>
   </a>
-  <span class="local-badge" title="Alle Dateien bleiben auf diesem Mac. Nichts wird hochgeladen.">● 100 % lokal</span>
+  <span class="local-badge" title="Alle Dateien bleiben auf diesem Mac. Nichts wird hochgeladen.">100 % lokal</span>
   <div class="spacer"></div>
   <input id="search" type="search" placeholder="Werkzeug suchen …" autocomplete="off">
 </header>
@@ -20,8 +23,19 @@
   <!-- Startseite -->
   <section id="home" class="view">
     <div class="hero">
-      <h1>Alles, was du mit PDFs machen musst – offline auf deinem Mac.</h1>
-      <p>Zusammenfügen, verkleinern, Seiten entfernen, unterschreiben, „wie gescannt“ ausgeben und vieles mehr.</p>
+      <div class="eyebrow accent">Lokaler PDF-Werkzeugkasten</div>
+      <div class="eyebrow">Bearbeiten · Unterschreiben · Umwandeln</div>
+      <h1>Alles, was du mit PDFs machen musst, <em>offline</em>.</h1>
+      <p>Zusammenfügen, verkleinern, Seiten entfernen, unterschreiben, „wie gescannt“ ausgeben und vieles mehr – direkt auf deinem Mac, ohne Upload.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#/tool/sign">PDF unterschreiben</a>
+        <a class="btn" href="#/tool/merge">PDF zusammenfügen</a>
+      </div>
+      <ul class="facts">
+        <li>Dateien verlassen nie diesen Rechner</li>
+        <li>29 Werkzeuge in einer Oberfläche</li>
+        <li>Unterschreiben &amp; „wie gescannt“ in einem Schritt</li>
+      </ul>
     </div>
     <div id="tool-grid"></div>
   </section>
@@ -75,19 +89,19 @@
     <div class="ed-toolbar">
       <button class="back" data-home>←</button>
       <div class="ed-tools">
-        <button data-tool="select" class="active" title="Auswählen & verschieben (V)">↖ Auswählen</button>
-        <button data-tool="signature" title="Unterschrift hinzufügen">✍ Unterschrift</button>
-        <button data-tool="text" title="Text (T)">T Text</button>
-        <button data-tool="date" title="Heutiges Datum">📅 Datum</button>
-        <button data-tool="image" title="Bild einfügen">🖼 Bild</button>
+        <button data-tool="select" class="active" title="Auswählen & verschieben (V)">Auswählen</button>
+        <button data-tool="signature" title="Unterschrift hinzufügen">Unterschrift</button>
+        <button data-tool="text" title="Text (T)">Text</button>
+        <button data-tool="date" title="Heutiges Datum">Datum</button>
+        <button data-tool="image" title="Bild einfügen">Bild</button>
         <button data-tool="check" title="Häkchen">✓</button>
         <button data-tool="cross" title="Kreuz">✕</button>
-        <button data-tool="whiteout" title="Weiss abdecken (Text überdecken)">▭ Abdecken</button>
-        <button data-tool="highlight" title="Markieren">▮ Markieren</button>
+        <button data-tool="whiteout" title="Weiss abdecken (Text überdecken)">Abdecken</button>
+        <button data-tool="highlight" title="Markieren">Markieren</button>
         <button data-tool="rect" title="Rechteck">□</button>
         <button data-tool="ellipse" title="Ellipse">○</button>
         <button data-tool="line" title="Linie">─</button>
-        <button data-tool="redact" title="Bereich dauerhaft schwärzen">■ Schwärzen</button>
+        <button data-tool="redact" title="Bereich dauerhaft schwärzen">Schwärzen</button>
       </div>
       <div class="spacer"></div>
       <button id="ed-undo" title="Rückgängig (⌘Z)">↶</button>
@@ -119,6 +133,10 @@
     </div>
   </section>
 </main>
+<footer class="foot">
+  <span>PDF-Werkstatt</span>
+  <span>Läuft lokal auf 127.0.0.1 · keine Daten verlassen diesen Mac</span>
+</footer>
 
 <!-- Unterschrift-Dialog -->
 <dialog id="sig-dialog">

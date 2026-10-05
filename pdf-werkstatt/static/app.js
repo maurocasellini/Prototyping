@@ -85,21 +85,22 @@ function renderHome() {
   const grid = $('#tool-grid');
   grid.innerHTML = '';
   const q = $('#search').value.trim().toLowerCase();
+  let num = 0;
   for (const cat of CATEGORIES) {
     const items = cat.tools.filter((id) => {
       const t = TOOLS[id];
       return !q || (t.title + ' ' + t.desc).toLowerCase().includes(q);
     });
     if (!items.length) continue;
-    grid.append(h('h3', { class: 'cat' }, cat.name));
+    num++;
+    grid.append(h('h3', { class: 'cat' }, h('span', { class: 'num' }, String(num).padStart(2, '0')), cat.name));
     grid.append(h('div', { class: 'cards' }, items.map((id) => {
       const t = TOOLS[id];
       const missing = t.needs && CAPS[t.needs] === false;
       return h('a', { class: 'card' + (missing ? ' missing' : ''), href: `#/tool/${id}` },
-        h('span', { class: 'icon', style: { background: t.color } }, t.icon),
         h('strong', {}, t.title),
         h('span', {}, t.desc),
-        missing ? h('em', {}, 'Zusatzprogramm nötig') : null);
+        missing ? h('em', {}, 'Zusatzprogramm nötig') : h('i', { class: 'go' }, 'Öffnen →'));
     })));
   }
   if (!grid.children.length) grid.append(h('p', { class: 'muted' }, 'Kein Werkzeug gefunden.'));
@@ -388,7 +389,7 @@ function showResult(box, res) {
   const delta = res.input_size && isPdf ? res.size - res.input_size : null;
   const next = h('select', { class: 'next' },
     h('option', { value: '' }, 'Weiterverarbeiten mit …'),
-    Object.entries(TOOLS).filter(([, t]) => !t.accept || t.accept.includes('.pdf')).map(([id, t]) => h('option', { value: id }, `${t.icon} ${t.title}`)));
+    Object.entries(TOOLS).filter(([, t]) => !t.accept || t.accept.includes('.pdf')).map(([id, t]) => h('option', { value: id }, t.title)));
   next.addEventListener('change', () => {
     if (!next.value) return;
     state.carry = [res];
@@ -400,7 +401,7 @@ function showResult(box, res) {
     h('div', { class: 'res-name' }, res.name),
     h('div', { class: 'muted' }, [res.pages ? `${res.pages} Seiten` : '', fmtSize(res.size), delta !== null && delta < 0 ? `${fmtSize(-delta)} gespart` : ''].filter(Boolean).join(' · ')),
     res.info ? h('div', { class: 'res-info' }, res.info) : null,
-    h('a', { class: 'primary big btn', href: `/api/file/${res.id}/download` }, '⬇ Herunterladen'),
+    h('a', { class: 'primary big btn', href: `/api/file/${res.id}/download` }, 'Herunterladen'),
     isPdf ? h('a', { class: 'btn', href: `/api/file/${res.id}/raw`, target: '_blank' }, 'Vorschau öffnen') : null,
     isPdf ? next : null);
   box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
