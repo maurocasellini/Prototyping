@@ -19,11 +19,23 @@ if ! command -v python3 >/dev/null 2>&1 || ! python3 -c 'import sys; sys.exit(0 
   exit 1
 fi
 
+# Apple-Chip (M1/M2/…): alles ausdrücklich nativ (arm64) ausführen, nie unter Rosetta
+RUN=""
+[ "$(sysctl -n hw.optional.arm64 2>/dev/null)" = "1" ] && RUN="arch -arm64"
+
 echo "  1/3  Werkzeuge installieren (einmalig, 1–3 Minuten) …"
 mkdir -p "$SUP"
-[ -x "$SUP/venv/bin/python" ] || python3 -m venv "$SUP/venv"
-"$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check --upgrade pip
-"$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check -r "$SRC/requirements.txt"
+[ -x "$SUP/venv/bin/python" ] || $RUN python3 -m venv "$SUP/venv"
+$RUN "$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check --upgrade pip
+$RUN "$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check -r "$SRC/requirements.txt"
+# Selbsttest: lassen sich die PDF-Bibliotheken laden?
+if ! $RUN "$SUP/venv/bin/python" -c "import pymupdf, flask, PIL, numpy" 2>/dev/null; then
+  echo "  Bibliotheken passen nicht zur Architektur – installiere neu …"
+  rm -rf "$SUP/venv"
+  $RUN python3 -m venv "$SUP/venv"
+  $RUN "$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check --upgrade pip
+  $RUN "$SUP/venv/bin/python" -m pip install --quiet --disable-pip-version-check -r "$SRC/requirements.txt"
+fi
 
 echo "  2/3  App erstellen in $DEST …"
 # Laufende Version beenden (bei Updates)
@@ -51,6 +63,7 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundleVersion</key><string>1</string>
   <key>LSMinimumSystemVersion</key><string>11.0</string>
   <key>LSUIElement</key><true/>
+  <key>LSArchitecturePriority</key><array><string>arm64</string><string>x86_64</string></array>
 </dict>
 </plist>
 PLIST
@@ -74,9 +87,26 @@ if [ -f "$SUP/port" ]; then
   fi
 fi
 cd "$RES" || exit 1
-nohup "$PY" app.py --app >"$SUP/log.txt" 2>&1 &
+rm -f "$SUP/port"
+# Auf Apple-Chips nativ starten (sonst lädt macOS die App evtl. unter Rosetta/x86_64)
+RUN=""
+[ "$(sysctl -n hw.optional.arm64 2>/dev/null)" = "1" ] && RUN="arch -arm64"
+nohup $RUN "$PY" app.py --app --no-browser >"$SUP/log.txt" 2>&1 &
 disown
-exit 0
+# Warten, bis der Server antwortet, dann Browser öffnen – sonst Fehler anzeigen
+for i in $(seq 1 60); do
+  sleep 0.5
+  if [ -f "$SUP/port" ]; then
+    PORT="$(cat "$SUP/port")"
+    if curl -s -m 1 "http://127.0.0.1:$PORT/api/ping" >/dev/null 2>&1; then
+      open "http://127.0.0.1:$PORT"
+      exit 0
+    fi
+  fi
+done
+MSG="$(tail -n 6 "$SUP/log.txt" 2>/dev/null | tr '"\\' "' " )"
+osascript -e "display alert \"PDF Werkstatt konnte nicht starten.\" message \"$MSG\""
+exit 1
 LAUNCHER
 chmod +x "$APP/Contents/MacOS/$NAME"
 
