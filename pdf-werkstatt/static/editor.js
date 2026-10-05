@@ -2,6 +2,24 @@
 const Editor = (() => {
   const S = { file: null, els: [], sel: null, tool: 'select', zoom: 1, history: [], editing: null, pendingSig: false };
   const box = $('#ed-pages');
+  const ED_ICONS = {
+    select: ['M5.5 3.5l5.5 16 2.3-6.9 6.9-2.3z'],
+    signature: ICONS.sign, text: ICONS.extract_text, image: ICONS.images_to_pdf,
+    date: ['M4 5.5h16v15H4z', 'M4 10h16', 'M8.5 3.5v4', 'M15.5 3.5v4', 'M8 14h2', 'M12 14h2', 'M8 17h2'],
+    check: ['M5 12.5l4.5 4.5L19 7'], cross: ['M6.5 6.5l11 11', 'M17.5 6.5l-11 11'],
+    whiteout: ['M3.5 7h17v10h-17z', 'M7 12h10'],
+    highlight: ['M4 20.5h16', 'M8.5 16.5l-1.5 2.5h4.5l.5-1.5', 'M8.5 16.5l7-12 3.5 2-6.5 11.5z'],
+    rect: ['M4 6h16v12H4z'], ellipse: ['M12 5c4.4 0 8.5 3.1 8.5 7s-4.1 7-8.5 7-8.5-3.1-8.5-7 4.1-7 8.5-7z'],
+    line: ['M4 12h16'], redact: ICONS.redact,
+  };
+  $$('.ed-tools button').forEach((b) => {
+    const paths = ED_ICONS[b.dataset.tool];
+    if (!paths) return;
+    const label = b.textContent.trim();
+    const iconOnly = label.length <= 2;
+    b.innerHTML = svgFrom(paths) + (iconOnly ? '' : `<span>${label}</span>`);
+    b.classList.toggle('icon-only', iconOnly);
+  });
   const FONTS = { helv: 'Arial, Helvetica, sans-serif', tiro: '"Times New Roman", Times, serif', cour: '"Courier New", Courier, monospace' };
   const defaults = { text: { size: 12, color: '#111111', font: 'helv' }, shape: { color: '#d00000', stroke: 1.5 }, mark: { color: '#1a3a9c' } };
   let uid = 1;

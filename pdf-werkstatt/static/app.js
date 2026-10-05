@@ -97,7 +97,10 @@ function renderHome() {
     grid.append(h('div', { class: 'cards' }, items.map((id) => {
       const t = TOOLS[id];
       const missing = t.needs && CAPS[t.needs] === false;
+      const ico = h('span', { class: 'ico' });
+      ico.innerHTML = iconSvg(id);
       return h('a', { class: 'card' + (missing ? ' missing' : ''), href: `#/tool/${id}` },
+        ico,
         h('strong', {}, t.title),
         h('span', {}, t.desc),
         missing ? h('em', {}, 'Zusatzprogramm nötig') : h('i', { class: 'go' }, 'Öffnen →'));
@@ -116,6 +119,7 @@ function openTool(id) {
   state.order = [];
   show('tool');
   $('#tool-title').textContent = t.title;
+  $('#tool-icon').innerHTML = iconSvg(id);
   $('#tool-desc').textContent = t.desc;
   const warn = $('#tool-warning');
   warn.classList.toggle('hidden', !(t.needs && CAPS[t.needs] === false));

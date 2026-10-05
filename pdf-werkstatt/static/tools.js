@@ -231,3 +231,45 @@ const TOOLS = {
     desc: 'Zwei Versionen nebeneinander vergleichen – Unterschiede im Text werden hervorgehoben.',
   },
 };
+
+// ---------------------------------------------------------------- Linien-Icons (24×24, Kontur)
+// Eine Zeichenkette = ein Pfad; Präfix „F:“ = gefüllte Fläche.
+const DOC = ['M6 2.5h8.5L19 7v14.5H6z', 'M14.5 2.5V7H19'];
+const ICONS = {
+  edit: ['M5 21.5V2.5h9.5L19 7v3', 'M14.5 2.5V7H19', 'M5 21.5h5', 'M12.5 21.5l.6-2.9 6.4-6.4 2.3 2.3-6.4 6.4z'],
+  sign: ['M3 16c1.8-5.5 3.6-8.6 4.8-8 1.5.8-2.2 8.3-.3 8.5 1.6.2 2.8-4.6 4.2-4.5 1.3.1.6 4 2.4 4 1.4 0 2.2-2 3.3-2 .9 0 1.4 1 2.6 1', 'M3 20.5h18'],
+  scan: [...DOC, 'M2.5 13.5h19', 'M9 9.5h6', 'M9 17.5h4'],
+  watermark: ['M12 3s6.5 7.2 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10.2 12 3 12 3z', 'M9 15.5a3 3 0 0 0 3 3'],
+  page_numbers: [...DOC, 'M10.5 11l-1 7', 'M14 11l-1 7', 'M8.8 13.2h6.4', 'M8.3 15.8h6.4'],
+  crop: ['M6.5 2.5v15h15', 'M2.5 6.5h15v15'],
+  flatten: ['M12 3.5l9 4.5-9 4.5L3 8z', 'M3 12l9 4.5 9-4.5', 'M3 16l9 4.5 9-4.5'],
+  metadata: ['M3 12.3V3.5h8.8l9.2 9.2-8.8 8.8z', 'M7.6 7.6h.01'],
+  merge: ['M3.5 3h6v8h-6z', 'M14.5 3h6v8h-6z', 'M6.5 11v2.5c0 1.7 1.3 3 3 3h5c1.7 0 3-1.3 3-3V11', 'M12 16.5v5', 'M9.5 19l2.5 2.5 2.5-2.5'],
+  split: ['M3 4h7v16H3z', 'M14 4h7v16h-7z', 'M12 2v2', 'M12 7v2', 'M12 12v2', 'M12 17v2'],
+  remove: ['M4 6.5h16', 'M9.5 6.5V4h5v2.5', 'M6 6.5l1 14h10l1-14', 'M10 10.5v6.5', 'M14 10.5v6.5'],
+  extract: ['M5 21.5V2.5h9.5L19 7v4', 'M14.5 2.5V7H19', 'M5 21.5h7', 'M14.5 17.5h7', 'M18.5 14.5l3 3-3 3'],
+  organize: ['M4 4h6.5v6.5H4z', 'M13.5 4H20v6.5h-6.5z', 'M4 13.5h6.5V20H4z', 'M13.5 13.5H20V20h-6.5z'],
+  rotate: ['M20 12a8 8 0 1 1-2.4-5.7', 'M20.2 3.5v4.3h-4.3'],
+  compress: ['M4 9h5V4', 'M20 9h-5V4', 'M4 15h5v5', 'M20 15h-5v5'],
+  repair: ['M14.5 6.5l3 3 3.8-3.8a5.5 5.5 0 0 1-7.3 7.3l-7 7a2.1 2.1 0 0 1-3-3l7-7a5.5 5.5 0 0 1 7.3-7.3z'],
+  ocr: ['M10.5 3.5a7 7 0 1 0 0 14 7 7 0 0 0 0-14z', 'M15.5 15.5L21 21', 'M7.5 8.5h6', 'M7.5 11h6', 'M7.5 13.5h4'],
+  grayscale: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 3v18', 'M12 7h6.5', 'M12 11h8.8', 'M12 15h8.4', 'M12 19h4.8'],
+  images_to_pdf: ['M3 5h18v14H3z', 'M3 16l5-5 4 4 3-3 6 6', 'M15.5 9h.01'],
+  office_to_pdf: [...DOC, 'M9 11h7', 'M9 14h7', 'M9 17h4.5'],
+  pdf_to_images: [...DOC, 'M8.5 18.5l3-3.5 2 2.2 1.5-1.5 2 2.8', 'M10.5 11.5h.01'],
+  pdf_to_word: [...DOC, 'M8.5 11.5l1.4 6 2.1-4.5 2.1 4.5 1.4-6'],
+  pdf_to_office: ['M3.5 20.5h17', 'M7 20.5V14', 'M12 20.5V8', 'M17 20.5V4'],
+  extract_text: ['M5 5.5V4h14v1.5', 'M12 4v16', 'M9 20h6'],
+  extract_images: ['M7.5 3h13.5v12H7.5z', 'M3 7.5V21h13.5', 'M7.5 12.5l4-4 4 4 2.5-2.5 3 3'],
+  protect: ['M5 11h14v10H5z', 'M8 11V7.5a4 4 0 0 1 8 0V11', 'M12 15v2.5'],
+  unlock: ['M5 11h14v10H5z', 'M8 11V7.5a4 4 0 0 1 7.6-1.8', 'M12 15v2.5'],
+  redact: [...DOC, 'F:M8.5 10h8v2.2h-8z', 'F:M8.5 14.5h5.5v2.2H8.5z'],
+  compare: ['M3.5 4h7v16h-7z', 'M13.5 4h7v16h-7z', 'M6 8.5h2', 'M16 8.5h2', 'M6 12h2', 'M16 12h2', 'M16 15.5h2'],
+};
+function svgFrom(paths) {
+  const body = paths.map((d) => d.startsWith('F:')
+    ? `<path d="${d.slice(2)}" fill="currentColor" stroke="none"/>`
+    : `<path d="${d}"/>`).join('');
+  return `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+const iconSvg = (id) => svgFrom(ICONS[id] || DOC);

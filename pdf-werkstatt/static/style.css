@@ -74,8 +74,18 @@ main { max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; }
 .card { display: flex; flex-direction: column; gap: 8px; padding: 24px 24px 20px; background: transparent;
   border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; transition: background .15s; }
 .card:hover { background: var(--sand); }
+.ico { display: inline-grid; place-items: center; width: 46px; height: 46px; flex: none; color: var(--accent);
+  border: 1px solid var(--line); background: var(--bg); transition: background .15s, color .15s, border-color .15s; }
+.ico svg { width: 26px; height: 26px; }
+.card .ico { margin-bottom: 10px; }
+.card:hover .ico { background: var(--navy); border-color: var(--navy); color: var(--on-navy); }
+.card.missing .ico { color: var(--muted); }
+.tool-title-row { display: flex; align-items: center; gap: 18px; margin: 14px 0 8px; }
+.tool-title-row h2 { margin: 0; }
+.big-ico { width: 60px; height: 60px; }
+.big-ico svg { width: 34px; height: 34px; }
 .card strong { font-family: var(--serif); font-weight: 400; font-size: 22px; line-height: 1.2; }
-.card span { color: var(--muted); font-size: 14px; flex: 1; }
+.card > span:not(.ico) { color: var(--muted); font-size: 14px; flex: 1; }
 .card .go, .card em { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); opacity: 0; transition: opacity .15s; }
 .card:hover .go, .card em { opacity: 1; }
 .card.missing strong { color: var(--muted); }
@@ -204,6 +214,9 @@ main { max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; }
 .ed-toolbar button { padding: 7px 11px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
   color: var(--on-navy); border-color: transparent; }
 .ed-toolbar button:hover { border-color: #4a5372; }
+.ed-tools button { display: inline-flex; align-items: center; gap: 7px; }
+.ed-tools button svg { width: 17px; height: 17px; flex: none; }
+.ed-tools button.icon-only { padding: 7px 8px; }
 .ed-tools button.active { background: var(--on-navy); color: var(--navy); }
 .ed-tools button[data-tool=signature] { background: var(--accent); color: #fff; }
 .ed-toolbar .back { color: #a9adbb; }
