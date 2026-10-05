@@ -5,7 +5,7 @@
   var html = document.documentElement, L = (html.getAttribute('data-lang') || 'de').slice(0, 2);
   var show = function () { html.classList.remove('i18n-wait'); };
   if (L === 'de') { show(); return; }
-  setTimeout(show, 2500); // nie länger als 2,5 s verstecken
+  setTimeout(show, 3000); // nie länger als 3 s verstecken
   var EX = null, PATS = [], ATTRS = ['placeholder', 'aria-label', 'title', 'alt'];
   var esc = function (s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
   function tr(s) {
@@ -55,20 +55,47 @@
   window.SB_LANG = L;
   function skip(el) { return el && el.closest && el.closest('[translate="no"],script,style,textarea,code'); }
   function skipAttr(el) { return el && el.closest && el.closest('[translate="no"],script,style'); } // Platzhalter in Textfeldern übersetzen
-  function node(n) {
-    if (n.nodeType === 3) { if (!skip(n.parentElement)) { var t = tr(n.nodeValue); if (t != null) n.nodeValue = t; } return; }
-    if (n.nodeType !== 1 || skipAttr(n)) return;
-    for (var a = 0; a < ATTRS.length; a++) { var v = n.getAttribute(ATTRS[a]); if (v) { var t2 = tr(v); if (t2 != null) n.setAttribute(ATTRS[a], t2); } }
-    if (n.tagName === 'INPUT' && (n.type === 'submit' || n.type === 'button') && n.value) { var t3 = tr(n.value); if (t3 != null) n.value = t3; }
-    var w = document.createTreeWalker(n, 5 /* Element + Text */), c;
-    while ((c = w.nextNode())) {
-      if (c.nodeType === 3) { if (!skip(c.parentElement)) { var t4 = tr(c.nodeValue); if (t4 != null) c.nodeValue = t4; } }
-      else if (!skipAttr(c)) for (var b = 0; b < ATTRS.length; b++) { var v2 = c.getAttribute(ATTRS[b]); if (v2) { var t5 = tr(v2); if (t5 != null) c.setAttribute(ATTRS[b], t5); } }
+  // Bereits übersetzte Texte nicht nochmals übersetzen (sonst kann ein Ergebnis, das zufällig ein deutscher Schlüssel ist, kippen)
+  var DONE = new WeakMap();
+  // Überschriften mit kursivem Teil («Konto <em>erstellen</em>») als Ganzes übersetzen, damit die Wortstellung stimmt
+  function heading(n) {
+    var h = n.parentElement; if (h && h.tagName === 'EM') h = h.parentElement;
+    if (!h || !/^H[1-3]$/.test(h.tagName) || !h.querySelector('em') || h.children.length !== 1) return false;
+    if (DONE.get(h) === h.innerHTML) return true;
+    var t = EX[h.innerHTML.replace(/\s+/g, ' ').trim()];
+    if (t == null) return false;
+    h.innerHTML = t; DONE.set(h, h.innerHTML);
+    return true;
+  }
+  function text(n) {
+    if (DONE.get(n) === n.nodeValue || skip(n.parentElement)) return;
+    if (heading(n)) return;
+    var t = tr(n.nodeValue); if (t != null) { n.nodeValue = t; DONE.set(n, t); }
+  }
+  function attrs(el) {
+    if (skipAttr(el)) return;
+    var d = DONE.get(el) || {};
+    for (var a = 0; a < ATTRS.length; a++) {
+      var k = ATTRS[a], v = el.getAttribute(k);
+      if (v && d[k] !== v) { var t = tr(v); if (t != null) { el.setAttribute(k, t); d[k] = t; } }
     }
+    DONE.set(el, d);
+  }
+  function node(n) {
+    if (n.nodeType === 3) { text(n); return; }
+    if (n.nodeType !== 1 || skipAttr(n)) return;
+    attrs(n);
+    if (n.tagName === 'INPUT' && (n.type === 'submit' || n.type === 'button') && n.value) { var t3 = tr(n.value); if (t3 != null) n.value = t3; }
+    // erst sammeln, dann ersetzen: das Ersetzen einer Überschrift würde den TreeWalker sonst abbrechen
+    var w = document.createTreeWalker(n, 5 /* Element + Text */), c, all = [];
+    while ((c = w.nextNode())) all.push(c);
+    for (var i = 0; i < all.length; i++) { c = all[i]; if (c.nodeType === 3) { if (c.isConnected) text(c); } else attrs(c); }
   }
   function run() {
     node(document.body);
-    var tt = tr(document.title); if (tt != null) document.title = tt;
+    var lastTitle = null;
+    var title = function () { if (document.title === lastTitle) return; var tt = tr(document.title); if (tt != null) document.title = tt; lastTitle = document.title; };
+    title(); new MutationObserver(title).observe(document.head, { subtree: true, childList: true, characterData: true });
     new MutationObserver(function (ms) {
       for (var i = 0; i < ms.length; i++) {
         var m = ms[i];
@@ -86,6 +113,8 @@
       else EX[k] = d[k];
     }
     PATS.sort(function (a, b) { return b[0].source.length - a[0].source.length; }); // spezifischere Muster zuerst
-    if (document.body) run(); else document.addEventListener('DOMContentLoaded', run);
+    // erst nach der Übernahme durch React (components/I18nReady.js), spätestens nach 2 s
+    var started = false, start = function () { if (!started) { started = true; run(); } };
+    if (window.__sbHydrated) start(); else { window.addEventListener('sb-hydrated', start); setTimeout(start, 2000); }
   }).catch(show);
 })();

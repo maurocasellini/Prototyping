@@ -889,7 +889,7 @@
  "long": "long",
  "Los": "Vamos",
  "Los geht’s": "Empecemos",
- "LÖSCHEN": "ELIMINAR",
+ "LÖSCHEN": "LÖSCHEN",
  "löschen.": "y eliminar tu cuenta.",
  "mag": "mag",
  "Mag ich nicht (mit Komma trennen)": "No me gusta (separado por comas)",
@@ -1529,5 +1529,13 @@
  "Zwischen Reiz und Reaktion liegt ein Raum. STOPP hilft dir, ihn zu finden, bevor Worte fallen, die du bereust.": "Entre el estímulo y la reacción hay un espacio. STOP te ayuda a encontrarlo antes de decir palabras de las que te arrepientas.",
  "Zyklus": "Ciclo",
  "Zyklus im Wandel": "El ciclo en transformación",
- "Zyklus wird unregelmässig, erste Beschwerden": "El ciclo se vuelve irregular, primeros síntomas"
+ "Zyklus wird unregelmässig, erste Beschwerden": "El ciclo se vuelve irregular, primeros síntomas",
+ "Konto <em>erstellen</em>": "Crear una <em>cuenta</em>",
+ "Datenschutz <em>bestätigen</em>": "Confirmar la <em>privacidad</em>",
+ "Quellen &amp; <em>Studienlage</em>": "Fuentes y <em>evidencia</em>",
+ "Dein Plan für <em>heute</em>": "Tu plan para <em>hoy</em>",
+ "Deine Woche auf dem <em>Teller</em>": "Tu semana en el <em>plato</em>",
+ "Erholung &amp; <em>Schlaf</em>": "Recuperación y <em>sueño</em>",
+ "Erholung <em>messen</em>": "<em>Medir</em> la recuperación",
+ "Was ist im <em>Kühlschrank</em>?": "¿Qué hay en la <em>nevera</em>?"
 }

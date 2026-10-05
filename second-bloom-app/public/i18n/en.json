@@ -889,7 +889,7 @@
  "long": "long",
  "Los": "Go",
  "Los geht’s": "Let’s go",
- "LÖSCHEN": "DELETE",
+ "LÖSCHEN": "LÖSCHEN",
  "löschen.": "delete your account.",
  "mag": "mag",
  "Mag ich nicht (mit Komma trennen)": "Foods I don’t like (separate with commas)",
@@ -1529,5 +1529,13 @@
  "Zwischen Reiz und Reaktion liegt ein Raum. STOPP hilft dir, ihn zu finden, bevor Worte fallen, die du bereust.": "Between stimulus and response there is a space. STOP helps you find it before you say words you regret.",
  "Zyklus": "Cycle",
  "Zyklus im Wandel": "A changing cycle",
- "Zyklus wird unregelmässig, erste Beschwerden": "Cycle becomes irregular, first symptoms"
+ "Zyklus wird unregelmässig, erste Beschwerden": "Cycle becomes irregular, first symptoms",
+ "Konto <em>erstellen</em>": "Create an <em>account</em>",
+ "Datenschutz <em>bestätigen</em>": "Confirm <em>privacy</em>",
+ "Quellen &amp; <em>Studienlage</em>": "Sources &amp; <em>evidence</em>",
+ "Dein Plan für <em>heute</em>": "Your plan for <em>today</em>",
+ "Deine Woche auf dem <em>Teller</em>": "Your week on a <em>plate</em>",
+ "Erholung &amp; <em>Schlaf</em>": "Recovery &amp; <em>sleep</em>",
+ "Erholung <em>messen</em>": "<em>Measure</em> recovery",
+ "Was ist im <em>Kühlschrank</em>?": "What’s in the <em>fridge</em>?"
 }

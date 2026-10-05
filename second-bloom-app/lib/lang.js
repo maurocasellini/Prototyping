@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export const LANGS = { de: "Deutsch", en: "English", fr: "Français", es: "Español", pt: "Português" };
 export const HTML_LANG = { de: "de-CH", en: "en", fr: "fr", es: "es", pt: "pt-PT" };
-export const I18N_VERSION = "1";
+export const I18N_VERSION = "4";
 export const pickLang = (v) => (Object.hasOwn(LANGS, v) ? v : "de");
 
 export async function getLang() {

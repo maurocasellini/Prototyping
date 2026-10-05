@@ -1,5 +1,6 @@
 import { Playfair_Display, Inter } from "next/font/google";
 import { getLang, HTML_LANG, I18N_VERSION } from "@/lib/lang";
+import I18nReady from "@/components/I18nReady";
 import "./globals.css";
 
 const display = Playfair_Display({ subsets: ["latin"], weight: ["400", "500", "700"], style: ["normal", "italic"], variable: "--fd" });
@@ -18,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={HTML_LANG[lang]} data-lang={lang} data-i18n-v={I18N_VERSION} className={`${display.variable} ${body.variable}${lang !== "de" ? " i18n-wait" : ""}`}>
       <head>{lang !== "de" && <script src={`/i18n.js?v=${I18N_VERSION}`} defer />}</head>
-      <body>{children}</body>
+      <body>{children}{lang !== "de" && <I18nReady />}</body>
     </html>
   );
 }
