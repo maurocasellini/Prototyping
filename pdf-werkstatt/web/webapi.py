@@ -95,6 +95,7 @@ def run_tool(tool, body_json):
         return 500, json.dumps({"error": f"Unerwarteter Fehler: {ex}"})
     if "json" in res:
         return 200, json.dumps({"result": res["json"]})
+    res["name"] = pdftools.localize_name(res["name"], (body.get("params") or {}).get("_lang"))
     path = new_path(res["name"])
     with open(path, "wb") as fh:
         fh.write(res["data"])

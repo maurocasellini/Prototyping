@@ -31,6 +31,25 @@ FONTS = {"helv", "hebo", "heit", "hebi", "tiro", "tibo", "tiit", "tibi", "cour",
 
 # ---------------------------------------------------------------- Helfer
 
+NAME_EN = {"_zusammengefuegt": "_merged", "_geteilt": "_split", "_bereinigt": "_pages-removed", "_auszug": "_extract",
+           "_seiten": "_pages", "_organisiert": "_organized", "_gedreht": "_rotated", "_komprimiert": "_compressed",
+           "_unterschrieben_scan": "_signed_scanned", "_scan": "_scanned", "_graustufen": "_grayscale", "_bilder": "_images",
+           "_nummeriert": "_numbered", "_wasserzeichen": "_watermarked", "_zugeschnitten": "_cropped",
+           "_geschuetzt": "_protected", "_entsperrt": "_unlocked", "_geschwaerzt": "_redacted", "_repariert": "_repaired",
+           "_flach": "_flattened", "_bearbeitet": "_edited", "konvertiert": "converted"}
+
+
+def localize_name(name, lang):
+    """Ergebnis-Dateinamen für englische Oberfläche: A_zusammengefuegt.pdf → A_merged.pdf"""
+    if lang != "en":
+        return name
+    base, ext = os.path.splitext(name)
+    for de, en in NAME_EN.items():
+        if base.endswith(de):
+            return base[: -len(de)] + en + ext
+    return name
+
+
 def stem(name):
     return os.path.splitext(os.path.basename(name))[0]
 
@@ -53,7 +72,7 @@ def parse_pages(spec, n, default_all=True):
         if default_all:
             return list(range(n))
         raise ToolError("Bitte Seiten angeben (z. B. 1-3, 5).")
-    spec = spec.replace("ende", str(n)).replace("last", str(n)).replace("–", "-")
+    spec = spec.replace("ende", str(n)).replace("last", str(n)).replace("end", str(n)).replace("–", "-")
     out = []
     for part in re.split(r"[,;\s]+", spec):
         if not part:

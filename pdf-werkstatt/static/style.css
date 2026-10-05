@@ -97,6 +97,11 @@ main { max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; }
 .bye h1 { font-size: 44px; margin: 0 0 12px; }
 .bye p { color: var(--muted); }
 
+.lang-switch { display: inline-flex; border: 1px solid var(--line); }
+.lang-switch button { border: none; border-radius: 0; padding: 6px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--muted); background: transparent; }
+.lang-switch button.active { background: var(--accent); color: #fff; }
+.lang-switch button:not(.active):hover { color: var(--text); }
+
 /* Fusszeile */
 .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 22px 28px; background: var(--navy); color: #a9adbb;
   font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }

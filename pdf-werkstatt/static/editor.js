@@ -441,7 +441,7 @@ const Editor = (() => {
     if (!S.file) return toast('Bitte zuerst ein PDF öffnen.', 'error');
     const { page, fy } = visiblePage();
     const d = defaults.text;
-    const el = add({ type: 'text', text: new Date().toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+    const el = add({ type: 'text', text: new Date().toLocaleDateString(I18N.lang === 'en' ? 'en-GB' : 'de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }),
       size: d.size, color: d.color, font: d.font, bold: false, italic: false, align: 'left', page, x: 0.4, y: fy, w: 0.1, h: 0.02 });
     measure(el);
     setTool('select');
@@ -577,7 +577,7 @@ const Editor = (() => {
   }
   function renderFonts() {
     const list = $('#sig-fonts');
-    const name = $('#sig-name').value || 'Max Muster';
+    const name = $('#sig-name').value || i18n('Max Muster');
     list.innerHTML = '';
     usableFonts = usableFonts || SIG_FONTS.filter(fontAvailable).filter((f) => f !== 'cursive');
     if (!usableFonts.includes(typedFont)) typedFont = usableFonts[0];

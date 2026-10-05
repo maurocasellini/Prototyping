@@ -130,8 +130,8 @@ def build_index(version):
 <meta name="theme-color" content="#242b41">''')
     h = replace_once(h, '<link rel="stylesheet" href="static/style.css">',
                      '<link rel="stylesheet" href="static/style.css">\n<link rel="stylesheet" href="web.css">')
-    h = replace_once(h, '<script src="static/tools.js"></script>\n<script src="static/app.js"></script>\n<script src="static/editor.js"></script>',
-                     '<div id="engine" class="engine"><div class="spinner"></div><span id="engine-text">PDF-Engine wird geladen …</span></div>\n'
+    h = replace_once(h, '<script src="static/i18n.js"></script>\n<script src="static/tools.js"></script>\n<script src="static/app.js"></script>\n<script src="static/editor.js"></script>',
+                     '<script src="static/i18n.js"></script>\n<div id="engine" class="engine"><div class="spinner"></div><span id="engine-text">PDF-Engine wird geladen …</span></div>\n'
                      f'<script src="boot.js?v={version}"></script>')
     # Texte für die Website
     h = replace_once(h, '<div class="eyebrow accent">Lokaler PDF-Werkzeugkasten</div>',

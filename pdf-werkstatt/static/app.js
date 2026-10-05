@@ -27,7 +27,7 @@ const api = {
   async run(tool, files, params) {
     const r = await fetch(`api/run/${tool}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: files.map((f) => f.id), params }),
+      body: JSON.stringify({ files: files.map((f) => f.id), params: { ...params, _lang: window.I18N ? I18N.lang : 'de' } }),
     });
     const data = await r.json().catch(() => ({ error: 'Server antwortet nicht.' }));
     if (!r.ok || data.error) throw new Error(data.error || 'Fehler');
@@ -77,7 +77,7 @@ ping();
 setInterval(ping, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) ping(); });
 $('#quit').addEventListener('click', async () => {
-  if (!confirm('PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.')) return;
+  if (!confirm(i18n('PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.'))) return;
   await fetch('api/quit', { method: 'POST' }).catch(() => {});
   document.body.innerHTML = '<div class="bye"><h1>PDF Werkstatt ist beendet.</h1><p>Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.</p></div>';
 });
@@ -264,7 +264,7 @@ function buildOptions(t) {
     } else if (f.type === 'image') {
       input = h('input', { id, type: 'file', accept: 'image/*', 'data-image': f.name });
     } else {
-      input = h('input', { id, name: f.name, type: f.type, value: f.default ?? '', placeholder: f.placeholder || '' });
+      input = h('input', { id, name: f.name, type: f.type, value: typeof f.default === 'string' ? i18n(f.default) : (f.default ?? ''), placeholder: f.placeholder || '' });
     }
     form.append(h('div', { class: 'field', 'data-field': f.name },
       h('label', { for: id }, f.label), input, f.hint ? h('small', {}, f.hint) : null));

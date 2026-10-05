@@ -149,6 +149,7 @@ def run(tool):
         return jsonify(error=f"Unerwarteter Fehler: {ex}"), 500
     if "json" in res:
         return jsonify(result=res["json"])
+    res["name"] = pdftools.localize_name(res["name"], (body.get("params") or {}).get("_lang"))
     path = os.path.join(WORK, uuid.uuid4().hex + os.path.splitext(res["name"])[1])
     with open(path, "wb") as fh:
         fh.write(res["data"])
