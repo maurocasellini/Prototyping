@@ -3,20 +3,28 @@
 Ein PDF-Werkzeugkasten im Stil von iLovePDF, der **komplett lokal auf deinem Mac** läuft.
 Deine Dateien werden nirgends hochgeladen: Ein kleiner Server läuft nur auf `127.0.0.1` und wird über den Browser bedient.
 
-## Starten
+## Installieren (einmalig)
 
-1. Den Ordner `pdf-werkstatt` irgendwo ablegen (z. B. unter `Programme` oder `Dokumente`).
-2. **Doppelklick auf `start.command`.**
-   - Beim ersten Start richtet sich die App selbst ein (1–2 Minuten, braucht einmal Internet).
-   - Danach öffnet sich der Browser mit der PDF-Werkstatt.
-3. Zum Beenden das Terminal-Fenster schliessen.
+1. Den Ordner `pdf-werkstatt` z. B. in **Dokumente** ablegen.
+2. **Terminal** öffnen (`⌘ + Leertaste` → „Terminal“) und eingeben:
+   ```
+   bash ~/Documents/pdf-werkstatt/install.command
+   ```
+   Das dauert beim ersten Mal 1–3 Minuten und braucht einmal Internet.
+3. Fertig: **„PDF Werkstatt“** liegt jetzt im Ordner **Programme** und öffnet sich automatisch.
 
-Falls macOS meldet, dass die Datei „von einem nicht verifizierten Entwickler“ stammt:
-Rechtsklick auf `start.command` → **Öffnen** → **Öffnen**. Das ist nur beim ersten Mal nötig.
+Danach startest du die App wie jede andere über **Launchpad**, **Spotlight** (`⌘ + Leertaste` → „PDF Werkstatt“) oder
+das **Dock** (App aus dem Programme-Ordner ins Dock ziehen). Kein Terminal mehr nötig.
 
-Alternativ im Terminal: `cd pdf-werkstatt && bash start.command`
+- Die Oberfläche öffnet sich im Browser. Ein erneuter Klick auf das App-Icon öffnet einfach wieder das Fenster.
+- **Beenden:** Knopf „Beenden“ oben rechts. Ohne offenes Fenster beendet sich die App nach 15 Minuten von selbst.
+- **Update:** neue Version in den Ordner legen und `install.command` nochmals ausführen.
+- **Deinstallieren:** „PDF Werkstatt“ aus Programme löschen, optional auch `~/Library/Application Support/PDF-Werkstatt`.
 
-**Voraussetzung:** Python 3. Ist meist schon da. Falls nicht: `xcode-select --install` oder `brew install python`.
+**Voraussetzung:** Python 3 (bei macOS meist dabei). Fragt der Mac nach der Xcode-Lizenz:
+`sudo xcodebuild -license accept`. Fehlt Python ganz: `xcode-select --install`.
+
+Für Entwickler: `bash start.command` startet die App direkt im Terminal.
 
 ## Funktionen
 
@@ -62,6 +70,8 @@ Python (Flask) + [PyMuPDF](https://pymupdf.readthedocs.io) für die PDF-Verarbei
 und eine Oberfläche ohne Framework (`static/`). Temporäre Dateien liegen nur im System-Temp-Ordner und werden beim Beenden gelöscht.
 
 ```
+install.command  erstellt die Mac-App „PDF Werkstatt“
+mac/             App-Icon (make_icon.py erzeugt AppIcon.icns)
 app.py        lokaler Server & API
 pdftools.py   alle PDF-Operationen
 scan.py       „Wie gescannt“-Effekt

@@ -9,6 +9,7 @@ import socket
 import sys
 import tempfile
 import threading
+import time
 import traceback
 import uuid
 import webbrowser
@@ -149,6 +150,41 @@ def run(tool):
     return jsonify(result=info)
 
 
+# ---------------------------------------------------------------- App-Modus (Mac-App ohne Terminal)
+APP_MODE = "--app" in sys.argv
+IDLE_LIMIT = 15 * 60  # ohne offenes Browserfenster beendet sich die App nach 15 Minuten
+LAST_PING = [time.time()]
+PORT_FILE = os.path.expanduser("~/Library/Application Support/PDF-Werkstatt/port")
+
+
+def shutdown():
+    try:
+        os.remove(PORT_FILE)
+    except OSError:
+        pass
+    shutil.rmtree(WORK, ignore_errors=True)
+    os._exit(0)
+
+
+@app.get("/api/ping")
+def ping():
+    LAST_PING[0] = time.time()
+    return jsonify(ok=True, app=APP_MODE)
+
+
+@app.post("/api/quit")
+def quit_app():
+    threading.Timer(0.4, shutdown).start()
+    return jsonify(ok=True)
+
+
+def watchdog():
+    while True:
+        time.sleep(30)
+        if time.time() - LAST_PING[0] > IDLE_LIMIT:
+            shutdown()
+
+
 def free_port(start=8765):
     for port in range(start, start + 50):
         with socket.socket() as s:
@@ -160,6 +196,11 @@ def free_port(start=8765):
 if __name__ == "__main__":
     port = free_port()
     url = f"http://127.0.0.1:{port}"
+    if APP_MODE:
+        os.makedirs(os.path.dirname(PORT_FILE), exist_ok=True)
+        with open(PORT_FILE, "w") as fh:
+            fh.write(str(port))
+        threading.Thread(target=watchdog, daemon=True).start()
     print(f"\n  PDF-Werkstatt läuft auf {url}\n  Zum Beenden: dieses Fenster schliessen oder Ctrl+C\n")
     if "--no-browser" not in sys.argv:
         threading.Timer(1.0, lambda: webbrowser.open(url)).start()

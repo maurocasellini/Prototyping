@@ -48,6 +48,25 @@ function busy(on, text = 'Wird verarbeitet …') {
 }
 
 let CAPS = {};
+
+// Lebenszeichen an den lokalen Server; „Beenden“-Knopf
+let APP_MODE = false;
+async function ping() {
+  try {
+    const r = await (await fetch('/api/ping', { cache: 'no-store' })).json();
+    APP_MODE = r.app;
+    $('#quit').classList.toggle('hidden', !APP_MODE);
+    $('#offline').classList.add('hidden');
+  } catch { $('#offline').classList.remove('hidden'); }
+}
+ping();
+setInterval(ping, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) ping(); });
+$('#quit').addEventListener('click', async () => {
+  if (!confirm('PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.')) return;
+  await fetch('/api/quit', { method: 'POST' }).catch(() => {});
+  document.body.innerHTML = '<div class="bye"><h1>PDF Werkstatt ist beendet.</h1><p>Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.</p></div>';
+});
 fetch('/api/capabilities').then((r) => r.json()).then((c) => { CAPS = c; renderHome(); });
 
 const NEEDS_HINT = {
