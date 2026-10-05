@@ -200,8 +200,32 @@ const SUPPS = [
   {id:'kreatin', n:'Kreatin-Monohydrat', for:'Muskelkraft, Trainingserfolg, erste Hinweise auf Nutzen fürs Gehirn', dose:'3–5 g täglich, Zeitpunkt egal', note:'Gut untersucht. Ausreichend trinken.', phases:['peri','meno','post','unsure']},
   {id:'calcium', n:'Calcium', for:'Knochendichte', dose:'Ziel ca. 1000 mg pro Tag, vorrangig über die Ernährung', note:'Nur ergänzen, wenn die Ernährung nicht reicht. Mit Vitamin D kombinieren.', phases:['meno','post']},
   {id:'b12', n:'Vitamin B12', for:'Energie, Nerven, Blutbildung', dose:'nach Blutwert', note:'Besonders relevant bei pflanzlicher Ernährung oder Magensäureblockern.', phases:['peri','meno','post','unsure']},
-  {id:'eisen', n:'Eisen', for:'Energie bei starken oder häufigen Blutungen', dose:'nur nach Ferritin-Messung', note:'Nicht auf Verdacht einnehmen. Überdosierung ist schädlich.', phases:['peri','unsure']}
+  {id:'eisen', n:'Eisen', for:'Energie bei starken oder häufigen Blutungen', dose:'nur nach Ferritin-Messung', note:'Nicht auf Verdacht einnehmen. Überdosierung ist schädlich.', phases:['peri','unsure']},
+  {id:'isoflavone', n:'Soja-Isoflavone', for:'Hitzewallungen', dose:'siehe Evidenz', note:'Wirkung bescheiden und individuell. Bei Brustkrebs in der Vorgeschichte ärztlich abklären.', phases:['peri','meno','post']},
+  {id:'traubensilberkerze', n:'Traubensilberkerze', for:'Hitzewallungen', dose:'siehe Evidenz', note:'Studienlage uneinheitlich. Selten Leberprobleme beschrieben.', phases:['peri','meno','post']}
 ];
+// Evidenz: Schlüssel je Mittel in /evidence.json (geprüfte Quellen aus PubMed, Leitlinien und Behörden)
+const EVID_KEYS = {d3k2:['vitd','k2'], mag:['magnesium'], omega3:['omega3'], kreatin:['creatine'], calcium:['calcium'], b12:['b12'], eisen:['iron'], isoflavone:['isoflavones'], traubensilberkerze:['black_cohosh']};
+let EVID = null;
+async function loadEvidence(){ if(EVID) return EVID; try{ const r = await fetch('/evidence.json'); if(r.ok) EVID = await r.json(); }catch(e){} return EVID; }
+const LEVEL = {hoch:['Hoch','t-sage'], moderat:['Moderat','t-sky'], niedrig:['Niedrig','t-sun'], unzureichend:['Unzureichend','t-accent']};
+const lvl = (e) => { const x = LEVEL[e] || ['Offen','t-accent']; return `<span class="tag ${x[1]}">${x[0]}</span>`; };
+function srcList(list){
+  return `<ol class="srcs">${(list||[]).map(q => `<li><span class="tag t-sky">${esc(q.type||'Quelle')}</span> ${esc(q.authors||'')} (${esc(q.year||'')}). <i>${esc(q.title||'')}</i>. ${esc(q.journal||'')}.
+    ${q.pmid ? `<a href="https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(q.pmid)}/" target="_blank" rel="noopener">PubMed ${esc(q.pmid)}</a>` : ''}
+    ${q.doi ? ` · <a href="https://doi.org/${encodeURI(q.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}
+    ${!q.pmid && !q.doi && q.url ? `<a href="${esc(q.url)}" target="_blank" rel="noopener">Quelle öffnen</a>` : ''}</li>`).join('')}</ol>`;
+}
+function evidenceBlock(e){
+  return `<div class="card" style="gap:10px">
+    <div class="row between wrap"><h3>${esc(e.name)}</h3></div>
+    <div class="list">${(e.claims||[]).map(c => `<div class="li small"><div class="grow">${esc(c.claim_de)}</div>${lvl(c.evidence)}</div>`).join('')}</div>
+    <p class="small">${esc(e.summary_de||'')}</p>
+    ${e.dose_de ? `<div class="small"><span class="eyebrow">Dosis laut Studien und Fachstellen</span><p>${esc(e.dose_de)}</p></div>` : ''}
+    ${e.safety_de ? `<div class="small"><span class="eyebrow">Sicherheit</span><p>${esc(e.safety_de)}</p></div>` : ''}
+    <details class="faq"><summary>Quellen (${(e.sources||[]).length})</summary>${srcList(e.sources)}</details>
+  </div>`;
+}
 const HRT = [
   ['Was ist eine Hormonersatztherapie?','Sie ersetzt das sinkende Östrogen. Frauen mit Gebärmutter erhalten zusätzlich ein Gestagen, meist mikronisiertes Progesteron, zum Schutz der Gebärmutterschleimhaut. Fachlich heisst sie auch Menopausale Hormontherapie (MHT).'],
   ['Welche Formen gibt es?','Östrogen über die Haut als Gel, Pflaster oder Spray, oder als Tablette. Bei Scheidentrockenheit gibt es lokale vaginale Östrogene in niedriger Dosis. Die Form beeinflusst das Risikoprofil, etwa für Thrombosen.'],
@@ -965,12 +989,12 @@ function renderBody(){
     </div>
     <div class="card">
       <div class="row between"><h2>Meine Supplements</h2><span class="small muted">heute ${taken.filter(t=>S.mySupps.includes(t)).length}/${mine.length}</span></div>
-      <div>${mine.length?mine.map(s=>`<div class="supp"><button class="tick ${taken.includes(s.id)?'on':''}" data-a="supp-take" data-v="${s.id}" aria-label="${s.n} genommen">${taken.includes(s.id)?I.check:''}</button><div class="grow"><b>${s.n}</b><div class="small muted">${s.dose}</div></div><button class="link" data-a="supp-info" data-v="${s.id}">Info</button></div>`).join(''):'<p class="small muted">Noch keine ausgewählt. Füge unten welche hinzu.</p>'}</div>
+      <div>${mine.length?mine.map(s=>`<div class="supp"><button class="tick ${taken.includes(s.id)?'on':''}" data-a="supp-take" data-v="${s.id}" aria-label="${s.n} genommen">${taken.includes(s.id)?I.check:''}</button><div class="grow"><b>${s.n}</b><div class="small muted">${s.dose}</div></div><button class="link" data-a="supp-info" data-v="${s.id}">Evidenz</button></div>`).join(''):'<p class="small muted">Noch keine ausgewählt. Füge unten welche hinzu.</p>'}</div>
     </div>
     <div class="card flat">
       <h3>Mikronährstoffe für deine Phase</h3>
-      <p class="small muted">Passend zur ${PHASES[S.profile.phase].name}. Orientierungswerte, keine Verordnung. Lass Blutwerte bestimmen und sprich die Einnahme mit Ärztin, Arzt oder Apotheke ab.</p>
-      <div>${SUPPS.filter(s=>s.phases.includes(S.profile.phase)).map(s=>`<div class="supp"><div class="grow"><b>${s.n}</b><div class="small muted">${s.for}</div></div><button class="btn sm ${S.mySupps.includes(s.id)?'ghost':'line'}" data-a="supp-mine" data-v="${s.id}">${S.mySupps.includes(s.id)?'Entfernen':'Hinzufügen'}</button></div>`).join('')}</div>
+      <p class="small muted">Passend zur ${PHASES[S.profile.phase].name}. Jede Angabe beruht auf geprüften Studien und Leitlinien mit Evidenzstufe und Quellen. Keine Verordnung: Lass Blutwerte bestimmen und sprich die Einnahme mit Ärztin, Arzt oder Apotheke ab. <a href="/quellen" target="_blank">Alle Quellen</a></p>
+      <div>${SUPPS.filter(s=>s.phases.includes(S.profile.phase)).map(s=>`<div class="supp"><div class="grow"><b>${s.n}</b><div class="small muted">${s.for}</div><button class="link" data-a="supp-info" data-v="${s.id}">Studienlage & Quellen</button></div><button class="btn sm ${S.mySupps.includes(s.id)?'ghost':'line'}" data-a="supp-mine" data-v="${s.id}">${S.mySupps.includes(s.id)?'Entfernen':'Hinzufügen'}</button></div>`).join('')}</div>
     </div>
     <div class="card">
       <span class="eyebrow">Nur mit ärztlicher Beratung</span>
@@ -996,13 +1020,16 @@ function renderBody(){
 }
 function openSupp(id){
   const s = SUPPS.find(x=>x.id===id);
-  openSheet(s.n, ()=>`
-    <div class="card" style="gap:0">
-      <div class="li"><div class="grow small"><span class="eyebrow">Wofür</span><div>${s.for}</div></div></div>
-      <div class="li"><div class="grow small"><span class="eyebrow">Orientierung</span><div>${s.dose}</div></div></div>
-      <div class="li"><div class="grow small"><span class="eyebrow">Hinweis</span><div>${s.note}</div></div></div>
-    </div>
-    <p class="small muted">Keine Dosierungsempfehlung. Bitte mit Ärztin, Arzt oder Apotheke abstimmen.</p>`);
+  const body = () => {
+    const ev = EVID ? (EVID_KEYS[id] || []).map(k => EVID[k]).filter(Boolean) : null;
+    return `
+    <p class="small">${esc(s.for)}. ${esc(s.note)}</p>
+    ${ev === null ? '<p class="small muted">Studienlage wird geladen …</p>' : ev.length ? ev.map(evidenceBlock).join('') : '<p class="small muted">Für dieses Mittel ist die Auswertung noch nicht hinterlegt.</p>'}
+    <div class="card flat"><p class="small"><b>Evidenzstufen:</b> Hoch = mehrere gute Studien oder Meta-Analysen kommen übereinstimmend zum Ergebnis. Moderat = gute Hinweise, aber Einschränkungen. Niedrig = wenige oder widersprüchliche Studien. Unzureichend = kein belastbarer Nutzen gezeigt. <a href="/quellen" target="_blank">Alle Quellen und Methodik</a></p></div>
+    <p class="small muted">Keine Dosierungsempfehlung für dich persönlich. Bitte Einnahme mit Ärztin, Arzt oder Apotheke abstimmen, vor allem bei Medikamenten oder Vorerkrankungen.</p>`;
+  };
+  openSheet(s.n, body);
+  if(!EVID) loadEvidence().then(() => { if(sheetRender === body) rerenderSheet(); });
 }
 function buildReport(){
   const days = last14(), L = days.filter(d=>d.c), n = L.length;

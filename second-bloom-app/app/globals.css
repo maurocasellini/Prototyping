@@ -385,3 +385,7 @@ nav.tabs button[aria-current="page"]{background:var(--rosa-soft)}
 nav.tabs button[aria-current="page"] svg{color:var(--sage)}
 .impulse::after{background:linear-gradient(90deg,var(--salbei),var(--rosa))}
 .foot{background:var(--rosa-soft)}
+
+/* Quellenlisten */
+.srcs{margin:10px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13px;line-height:1.55}
+.srcs .tag{margin-right:4px}
