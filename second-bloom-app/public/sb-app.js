@@ -651,6 +651,7 @@ function renderFoodToday(){
         <div class="li"><div class="grow small"><b>Phytoöstrogene.</b> Leinsamen, Soja und Hülsenfrüchte können Beschwerden bei manchen Frauen etwas lindern.</div></div>
         <div class="li"><div class="grow small"><b>Blutzucker ruhig halten.</b> Wenig Zucker und Alkohol. Beides verstärkt Hitzewallungen, Schlafprobleme und Stimmungstiefs.</div></div>
       </div>
+      <p class="small muted">Studienlage: <a href="/quellen#protein" target="_blank">Protein</a> · <a href="/quellen#isoflavones" target="_blank">Phytoöstrogene</a></p>
     </div>`;
 }
 
@@ -1001,6 +1002,7 @@ function renderBody(){
       <h2>Hormonersatztherapie verstehen</h2>
       <p class="small">Second Bloom gibt keine Therapieempfehlung. Hier findest du verständliches Wissen, damit du gut vorbereitet ins Gespräch mit deiner Gynäkologin oder deinem Gynäkologen gehst.</p>
       <div>${HRT.map(([q,a])=>`<details class="faq"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+      <p class="small muted">Studienlage zu nicht-hormonellen Möglichkeiten bei Hitzewallungen: <a href="/quellen#nonhormonal" target="_blank">Quellen &amp; Evidenz</a></p>
     </div>
     <div class="card flat">
       <h3>Profil</h3>

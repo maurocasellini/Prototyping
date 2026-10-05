@@ -3,6 +3,7 @@ import Form from "@/components/Form";
 import { requireAdmin } from "@/lib/auth";
 import * as repo from "@/lib/repo";
 import { aiConfig, getUsage, MODELS, DAILY_CALLS_PER_USER, DAILY_CALLS_DEMO } from "@/lib/ai";
+import { checkEvidence } from "@/lib/evidence-check";
 import { adminSettings, adminSetRole, adminDeleteUser } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -10,8 +11,10 @@ const usd = (v) => `$${(v || 0).toFixed(2)}`;
 
 export default async function Admin() {
   const me = await requireAdmin();
-  const [users, settings, cfg, usage] = await Promise.all([repo.listUsers(), repo.getSettings(), aiConfig(), getUsage()]);
+  const [users, settings, cfg, usage, ev] = await Promise.all([repo.listUsers(), repo.getSettings(), aiConfig(), getUsage(), checkEvidence()]);
   const months = Object.entries(usage).slice(0, 6);
+  const evBad = ev.rows.filter((r) => r.pmid && r.status !== "ok");
+  const evOk = ev.rows.filter((r) => r.status === "ok").length, evPm = ev.rows.filter((r) => r.pmid).length;
   return (
     <SiteShell>
       <div className="stack"><span className="eyebrow">Admin</span><h1>Verwaltung</h1></div>
@@ -42,6 +45,16 @@ export default async function Admin() {
           <p className="small muted">Preise je 1 Mio. Tokens: {Object.values(MODELS).map((m) => `${m.name} $${m.price[0]} / $${m.price[1]}`).join(" · ")}</p>
         </section>
       </div>
+      <section className="card">
+        <span className="eyebrow">Quellen</span>
+        <h2>PubMed-Prüfung</h2>
+        {ev.error ? <p className="msg err">NCBI war nicht erreichbar ({ev.error}). Die Prüfung läuft beim nächsten Aufruf erneut.</p>
+          : <p className="small">{evOk} von {evPm} PubMed-IDs gefunden, Titel passt. {ev.rows.length - evPm} weitere Quellen (Behörden, Cochrane, WHO) ohne PubMed-ID sind direkt verlinkt. Täglich neu geprüft über die NCBI-Schnittstelle.</p>}
+        {!ev.error && evBad.length > 0 && <div className="scroll-x"><table className="t"><thead><tr><th>Thema</th><th>PMID</th><th>Status</th><th>Bei uns</th><th>Bei PubMed</th></tr></thead><tbody>
+          {evBad.map((r, i) => <tr key={i}><td>{r.topic}</td><td><a href={`https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/`} target="_blank" rel="noreferrer">{r.pmid}</a></td><td>{r.status}</td><td className="small">{r.title} ({r.year})</td><td className="small">{r.pubmedTitle || "–"}{r.pubmedYear ? ` (${r.pubmedYear})` : ""}</td></tr>)}
+        </tbody></table></div>}
+        <p className="small muted"><a href="/quellen">Alle Quellen ansehen</a></p>
+      </section>
       <section className="card">
         <span className="eyebrow">Konten</span>
         <h2>{users.length} {users.length === 1 ? "Konto" : "Konten"}</h2>
