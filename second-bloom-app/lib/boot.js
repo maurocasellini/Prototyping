@@ -7,10 +7,11 @@ import { aiConfig } from "./ai";
 const today = () => new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Zurich" });
 
 export async function wearFor(userId, state) {
-  const conn = await repo.getConnection(userId, "intervals");
+  const [conn, apple] = await Promise.all([repo.getConnection(userId, "intervals"), repo.getConnection(userId, "apple")]);
   const rows = await repo.getDaily(userId);
   const st = state === undefined ? await repo.getState(userId) : state;
-  return summarize(rows, st, today(), { connected: Boolean(conn), provider: conn ? "intervals.icu" : null, lastSync: conn?.last_sync_at || null, error: conn?.last_error || null });
+  const provider = conn ? "intervals.icu" : apple ? "Apple Health (Import)" : null;
+  return summarize(rows, st, today(), { connected: Boolean(conn || apple), provider, lastSync: conn?.last_sync_at || apple?.last_import_at || null, error: conn?.last_error || null });
 }
 
 export async function bootUser(user) {

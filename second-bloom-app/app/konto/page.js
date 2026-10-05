@@ -2,6 +2,7 @@ import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Form from "@/components/Form";
 import SyncButton from "@/components/SyncButton";
+import AppleHealthImport from "@/components/AppleHealthImport";
 import { requireUser } from "@/lib/auth";
 import * as repo from "@/lib/repo";
 import { updateAccount, changePassword, deleteAccount, connectDevice, disconnectDevice, syncNow, setAiConsent } from "../actions";
@@ -13,6 +14,7 @@ export default async function Konto({ searchParams }) {
   const sp = await searchParams;
   const me = await requireUser();
   const conn = await repo.getConnection(me.id, "intervals");
+  const apple = await repo.getConnection(me.id, "apple");
   const days = conn ? (await repo.getDaily(me.id)).length : 0;
   const consent = (await repo.getState(me.id))?.consent || {};
   const d = (s) => (s ? new Date(s).toLocaleDateString("de-CH", { dateStyle: "long" }) : "–");
@@ -49,6 +51,21 @@ export default async function Konto({ searchParams }) {
             </Form>
             <p className="small muted">Der Schlüssel wird verschlüsselt gespeichert. Danach gleicht Second Bloom jeden Morgen automatisch ab.</p>
           </>)}
+        </section>
+        <section className="card" id="apple">
+          <span className="eyebrow">Apple Health · iPhone</span>
+          <h2>Apple Health importieren</h2>
+          <div className="howto">
+            <p className="small"><b>Warum ein Import und keine direkte Verbindung?</b> Apple gibt Gesundheitsdaten aus Datenschutzgründen nur an Apps heraus, die direkt auf dem iPhone laufen (HealthKit). Eine Online-Schnittstelle wie bei Garmin oder Oura gibt es nicht. Deshalb geht Apple Health hier über einen Export. Für einen automatischen Abgleich bräuchte es eine eigene iPhone-App von Second Bloom.</p>
+            <ol className="small">
+              <li>Auf dem iPhone die App Health öffnen.</li>
+              <li>Oben rechts auf dein Profilbild tippen.</li>
+              <li>Ganz unten «Alle Gesundheitsdaten exportieren» wählen und bestätigen.</li>
+              <li>Die Datei export.zip speichern (z. B. in «Dateien») und hier auswählen.</li>
+            </ol>
+            <p className="small muted">Die Datei wird nur in deinem Browser gelesen und nicht hochgeladen. An Second Bloom gehen nur Tageswerte der letzten 180 Tage: Schlaf, HRV, Ruhepuls, Schritte, Sauerstoffsättigung, Atemfrequenz, Gewicht und Periodentage. Wiederhole den Import, wann immer du neue Werte übernehmen willst.</p>
+          </div>
+          <AppleHealthImport last={apple?.last_import_at ? `${when(apple.last_import_at)} · ${apple.days} Tage` : null} />
         </section>
         <section className="card">
           <span className="eyebrow">Profil</span>

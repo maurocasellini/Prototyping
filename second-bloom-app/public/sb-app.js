@@ -1286,7 +1286,8 @@ function wearCard(){
   if(!w || (!w.connected && !w.today)) return `<div class="card">
     <span class="eyebrow">Optional · Gesundheitsdaten</span><h2>Erholung <em>messen</em></h2>
     <p class="small">Verbinde Garmin, Oura, WHOOP oder Polar. Dann siehst du Schlaf, HRV und Ruhepuls gegen deine eigene Normalität, unruhige Nächte und wie sich dein Zyklus verändert.</p>
-    ${USER ? '<a class="btn accent" href="/konto#geraete">Gerät verbinden</a>' : '<a class="btn accent" href="/register">Konto erstellen und verbinden</a>'}
+    ${USER ? '<div class="row wrap"><a class="btn accent" href="/konto#geraete">Gerät verbinden</a><a class="btn line" href="/konto#apple">Apple Health importieren</a></div>' : '<a class="btn accent" href="/register">Konto erstellen und verbinden</a>'}
+    <p class="small muted">iPhone mit Apple Health? Apple erlaubt keinen direkten Online-Zugriff auf Gesundheitsdaten. Deshalb übernimmst du sie über den Export aus der Health-App.</p>
   </div>`;
   const t = w.today;
   const m = (lbl, val, sub) => `<div class="metric" style="background:var(--surface-2)"><span class="lbl">${lbl}</span><b style="font-family:var(--font-display);font-weight:500;color:var(--head);font-size:20px">${val}</b><span class="small muted">${sub || '&nbsp;'}</span></div>`;

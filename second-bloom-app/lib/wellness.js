@@ -30,8 +30,8 @@ export function recoveryFor(row, b) {
 
 function periodStarts(rows, state) {
   const set = new Set(Object.entries(state?.checkins || {}).filter(([, c]) => c?.period).map(([d]) => d));
-  let prev = null;
-  for (const r of rows) { if (r.phase === "PERIOD" && prev !== "PERIOD") set.add(r.day); prev = r.phase || prev; }
+  // alle Periodentage (Check-in, Gerät oder Apple Health); der erste Tag jeder Gruppe gilt als Beginn
+  for (const r of rows) if (r.phase === "PERIOD") set.add(r.day);
   const out = [];
   for (const d of [...set].sort()) if (!out.length || diffDays(out.at(-1), d) >= 10) out.push(d);
   return out;

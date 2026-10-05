@@ -101,6 +101,8 @@ export default function PrivacyEN() {
           <p>If you connect a watch or a ring, Second Bloom retrieves your daily values via the <b>intervals.icu</b> service. intervals.icu is an independent service with which you hold your own account and through which you connect Garmin, Oura, WHOOP, Polar or other manufacturers. Data processing by intervals.icu and by your device manufacturer is governed by their own privacy policies.</p>
           <p>We store your API key <b>encrypted (AES-256-GCM)</b> and use it to retrieve the values for the last few days once a day and whenever you request it, and the last 120 days when you first connect. We take over only the health values listed in section 4, no GPS data, routes or workout details. You can disconnect at any time under Account and delete all stored device values in the process.</p>
 
+          <p><b>Apple Health:</b> Apple does not offer an online interface for health data. You can therefore select the export from the Health app (export.zip) under Account. The file is read exclusively in your browser and is not uploaded. Only daily values from the last 180 days are sent to us (sleep duration, HRV, resting heart rate, steps, oxygen saturation, respiratory rate, weight and period days). They are stored like other device data and can be deleted under Account.</p>
+
           <h2 id="ki">9. AI features</h2>
           <p>As long as you have not switched off the AI features (default: switched on), we send a brief extract for each request to the Claude API of <b>Anthropic</b>:</p>
           <ul>

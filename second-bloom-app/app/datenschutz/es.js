@@ -101,6 +101,8 @@ export default function PrivacyES() {
           <p>Si conectas un reloj o un anillo, Second Bloom obtiene los valores diarios a través del servicio <b>intervals.icu</b>. intervals.icu es un servicio independiente en el que tú misma tienes una cuenta y con el que conectas Garmin, Oura, WHOOP, Polar u otros fabricantes. Al tratamiento de datos por parte de intervals.icu y del fabricante de tu dispositivo se aplican sus propias políticas de privacidad.</p>
           <p>Guardamos tu clave API <b>cifrada (AES-256-GCM)</b> y con ella obtenemos una vez al día, así como cuando tú lo solicitas, los valores de los últimos días; en la primera conexión, los de los últimos 120 días. Solo incorporamos los valores de salud indicados en el apartado 4, sin datos GPS, recorridos ni detalles de los entrenamientos. Puedes desconectar la conexión en cualquier momento en Cuenta y eliminar al mismo tiempo todos los valores del dispositivo almacenados.</p>
 
+          <p><b>Apple Health:</b> Apple no ofrece una interfaz en línea para los datos de salud. Por eso puedes seleccionar la exportación de la app Salud (export.zip) en Cuenta. El archivo se lee únicamente en tu navegador y no se sube. Solo se nos envían valores diarios de los últimos 180 días (duración del sueño, VFC, frecuencia cardiaca en reposo, pasos, saturación de oxígeno, frecuencia respiratoria, peso y días de regla). Se guardan como el resto de datos de dispositivos y puedes eliminarlos en Cuenta.</p>
+
           <h2 id="ki">9. Funciones de IA</h2>
           <p>Mientras no hayas desactivado las funciones de IA (por defecto: activadas), enviamos para cada solicitud un extracto breve a la API de Claude de <b>Anthropic</b>:</p>
           <ul>
