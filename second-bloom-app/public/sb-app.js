@@ -591,7 +591,6 @@ function renderToday(){
     <div class="impulse"><span class="eyebrow">Impuls des Tages</span><p class="q">„${imp}“</p></div>
     ${lowMoodStreak()?helpBanner():''}
     <div class="col">
-    ${recoveryMini()}
     ${dayNoteCard(c)}
     ${c ? `<div class="card">
       <div class="row between"><h2>Dein Check-in</h2><button class="link" data-a="checkin">Bearbeiten</button></div>
@@ -602,6 +601,7 @@ function renderToday(){
       <div><span class="eyebrow">Auf dich abgestimmt</span><h2>Dein Plan für <em>heute</em></h2></div>
       <div>${recommendations().map(r=>`<div class="reco"><div><span class="tag ${tagClass(r.tag)}">${r.tag}</span><h3>${r.t}</h3></div><button class="btn sm ${r.go==='checkin'?'accent':'ghost'}" data-a="go" data-v="${r.go}">${r.cta}</button><p class="txt">${r.x}</p></div>`).join('')}</div>
     </div>
+    ${recoveryMini()}
     </div>
     <div class="col">
     <div class="metrics">
@@ -1022,8 +1022,7 @@ function renderBody(){
   const counts = symptomCounts(days).slice(0,5), taken = S.supps[today()]||[];
   const mine = SUPPS.filter(s=>S.mySupps.includes(s.id));
   return `
-    <div class="stack" style="gap:4px"><span class="eyebrow">Erholung, Zyklus, Mikronährstoffe, Hormone</span><h1>Körper</h1></div>
-    ${wearCard()}
+    <div class="stack" style="gap:4px"><span class="eyebrow">Hormone, Zyklus, Mikronährstoffe</span><h1>Körper</h1></div>
     <div class="card">
       <div class="row between"><h2>Die letzten 14 Tage</h2><span class="small muted">${logged} Check-ins</span></div>
       ${chart(days)}
@@ -1031,6 +1030,13 @@ function renderBody(){
       ${counts.length?`<div class="list">${counts.map(([s,n])=>`<div class="li small"><div class="grow">${s}</div><div style="width:38%" class="bar"><i style="width:${n/Math.max(1,logged)*100}%;background:var(--accent)"></i></div><span class="num" style="width:56px;text-align:right">${n} Tage</span></div>`).join('')}</div>`:''}
       ${hasEx?`<p class="small muted">Enthält Beispieldaten aus der Demo. Du kannst sie unten im Profil löschen.</p>`:''}
       <button class="btn accent" data-a="report">Für das Arztgespräch zusammenfassen</button>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Nur mit ärztlicher Beratung</span>
+      <h2>Hormonersatztherapie verstehen</h2>
+      <p class="small">Second Bloom gibt keine Therapieempfehlung. Hier findest du verständliches Wissen, damit du gut vorbereitet ins Gespräch mit deiner Gynäkologin oder deinem Gynäkologen gehst.</p>
+      <div>${HRT.map(([q,a])=>`<details class="faq"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+      ${USER ? `<p class="small muted">Studienlage zu nicht-hormonellen Möglichkeiten bei Hitzewallungen: <a href="/quellen#nonhormonal" target="_blank">Quellen &amp; Evidenz</a></p>` : ''}
     </div>
     <div class="card">
       <div class="row between"><h2>Meine Supplements</h2><span class="small muted">heute ${taken.filter(t=>S.mySupps.includes(t)).length}/${mine.length}</span></div>
@@ -1041,13 +1047,7 @@ function renderBody(){
       <p class="small muted">Passend zur ${PHASES[S.profile.phase].name}. Jede Angabe beruht auf geprüften Studien und Leitlinien mit Evidenzstufe und Quellen. Keine Verordnung: Lass Blutwerte bestimmen und sprich die Einnahme mit Ärztin, Arzt oder Apotheke ab. ${USER ? `<a href="/quellen" target="_blank">Alle Quellen</a>` : ''}</p>
       <div>${SUPPS.filter(s=>s.phases.includes(S.profile.phase)).map(s=>`<div class="supp"><div class="grow"><b>${s.n}</b><div class="small muted">${s.for}</div><button class="link" data-a="supp-info" data-v="${s.id}">Studienlage & Quellen</button></div><button class="btn sm ${S.mySupps.includes(s.id)?'ghost':'line'}" data-a="supp-mine" data-v="${s.id}">${S.mySupps.includes(s.id)?'Entfernen':'Hinzufügen'}</button></div>`).join('')}</div>
     </div>
-    <div class="card">
-      <span class="eyebrow">Nur mit ärztlicher Beratung</span>
-      <h2>Hormonersatztherapie verstehen</h2>
-      <p class="small">Second Bloom gibt keine Therapieempfehlung. Hier findest du verständliches Wissen, damit du gut vorbereitet ins Gespräch mit deiner Gynäkologin oder deinem Gynäkologen gehst.</p>
-      <div>${HRT.map(([q,a])=>`<details class="faq"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
-      ${USER ? `<p class="small muted">Studienlage zu nicht-hormonellen Möglichkeiten bei Hitzewallungen: <a href="/quellen#nonhormonal" target="_blank">Quellen &amp; Evidenz</a></p>` : ''}
-    </div>
+    ${wearCard()}
     <div class="card flat">
       <h3>Profil</h3>
       <div class="list small">
@@ -1284,7 +1284,7 @@ function bars(days){
 function wearCard(){
   const w = WEAR;
   if(!w || (!w.connected && !w.today)) return `<div class="card">
-    <span class="eyebrow">Uhr & Ring</span><h2>Erholung <em>messen</em></h2>
+    <span class="eyebrow">Optional · Uhr & Ring</span><h2>Erholung <em>messen</em></h2>
     <p class="small">Verbinde Garmin, Oura, WHOOP oder Polar. Dann siehst du Schlaf, HRV und Ruhepuls gegen deine eigene Normalität, unruhige Nächte und wie sich dein Zyklus verändert.</p>
     ${USER ? '<a class="btn accent" href="/konto#geraete">Gerät verbinden</a>' : '<a class="btn accent" href="/register">Konto erstellen und verbinden</a>'}
   </div>`;

@@ -16,7 +16,7 @@ export default async function Home({ searchParams }) {
           <span className="eyebrow">Perimenopause · Menopause · danach</span>
           <div className="word">Second Bloom</div>
           <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
-          <p className="muted">Ernährung, Krafttraining, Erholung, Zyklus und tägliches Mental Coaching. Abgestimmt auf deine Phase, deinen Tag und die Werte deiner Uhr.</p>
+          <p className="muted">Hormone und Zyklus verstehen, dazu Ernährung, Krafttraining und tägliches Mental Coaching. Abgestimmt auf deine Phase und deinen Tag. Auf Wunsch mit den Werten deiner Uhr.</p>
           <div className="row wrap">
             <Link className="btn accent" href="/register">Konto erstellen</Link>
             <Link className="btn line" href="/demo">Demo ansehen</Link>
@@ -27,12 +27,12 @@ export default async function Home({ searchParams }) {
       <div className="orn">· · ·</div>
       <section className="feat">
         {[
-          ["Erholung statt Leistung", "Schlaf, HRV und Ruhepuls von Garmin, Oura & Co., immer gegen deine eigene Normalität gemessen. Unruhige Nächte werden sichtbar."],
-          ["Zyklus im Wandel", "Perioden und Zykluslänge über die Monate. So siehst du, wann der Zyklus unregelmässig wird."],
+          ["Hormone & Zyklus", "Was in Perimenopause und Menopause im Körper passiert, verständlich erklärt. Dazu Perioden, Beschwerden und Zykluslänge über die Monate, damit du Veränderungen früh erkennst."],
+          ["Gut vorbereitet zum Arzt", "Ein Bericht mit deinen Beschwerden, Werten und Fragen für das Gespräch über Hormone und Hormonersatztherapie."],
           ["Essen, das passt", "Proteinreich und hormonfreundlich: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
-          ["Kraft für Muskeln und Knochen", "Ein Wochenplan mit Krafteinheiten, der sich an deinen Schlaf und deine Energie anpasst."],
+          ["Kraft für Muskeln und Knochen", "Ein Wochenplan mit Krafteinheiten, der sich an deine Energie und deinen Tag anpasst."],
           ["Kopf und Gefühle", "Atemübungen, Coaching-Programme und Antworten auf Fragen zu Dünnhäutigkeit, Brain Fog und Leistung im Job."],
-          ["Gut vorbereitet zum Arzt", "Ein Bericht mit deinen Werten und Fragen für das Gespräch über Hormone."],
+          ["Optional: deine Uhr", "Wer mag, verbindet Garmin, Oura & Co. Schlaf, HRV und Ruhepuls ergänzen das Bild, immer gemessen an deiner eigenen Normalität."],
         ].map(([t, x]) => <div key={t} className="card"><h3>{t}</h3><p className="small muted">{x}</p></div>)}
       </section>
     </SiteShell>

@@ -7,10 +7,11 @@ export default function AuthLayout({ children }) {
         <div className="word">Second Bloom</div>
         <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
         <ul>
-          <li>Erholung, Schlaf und Zyklus aus deiner Uhr, gemessen an deiner eigenen Normalität</li>
+          <li>Hormone und Zyklus verstehen, mit Wissen für das Gespräch in der Praxis</li>
           <li>Proteinreiches, hormonfreundliches Essen mit Wochenplan und Einkaufsliste</li>
           <li>Krafttraining, das sich an deinen Tag anpasst</li>
           <li>Mental Coaching bei Stimmungsschwankungen, Brain Fog und Druck im Job</li>
+          <li>Optional: Schlaf und Erholung aus deiner Uhr, gemessen an deiner eigenen Normalität</li>
         </ul>
         <div className="impulse"><span className="eyebrow">Impuls des Tages</span><p className="q">„Dein Körper baut nicht ab. Er baut um. Du darfst dabei mitbestimmen.“</p></div>
       </aside>
