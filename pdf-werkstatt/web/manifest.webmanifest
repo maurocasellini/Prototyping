@@ -1,6 +1,6 @@
 {
-  "name": "PDF Werkstatt",
-  "short_name": "PDF Werkstatt",
+  "name": "PDF Toolkit",
+  "short_name": "PDF Toolkit",
   "description": "PDF-Werkzeuge, die komplett im Browser laufen – ohne Upload.",
   "lang": "de",
   "start_url": "./",

@@ -1,4 +1,4 @@
-# PDF Werkstatt
+# PDF Toolkit
 
 A privacy-first PDF toolkit for the browser. All processing happens **inside the browser tab** – files are read into
 your device’s memory and are never uploaded to any server.

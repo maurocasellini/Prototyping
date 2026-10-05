@@ -77,9 +77,9 @@ ping();
 setInterval(ping, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) ping(); });
 $('#quit').addEventListener('click', async () => {
-  if (!confirm(i18n('PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.'))) return;
+  if (!confirm(i18n('PDF Toolkit beenden? Nicht heruntergeladene Ergebnisse gehen verloren.'))) return;
   await fetch('api/quit', { method: 'POST' }).catch(() => {});
-  document.body.innerHTML = '<div class="bye"><h1>PDF Werkstatt ist beendet.</h1><p>Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.</p></div>';
+  document.body.innerHTML = '<div class="bye"><h1>PDF Toolkit ist beendet.</h1><p>Du kannst dieses Fenster schliessen. Neu starten: App „PDF Toolkit“ öffnen.</p></div>';
 });
 fetch('api/capabilities').then((r) => r.json()).then((c) => { CAPS = c; renderHome(); });
 

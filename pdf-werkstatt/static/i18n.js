@@ -4,12 +4,11 @@
 (() => {
   const EN = {
     // Header, home, footer
-    'PDF Werkstatt': 'PDF Workshop', 'PDF-Werkstatt': 'PDF Workshop', 'WERKSTATT': 'WORKSHOP',
     '100 % lokal': '100% local', 'Kein Upload': 'No upload', 'Beenden': 'Quit', 'App beenden': 'Quit app',
     'Werkzeug suchen …': 'Search tools …',
     'Alle Dateien bleiben auf diesem Mac. Nichts wird hochgeladen.': 'All files stay on this Mac. Nothing is uploaded.',
     'Alle Dateien bleiben auf deinem Gerät. Nichts wird hochgeladen.': 'All files stay on your device. Nothing is uploaded.',
-    'PDF Werkstatt läuft nicht mehr – bitte die App neu öffnen und diese Seite neu laden.': 'PDF Workshop is no longer running – please reopen the app and reload this page.',
+    'PDF Toolkit läuft nicht mehr – bitte die App neu öffnen und diese Seite neu laden.': 'PDF Toolkit is no longer running – please reopen the app and reload this page.',
     'Lokaler PDF-Werkzeugkasten': 'Local PDF toolkit', 'PDF-Werkzeugkasten im Browser': 'PDF toolkit in your browser',
     'Bearbeiten · Unterschreiben · Umwandeln': 'Edit · Sign · Convert',
     'Alles, was du mit PDFs machen musst,': 'Everything you need to do with PDFs,',
@@ -24,9 +23,9 @@
     'Unterschreiben & „wie gescannt“ in einem Schritt': 'Sign & “make it look scanned” in one step',
     'Läuft lokal auf 127.0.0.1 · keine Daten verlassen diesen Mac': 'Runs locally on 127.0.0.1 · no data leaves this Mac',
     'Verarbeitung nur in deinem Browser ·': 'Processing only in your browser ·', 'Quellcode (AGPL-3.0)': 'Source code (AGPL-3.0)',
-    'PDF Werkstatt ist beendet.': 'PDF Workshop has been closed.',
-    'Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.': 'You can close this window. To restart, open the “PDF Werkstatt” app.',
-    'PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.': 'Quit PDF Workshop? Results you have not downloaded will be lost.',
+    'PDF Toolkit ist beendet.': 'PDF Toolkit has been closed.',
+    'Du kannst dieses Fenster schliessen. Neu starten: App „PDF Toolkit“ öffnen.': 'You can close this window. To restart, open the “PDF Toolkit” app.',
+    'PDF Toolkit beenden? Nicht heruntergeladene Ergebnisse gehen verloren.': 'Quit PDF Toolkit? Results you have not downloaded will be lost.',
     'Öffnen →': 'Open →', 'Zusatzprogramm nötig': 'Add-on required', 'Kein Werkzeug gefunden.': 'No tool found.',
     // Categories
     'Am häufigsten gebraucht': 'Most used', 'Bearbeiten & Unterschreiben': 'Edit & sign', 'Organisieren': 'Organize',
@@ -144,7 +143,7 @@
     // Web version
     'PDF-Engine wird geladen …': 'Loading PDF engine …', 'PDF-Bibliotheken werden geladen …': 'Loading PDF libraries …',
     'Dieser Browser wird nicht unterstützt. Bitte eine aktuelle Version von Safari, Chrome, Edge oder Firefox verwenden.': 'This browser is not supported. Please use a current version of Safari, Chrome, Edge or Firefox.',
-    'PDF Werkstatt ist in keinem Tab geöffnet.': 'PDF Workshop is not open in any tab.', 'Datei nicht gefunden': 'File not found', 'Unbekannte Anfrage': 'Unknown request',
+    'PDF Toolkit ist in keinem Tab geöffnet.': 'PDF Toolkit is not open in any tab.', 'Datei nicht gefunden': 'File not found', 'Unbekannte Anfrage': 'Unknown request',
     'Dieses Werkzeug ist in der Web-Version nicht verfügbar.': 'This tool is not available in the web version.',
     'Zu wenig Arbeitsspeicher im Browser für diese Datei.': 'Not enough browser memory for this file.',
     // PDF engine messages
@@ -266,7 +265,7 @@
 
   function renderSwitch() {
     document.documentElement.lang = lang;
-    document.title = tr('PDF Werkstatt');
+    document.title = tr('PDF Toolkit');
     document.querySelectorAll('[data-lang]').forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
   }
   function setLang(l) {

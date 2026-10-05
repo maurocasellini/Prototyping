@@ -1,4 +1,4 @@
-/* Service worker of PDF Werkstatt (web).
+/* Service worker of PDF Toolkit (web).
    1) Intercepts all “api/…” requests BEFORE they reach the network and answers them
       via the PDF engine in the browser tab. Nothing is ever sent to a server.
    2) Caches the app so it also works offline. */
@@ -46,7 +46,7 @@ async function apiResponse(event) {
       return new Response(res.body, { status: res.status, headers: res.headers });
     }
   }
-  return new Response(JSON.stringify({ error: 'PDF Werkstatt ist in keinem Tab geöffnet.' }),
+  return new Response(JSON.stringify({ error: 'PDF Toolkit ist in keinem Tab geöffnet.' }),
     { status: 404, headers: { 'Content-Type': 'application/json' } });
 }
 

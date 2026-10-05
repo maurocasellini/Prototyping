@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the web version of PDF Werkstatt into web/dist/<base>/.
+"""Builds the web version of PDF Toolkit into web/dist/<base>/.
 
 Everything runs in the browser (Pyodide + PyMuPDF as WebAssembly). Engine files are
 downloaded from pinned sources and verified via SHA-256, so exactly these versions are
@@ -125,7 +125,8 @@ def build_index(version):
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="PDF-Werkzeuge, die komplett im Browser laufen. Keine Datei wird hochgeladen.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-64.png">
+<link rel="icon" href="static/logo.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <meta name="theme-color" content="#242b41">''')
     h = replace_once(h, '<link rel="stylesheet" href="static/style.css">',
@@ -154,7 +155,7 @@ def build_index(version):
 
 def main():
     t0 = time.time()
-    print("PDF Werkstatt – web build →", OUT)
+    print("PDF Toolkit – web build →", OUT)
     shutil.rmtree(DIST, ignore_errors=True)
     os.makedirs(OUT)
 
@@ -204,7 +205,7 @@ def main():
             # Fallback only – normally Vercel redirects "/" to the app before this page is served
             fh.write(f'<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
                      f'<meta name="viewport" content="width=device-width, initial-scale=1">'
-                     f'<meta http-equiv="refresh" content="0; url={BASE}"><title>PDF Werkstatt</title>'
+                     f'<meta http-equiv="refresh" content="0; url={BASE}"><title>PDF Toolkit</title>'
                      f'<style>html,body{{margin:0;height:100%;background:#f1f1ec}}'
                      f'@media (prefers-color-scheme: dark){{html,body{{background:#1d2336}}}}</style>')
     with open(os.path.join(DIST, "robots.txt"), "w") as fh:

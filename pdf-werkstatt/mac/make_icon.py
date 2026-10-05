@@ -1,57 +1,63 @@
-"""Generates AppIcon.icns (navy tile, copper document, cream signature)."""
+"""Generates the PDF Toolkit logo as PNG/ICNS (web icons + Mac app icon).
+
+Same geometry as static/logo.svg (64×64 grid): navy tile, a faint back document,
+a copper front document with folded corner and two cream text lines.
+
+    python3 mac/make_icon.py
+"""
 import math
 import os
 
 from PIL import Image, ImageDraw
 
-NAVY, COPPER, CREAM = (36, 43, 65), (176, 108, 56), (241, 241, 236)
-S = 1024
+NAVY, COPPER, CREAM = (36, 43, 65), (196, 125, 69), (241, 241, 236)
+BACK = tuple(round(n * 0.65 + c * 0.35) for n, c in zip(NAVY, CREAM))  # cream at 35 % on navy
 SS = 4  # supersampling for smooth edges
 
 
-def icon():
-    im = Image.new("RGBA", (S * SS, S * SS), (0, 0, 0, 0))
+def logo(size, inset=0.0):
+    """Logo as RGBA image. inset = transparent margin per side (fraction), e.g. 0.1 for macOS."""
+    S = size * SS
+    im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
-    k = SS
-    # macOS grid: 824 px tile, centred, radius ~185
-    m = 100 * k
-    d.rounded_rectangle((m, m, S * k - m, S * k - m), radius=185 * k, fill=NAVY)
-    # document with folded corner
-    x0, y0, x1, y1, fold = 330 * k, 250 * k, 694 * k, 774 * k, 120 * k
-    w = 26 * k
-    doc = [(x0, y0), (x1 - fold, y0), (x1, y0 + fold), (x1, y1), (x0, y1), (x0, y0)]
-    d.line(doc, fill=COPPER, width=w, joint="curve")
-    d.line([(x1 - fold, y0), (x1 - fold, y0 + fold), (x1, y0 + fold)], fill=COPPER, width=w, joint="curve")
-    for pt in doc:
-        d.ellipse((pt[0] - w / 2, pt[1] - w / 2, pt[0] + w / 2, pt[1] + w / 2), fill=COPPER)
-    # text lines
+    off = S * inset
+    k = (S - 2 * off) / 64
+
+    def P(x, y):
+        return (off + x * k, off + y * k)
+
     def stroke(points, color, width):
-        """Smooth line: circles along the points (round caps, no jaggies)."""
-        r = width / 2
+        r = width * k / 2
         for (ax, ay), (bx, by) in zip(points, points[1:]):
             n = max(1, int(math.hypot(bx - ax, by - ay) / (r / 3)))
             for j in range(n + 1):
                 px, py = ax + (bx - ax) * j / n, ay + (by - ay) * j / n
                 d.ellipse((px - r, py - r, px + r, py + r), fill=color)
 
-    for i, ln in enumerate((0.62, 0.8, 0.48)):
-        y = (390 + i * 66) * k
-        stroke([(x0 + 72 * k, y), (x0 + 72 * k + (x1 - x0 - 144 * k) * ln, y)], COPPER, 15 * k)
-    # signature (cream) above the baseline
-    pts = []
-    for i in range(240):
-        t = i / 239
-        x = 395 + t * 235
-        y = 632 - 48 * math.sin(t * 10.5) * math.exp(-t * 1.4) - 14 * t
-        pts.append((x * k, y * k))
-    stroke(pts, CREAM, 15 * k)
-    stroke([(392 * k, 694 * k), (632 * k, 694 * k)], CREAM, 7 * k)
-    return im.resize((S, S), Image.LANCZOS)
+    d.rounded_rectangle((*P(0, 0), *P(64, 64)), radius=14 * k, fill=NAVY)
+    back = [P(18, 15), P(35, 15), P(43, 23), P(43, 49), P(18, 49), P(18, 15)]
+    stroke(back, BACK, 2.4)
+    front = [P(24, 19), P(41, 19), P(49, 27), P(49, 53), P(24, 53)]
+    d.polygon(front, fill=NAVY)
+    stroke(front + [front[0]], COPPER, 3)
+    stroke([P(41, 19), P(41, 27), P(49, 27)], COPPER, 3)
+    stroke([P(30, 36), P(43, 36)], CREAM, 2.6)
+    stroke([P(30, 42), P(39, 42)], CREAM, 2.6)
+    return im.resize((size, size), Image.LANCZOS)
 
 
 if __name__ == "__main__":
     here = os.path.dirname(os.path.abspath(__file__))
-    img = icon()
-    img.save(os.path.join(here, "AppIcon.png"))
-    img.save(os.path.join(here, "AppIcon.icns"), sizes=[(16, 16), (32, 32), (64, 64), (128, 128), (256, 256), (512, 512), (1024, 1024)])
-    print("AppIcon.icns erstellt")
+    root = os.path.dirname(here)
+    icons = os.path.join(root, "web", "icons")
+    os.makedirs(icons, exist_ok=True)
+    for s in (64, 180, 192, 512):
+        logo(s).save(os.path.join(icons, f"icon-{s}.png"), optimize=True)
+    # maskable (Android): full-bleed navy background, logo slightly smaller
+    m = Image.new("RGBA", (512, 512), NAVY + (255,))
+    m.alpha_composite(logo(512, inset=0.1))
+    m.save(os.path.join(icons, "icon-maskable-512.png"), optimize=True)
+    # macOS app icon: 824/1024 tile with transparent margin
+    logo(1024, inset=100 / 1024).save(os.path.join(here, "AppIcon.icns"),
+                                       sizes=[(16, 16), (32, 32), (64, 64), (128, 128), (256, 256), (512, 512), (1024, 1024)])
+    print("icons generated")
