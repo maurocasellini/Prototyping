@@ -200,8 +200,12 @@ def main():
         fh.write(build_index(version))
     # project root → app
     with open(os.path.join(DIST, "index.html"), "w", encoding="utf-8") as fh:
+        # Fallback only – normally Vercel redirects "/" to the app before this page is served
         fh.write(f'<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
-                 f'<meta http-equiv="refresh" content="0; url={BASE}"><a href="{BASE}">PDF Werkstatt</a>')
+                 f'<meta name="viewport" content="width=device-width, initial-scale=1">'
+                 f'<meta http-equiv="refresh" content="0; url={BASE}"><title>PDF Werkstatt</title>'
+                 f'<style>html,body{{margin:0;height:100%;background:#f1f1ec}}'
+                 f'@media (prefers-color-scheme: dark){{html,body{{background:#1d2336}}}}</style>')
     with open(os.path.join(DIST, "robots.txt"), "w") as fh:
         fh.write("User-agent: *\nDisallow: /\n")
 
