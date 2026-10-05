@@ -1,0 +1,813 @@
+{
+ "_meta": {
+  "updated": "2026-10-05",
+  "method_de": "Searches in PubMed, Cochrane and the websites of authorities (EFSA, NIH ODS, FSVO, DGE, WHO). Preference was given to meta-analyses, large randomised controlled trials (RCTs) and guidelines. The evidence level rates how certain each statement is; for null results, the statement is phrased negatively (e.g. 'No protection …' with level high).",
+  "check_de": "The title, journal, year and PubMed ID of each source were cross-checked via search. Figures are taken from abstracts, not from full texts. The PubMed IDs are additionally checked automatically against the NCBI interface (admin area). A professional review is planned before the public launch."
+ },
+ "vitd": {
+  "name": "Vitamin D3",
+  "claims": [
+   {
+    "claim_de": "No protection against bone fractures from vitamin D alone in healthy adults without a deficiency",
+    "evidence": "hoch"
+   },
+   {
+    "claim_de": "Vitamin D together with calcium can slightly reduce hip and other fractures in older people (especially in cases of deficiency or in care homes)",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "No protection against cancer or cardiovascular disease in healthy adults",
+    "evidence": "hoch"
+   },
+   {
+    "claim_de": "Correcting a deficiency (25-OH-D below 50 nmol/l) supports bone health and, in older people, muscle health",
+    "evidence": "moderat"
+   }
+  ],
+  "summary_de": "In the large VITAL trial (25,871 people, 2000 IU per day, median 5.3 years), vitamin D3 reduced neither cancer, cardiovascular events nor bone fractures (fractures: HR 0.99; 95% CI 0.89–1.10). Participants were not selected on the basis of a deficiency. According to a Cochrane review (53 trials, 91,791 people), vitamin D alone hardly prevents fractures. In combination with calcium, a small benefit is possible in older people. The Endocrine Society (2024) sees no advantage for healthy adults under 75 years of age from doses above the recommended daily intake.",
+  "dose_de": "Switzerland (FSVO/FCN): 600 IU (15 µg) per day up to age 59, 800 IU (20 µg) from age 60. DGE/D-A-CH: 20 µg (800 IU) per day if the body's own production via the skin is lacking. NIH ODS (IOM): 600 IU for ages 51–70, 800 IU from age 70. Upper limit (UL): 100 µg (4000 IU) per day from all sources (EFSA 2023, likewise IOM). A 25-OH-D level of at least 50 nmol/l is considered sufficient.",
+  "safety_de": "Very high doses over a longer period can lead to raised calcium levels in the blood and urine. In case of kidney stones, raised calcium or kidney disease, only after consulting a doctor. In combination with calcium, slightly more gastrointestinal complaints and kidney problems occurred (Cochrane). Routine measurement of 25-OH-D is not recommended for healthy adults under 75 (Endocrine Society 2024). It is useful where there are risk factors such as osteoporosis or malabsorption.",
+  "sources": [
+   {
+    "type": "RCT",
+    "authors": "LeBoff et al.",
+    "title": "Supplemental Vitamin D and Incident Fractures in Midlife and Older Adults",
+    "journal": "New England Journal of Medicine",
+    "year": 2022,
+    "pmid": "35939577",
+    "doi": "10.1056/NEJMoa2202106",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35939577/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Manson et al.",
+    "title": "Vitamin D Supplements and Prevention of Cancer and Cardiovascular Disease",
+    "journal": "New England Journal of Medicine",
+    "year": 2019,
+    "pmid": "30415629",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30415629/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Avenell et al.",
+    "title": "Vitamin D and vitamin D analogues for preventing fractures in post-menopausal women and older men",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2014,
+    "pmid": null,
+    "doi": null,
+    "url": "https://cochrane.org/CD000227/MUSKINJ_vitamin-d-and-related-vitamin-d-compounds-preventing-fractures-resulting-osteoporosis-older-people"
+   },
+   {
+    "type": "Guideline",
+    "authors": "Demay et al.",
+    "title": "Vitamin D for the Prevention of Disease: An Endocrine Society Clinical Practice Guideline",
+    "journal": "Journal of Clinical Endocrinology & Metabolism",
+    "year": 2024,
+    "pmid": "38828931",
+    "doi": "10.1210/clinem/dgae290",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38828931/"
+   },
+   {
+    "type": "Authority",
+    "authors": "Bundesamt für Lebensmittelsicherheit und Veterinärwesen (BLV) / EEK",
+    "title": "Empfehlungen zu Vitamin D",
+    "journal": "BLV",
+    "year": null,
+    "pmid": null,
+    "doi": null,
+    "url": "https://www.blv.admin.ch/dam/blv/de/dokumente/lebensmittel-und-ernaehrung/ernaehrung/empfehlungen-vitamin-d.pdf.download.pdf/empfehlungen-vitamin-d.pdf"
+   }
+  ]
+ },
+ "k2": {
+  "name": "Vitamin K2",
+  "claims": [
+   {
+    "claim_de": "Slows bone mineral density loss after the menopause (MK-7)",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Reduces the risk of bone fractures",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Protects against vascular calcification and cardiovascular disease",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Is needed as a fixed partner of vitamin D3 to 'direct calcium into the bones'",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "In a 3-year trial with 244 healthy postmenopausal women, 180 µg MK-7 per day slowed the loss of bone mineral density at the lumbar spine and femoral neck. However, a meta-analysis (Mott 2019, 36 studies) found no confirmed effect on bone mineral density or vertebral fractures. A possible reduction in clinical fractures (OR 0.72) is not sufficient as evidence. For the blood vessels, a meta-analysis (Lees 2019) shows less calcification (−9.1 %), but only for surrogate markers, not for heart attacks or deaths. That D3 is harmful without K2, or that K2 must necessarily accompany it, is not supported by studies.",
+  "dose_de": "EFSA: adequate intake of 70 µg vitamin K (phylloquinone) per day for adults (1 µg per kg body weight). NIH ODS: 90 µg per day for women aged 19 and over. Used in studies on K2: 180 µg MK-7 per day over 3 years. Green leafy vegetables provide vitamin K1; fermented foods and cheese also provide K2.",
+  "safety_de": "Most important interaction: vitamin K weakens the effect of anticoagulants of the vitamin K antagonist type (e.g. warfarin, in Switzerland often phenprocoumon/Marcoumar). Anyone taking such medicines should take vitamin K only after consultation and in a consistent amount. A laboratory test is not recommended routinely.",
+  "sources": [
+   {
+    "type": "RCT",
+    "authors": "Knapen et al.",
+    "title": "Three-year low-dose menaquinone-7 supplementation helps decrease bone loss in healthy postmenopausal women",
+    "journal": "Osteoporosis International",
+    "year": 2013,
+    "pmid": "23525894",
+    "doi": "10.1007/s00198-013-2325-6",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23525894/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Mott et al.",
+    "title": "Effect of vitamin K on bone mineral density and fractures in adults: an updated systematic review and meta-analysis of randomised controlled trials",
+    "journal": "Osteoporosis International",
+    "year": 2019,
+    "pmid": "31076817",
+    "doi": "10.1007/s00198-019-04949-0",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31076817/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Lees et al.",
+    "title": "Vitamin K status, supplementation and vascular disease: a systematic review and meta-analysis",
+    "journal": "Heart",
+    "year": 2019,
+    "pmid": "30514729",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30514729/"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Dietary reference values for vitamin K",
+    "journal": "EFSA Journal",
+    "year": 2017,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2017.4780",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2017.4780"
+   },
+   {
+    "type": "Authority",
+    "authors": "NIH Office of Dietary Supplements",
+    "title": "Vitamin K – Health Professional Fact Sheet",
+    "journal": "NIH ODS",
+    "year": null,
+    "pmid": null,
+    "doi": null,
+    "url": "https://ods.od.nih.gov/factsheets/VitaminK-HealthProfessional/"
+   }
+  ]
+ },
+ "calcium": {
+  "name": "Calcium",
+  "claims": [
+   {
+    "claim_de": "Slightly increases bone mineral density (by about 1–2 %)",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "On its own (from food or a supplement) reduces fracture risk",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Calcium plus vitamin D prevents hip fractures in healthy postmenopausal women",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Calcium in the recommended amount does not increase cardiovascular risk in healthy people",
+    "evidence": "moderat"
+   }
+  ],
+  "summary_de": "A meta-analysis (Tai 2015) shows that more calcium increases bone mineral density only slightly: by 0.7–1.8 % via diet and by 1.0–1.8 % with supplements. For bone fractures, the evidence is weak and inconsistent. Dietary calcium was not associated with fracture risk (Bolland 2015). In the WHI trial (36,282 women, 1000 mg calcium plus 400 IU vitamin D), there were not significantly fewer hip fractures. Only among women who took it consistently were there 29 % fewer. A US guideline (2016) found no association between calcium (with or without vitamin D) and cardiovascular disease in healthy people.",
+  "dose_de": "EFSA: 950 mg per day for adults aged 25 and over. Upper limit (UL): 2500 mg per day from all sources (EFSA). Ideally via food (dairy products, calcium-rich mineral water, green vegetables). Supplements mainly when dietary intake is clearly too low.",
+  "safety_de": "In the WHI trial, calcium supplements increased the risk of kidney stones. If you have a history of kidney stones or kidney disease, have this checked by a doctor. Calcium can inhibit the absorption of iron, thyroid hormone, bisphosphonates and certain antibiotics. Therefore take them at different times. A blood test says little about calcium status. What matters is intake.",
+  "sources": [
+   {
+    "type": "Meta-analysis",
+    "authors": "Tai et al.",
+    "title": "Calcium intake and bone mineral density: systematic review and meta-analysis",
+    "journal": "BMJ",
+    "year": 2015,
+    "pmid": "26420598",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26420598/"
+   },
+   {
+    "type": "Review",
+    "authors": "Bolland et al.",
+    "title": "Calcium intake and risk of fracture: systematic review",
+    "journal": "BMJ",
+    "year": 2015,
+    "pmid": "26420387",
+    "doi": "10.1136/bmj.h4580",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26420387/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Jackson et al.",
+    "title": "Calcium plus vitamin D supplementation and the risk of fractures",
+    "journal": "New England Journal of Medicine",
+    "year": 2006,
+    "pmid": "16481635",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/16481635/"
+   },
+   {
+    "type": "Guideline",
+    "authors": "Kopecky et al.",
+    "title": "Lack of Evidence Linking Calcium With or Without Vitamin D Supplementation to Cardiovascular Disease in Generally Healthy Adults: A Clinical Guideline From the National Osteoporosis Foundation and the American Society for Preventive Cardiology",
+    "journal": "Annals of Internal Medicine",
+    "year": 2016,
+    "pmid": "27776362",
+    "doi": "10.7326/M16-1743",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27776362/"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Scientific Opinion on Dietary Reference Values for calcium",
+    "journal": "EFSA Journal",
+    "year": 2015,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2015.4101",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2015.4101"
+   }
+  ]
+ },
+ "magnesium": {
+  "name": "Magnesium",
+  "claims": [
+   {
+    "claim_de": "Improves sleep in older adults",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "No clinically relevant protection against muscle cramps in older adults",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "Relieves depressive symptoms (as an add-on, in diagnosed depression)",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Lifts mood in women without depression or deficiency",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "On sleep, there are only three small studies with 151 older people. Falling asleep was on average around 17 minutes faster, but the quality of the evidence is low to very low. A Cochrane review (2020) concludes that magnesium probably offers older people no noticeable protection against muscle cramps. In people with diagnosed depression, a meta-analysis of 7 studies (325 people) showed lower depression scores. The studies are small, and nothing can be inferred from them for people without depression.",
+  "dose_de": "EFSA: adequate intake of 300 mg per day for women. NIH ODS (IOM): 320 mg per day for women aged 51 and over. The upper limit applies only to supplements, not to food: EFSA 250 mg per day (readily soluble magnesium salts), IOM/NIH 350 mg per day.",
+  "safety_de": "Supplements above the upper limit can cause diarrhoea. In case of impaired kidney function, only after consulting a doctor. Magnesium can reduce the absorption of bisphosphonates, thyroid hormone and certain antibiotics. Therefore take them at different times. The magnesium level in the blood reflects the body's stores only imprecisely.",
+  "sources": [
+   {
+    "type": "Meta-analysis",
+    "authors": "Mah et al.",
+    "title": "Oral magnesium supplementation for insomnia in older adults: a Systematic Review & Meta-Analysis",
+    "journal": "BMC Complementary Medicine and Therapies",
+    "year": 2021,
+    "pmid": "33865376",
+    "doi": "10.1186/s12906-021-03297-z",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33865376/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Garrison et al.",
+    "title": "Magnesium for skeletal muscle cramps",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2020,
+    "pmid": "32956536",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32956536/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Moabedi et al.",
+    "title": "Magnesium supplementation beneficially affects depression in adults with depressive disorder: a systematic review and meta-analysis of randomized clinical trials",
+    "journal": "Frontiers in Psychiatry",
+    "year": 2023,
+    "pmid": "38213402",
+    "doi": "10.3389/fpsyt.2023.1333261",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38213402/"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Scientific Opinion on Dietary Reference Values for magnesium",
+    "journal": "EFSA Journal",
+    "year": 2015,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2015.4186",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2015.4186"
+   },
+   {
+    "type": "Authority",
+    "authors": "NIH Office of Dietary Supplements",
+    "title": "Magnesium – Health Professional Fact Sheet",
+    "journal": "NIH ODS",
+    "year": null,
+    "pmid": null,
+    "doi": null,
+    "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/"
+   }
+  ]
+ },
+ "b12": {
+  "name": "Vitamin B12",
+  "claims": [
+   {
+    "claim_de": "Corrects a confirmed B12 deficiency; in high doses as a tablet similarly effective to injections",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "No benefit for memory and cognitive performance without a deficiency",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "No benefit for depressive symptoms without a deficiency",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "More energy / less fatigue without a deficiency",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "A meta-analysis of 16 studies with 6276 people without a marked deficiency found no effect of B12 (alone or with other B vitamins) on memory, cognitive performance or depressive symptoms. There were too few data on fatigue for an analysis. In a confirmed deficiency, B12 is clearly indicated. High-dose tablets (1–2 mg per day) work about as well as injections, but injections work faster.",
+  "dose_de": "EFSA: adequate intake of 4 µg per day for adults. To treat a deficiency: 1–2 mg per day as a tablet, or injections as prescribed by a doctor (Langan 2017). A supplement is necessary on a vegan diet.",
+  "safety_de": "Risk groups for a deficiency include: taking metformin for more than 4 months, acid blockers (PPIs/H2 blockers) for more than 12 months, a vegan diet, gastrointestinal surgery or chronic inflammatory bowel disease, and age over 75. In the DPPOS study, the risk of deficiency rose by 13 % per year of metformin use. Where there are risk factors, a test is useful (serum B12, supplemented by holotranscobalamin, methylmalonic acid or homocysteine). Without risk factors, no screening is recommended.",
+  "sources": [
+   {
+    "type": "Meta-analysis",
+    "authors": "Markun et al.",
+    "title": "Effects of Vitamin B12 Supplementation on Cognitive Function, Depressive Symptoms, and Fatigue: A Systematic Review, Meta-Analysis, and Meta-Regression",
+    "journal": "Nutrients",
+    "year": 2021,
+    "pmid": "33809274",
+    "doi": "10.3390/nu13030923",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33809274/"
+   },
+   {
+    "type": "Review",
+    "authors": "Langan et al.",
+    "title": "Vitamin B12 Deficiency: Recognition and Management",
+    "journal": "American Family Physician",
+    "year": 2017,
+    "pmid": "28925645",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28925645/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Aroda et al.",
+    "title": "Long-term Metformin Use and Vitamin B12 Deficiency in the Diabetes Prevention Program Outcomes Study",
+    "journal": "Journal of Clinical Endocrinology & Metabolism",
+    "year": 2016,
+    "pmid": "26900641",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26900641/"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Scientific Opinion on Dietary Reference Values for cobalamin (vitamin B12)",
+    "journal": "EFSA Journal",
+    "year": 2015,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2015.4150",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2015.4150"
+   }
+  ]
+ },
+ "iron": {
+  "name": "Iron",
+  "claims": [
+   {
+    "claim_de": "Corrects a confirmed iron deficiency, e.g. with heavy bleeding in the perimenopause",
+    "evidence": "hoch"
+   },
+   {
+    "claim_de": "Taking it every other day improves iron absorption compared with daily intake",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "Iron supplements without a confirmed deficiency (e.g. after the menopause) provide a benefit",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "Heavy menstrual bleeding is the most common cause of iron deficiency in women before the menopause and often goes unrecognised. A confirmed deficiency is treated with iron. The cause of the bleeding should be investigated by a doctor. In randomised trials in women with low ferritin, the body absorbed iron better when it was taken every other day rather than daily (21.8 % vs. 16.3 %). After the menopause, requirements fall considerably. Without a confirmed deficiency, no benefit from supplements has been demonstrated.",
+  "dose_de": "EFSA: 16 mg per day for women before the menopause, 11 mg per day after the menopause. EFSA (2024) gives 40 mg per day as a safe total intake for adults. This value does not apply to medically supervised treatment of iron deficiency. Therapeutic doses only after laboratory results and on medical prescription.",
+  "safety_de": "Have your ferritin measured before taking it. The WHO (2020) defines iron deficiency in healthy adults as ferritin below 15 µg/l, and in the presence of inflammation or infection below 70 µg/l. Some professional societies use higher thresholds. Common side effects are gastrointestinal complaints and black stools. Calcium, coffee, tea and acid blockers reduce absorption. Take iron at a different time from thyroid hormone. Do not take iron if you have iron overload disease (haemochromatosis). Always have iron deficiency after the menopause investigated by a doctor.",
+  "sources": [
+   {
+    "type": "Review",
+    "authors": "Munro et al.",
+    "title": "Heavy menstrual bleeding, iron deficiency, and iron deficiency anemia: Framing the issue",
+    "journal": "International Journal of Gynecology & Obstetrics",
+    "year": 2023,
+    "pmid": "37538011",
+    "doi": "10.1002/ijgo.14943",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37538011/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Stoffel et al.",
+    "title": "Iron absorption from oral iron supplements given on consecutive versus alternate days and as single morning doses versus twice-daily split dosing in iron-depleted women: two open-label, randomised controlled trials",
+    "journal": "The Lancet Haematology",
+    "year": 2017,
+    "pmid": "29032957",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29032957/"
+   },
+   {
+    "type": "Guideline",
+    "authors": "World Health Organization",
+    "title": "WHO guideline on use of ferritin concentrations to assess iron status in individuals and populations",
+    "journal": "WHO",
+    "year": 2020,
+    "pmid": null,
+    "doi": null,
+    "url": "https://www.who.int/publications/i/item/9789240000124"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Scientific opinion on the tolerable upper intake level for iron",
+    "journal": "EFSA Journal",
+    "year": 2024,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2024.8819",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2024.8819"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA NDA Panel",
+    "title": "Scientific Opinion on Dietary Reference Values for iron",
+    "journal": "EFSA Journal",
+    "year": 2015,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2015.4254",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2015.4254"
+   }
+  ]
+ },
+ "omega3": {
+  "name": "Omega-3 (EPA/DHA)",
+  "claims": [
+   {
+    "claim_de": "Relief of depressive symptoms",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Prevention of depression in healthy people",
+    "evidence": "unzureichend"
+   },
+   {
+    "claim_de": "Protection against cardiovascular disease",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Fewer hot flushes during the menopause",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "In adults with depression, a Cochrane review shows only a small effect compared with placebo (SMD -0.40). The authors consider this effect unlikely to be clinically meaningful; the evidence is low to very low. In the large VITAL-DEP trial (over 18,000 people aged 50 and over, 1 g/day, 5.3 years), omega-3 did not prevent depression; the risk was even slightly increased (HR 1.13). According to Cochrane (2020), long-chain omega-3 fatty acids have little or no effect on all-cause mortality and on cardiovascular events. For hot flushes, omega-3 was no better than placebo in a randomised trial (MsFLASH); The Menopause Society does not recommend it for this purpose.",
+  "dose_de": "Amounts studied: in VITAL-DEP, 1 g fish oil per day (465 mg EPA + 375 mg DHA). In MsFLASH, 1.8 g omega-3 per day for 12 weeks. According to a meta-analysis on depression (Liao 2019), only EPA-rich supplements (at least 60 % EPA) with no more than 1 g EPA per day were effective; pure DHA supplements were not effective. Oily fish in the diet is an alternative to a supplement.",
+  "safety_de": "According to a meta-analysis of large trials, the risk of atrial fibrillation increases with the dose: about 11 % more risk per additional gram per day (HR 1.11). Anyone taking blood thinners, with heart rhythm disorders or facing surgery should discuss taking it with a doctor. In depression, omega-3 does not replace treatment.",
+  "sources": [
+   {
+    "type": "Cochrane Review",
+    "authors": "Appleton et al.",
+    "title": "Omega-3 fatty acids for depression in adults",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2021,
+    "pmid": "34817851",
+    "doi": "10.1002/14651858.CD004692.pub5",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34817851/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Okereke et al.",
+    "title": "Effect of Long-term Supplementation With Marine Omega-3 Fatty Acids vs Placebo on Risk of Depression or Clinically Relevant Depressive Symptoms and on Change in Mood Scores: A Randomized Clinical Trial",
+    "journal": "JAMA",
+    "year": 2021,
+    "pmid": "34932079",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34932079/"
+   },
+   {
+    "type": "Cochrane Review",
+    "authors": "Abdelhamid et al.",
+    "title": "Omega-3 fatty acids for the primary and secondary prevention of cardiovascular disease",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2020,
+    "pmid": "32114706",
+    "doi": "10.1002/14651858.CD003177.pub5",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32114706/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Gencer et al.",
+    "title": "Effect of Long-Term Marine ɷ-3 Fatty Acids Supplementation on the Risk of Atrial Fibrillation in Randomized Controlled Trials of Cardiovascular Outcomes: A Systematic Review and Meta-Analysis",
+    "journal": "Circulation",
+    "year": 2021,
+    "pmid": "34612056",
+    "doi": "10.1161/CIRCULATIONAHA.121.055654",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34612056/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Cohen et al.",
+    "title": "Efficacy of omega-3 for vasomotor symptoms treatment: a randomized controlled trial",
+    "journal": "Menopause",
+    "year": 2014,
+    "pmid": "23982113",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23982113/"
+   }
+  ]
+ },
+ "creatine": {
+  "name": "Creatine monohydrate",
+  "claims": [
+   {
+    "claim_de": "More muscle mass and strength together with strength training (older and postmenopausal women)",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "Bone mineral density",
+    "evidence": "unzureichend"
+   },
+   {
+    "claim_de": "Memory and cognition",
+    "evidence": "niedrig"
+   },
+   {
+    "claim_de": "Mood",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "In older adults doing strength training, creatine produced on average 1.37 kg more fat-free mass and more strength than placebo in a meta-analysis of 22 studies. A 2026 meta-analysis on postmenopausal women (7 studies, 608 women) found small benefits: +0.37 kg lean mass and +7.5 kg on the leg press. These benefits were seen only with at least 5 g/day plus strength training. Creatine had no effect on bone mineral density. A 2-year trial with 3 g/day without targeted strength training improved neither bone nor muscle. For memory, there are some positive meta-analyses, but the data are limited and methodologically disputed.",
+  "dose_de": "According to the ISSN position stand, 3–5 g per day as a maintenance dose. A loading phase of approx. 0.3 g/kg/day for 5–7 days is possible but not necessary. In studies with postmenopausal women, benefits appeared from about 5 g per day, and only together with strength training.",
+  "safety_de": "According to the ISSN, creatine is considered safe in healthy adults at the recommended doses. In the meta-analysis on postmenopausal women, side effects were mild and as frequent as with placebo; kidney values remained unchanged. A slight weight gain due to water retention is possible. Anyone with kidney disease, who regularly takes medicines that affect the kidneys, or who has diabetes should consult a doctor beforehand. Creatine can raise the creatinine level in the blood; this should be mentioned when having laboratory tests.",
+  "sources": [
+   {
+    "type": "Position Statement",
+    "authors": "Kreider et al.",
+    "title": "International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine",
+    "journal": "Journal of the International Society of Sports Nutrition",
+    "year": 2017,
+    "pmid": "28615996",
+    "doi": "10.1186/s12970-017-0173-z",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28615996/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Naddafha et al.",
+    "title": "Creatine monohydrate for lean mass, strength, and bone density in postmenopausal women: a systematic review and meta-analysis",
+    "journal": "Journal of the International Society of Sports Nutrition",
+    "year": 2026,
+    "pmid": "42141930",
+    "doi": "10.1080/15502783.2026.2668435",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42141930/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Chilibeck et al.",
+    "title": "Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis",
+    "journal": "Open Access Journal of Sports Medicine",
+    "year": 2017,
+    "pmid": "29138605",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29138605/"
+   },
+   {
+    "type": "RCT",
+    "authors": "Sales et al.",
+    "title": "Creatine Supplementation (3 g/d) and Bone Health in Older Women: A 2-Year, Randomized, Placebo-Controlled Trial",
+    "journal": "The Journals of Gerontology: Series A",
+    "year": 2020,
+    "pmid": "31257405",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31257405/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Prokopidis et al.",
+    "title": "Effects of creatine supplementation on memory in healthy individuals: a systematic review and meta-analysis of randomized controlled trials",
+    "journal": "Nutrition Reviews",
+    "year": 2023,
+    "pmid": "35984306",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35984306/"
+   }
+  ]
+ },
+ "protein": {
+  "name": "Protein intake",
+  "claims": [
+   {
+    "claim_de": "More protein than the standard recommendation (approx. 1.0–1.2 g/kg/day) helps older adults maintain muscle mass and function",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "More protein enhances muscle growth from strength training",
+    "evidence": "moderat"
+   },
+   {
+    "claim_de": "Specific target of 1.2–1.6 g/kg/day for midlife women doing strength training",
+    "evidence": "niedrig"
+   }
+  ],
+  "summary_de": "Expert groups (PROT-AGE, ESPEN) recommend that healthy older people consume at least 1.0–1.2 g protein per kg body weight per day. For physically active people, PROT-AGE recommends at least 1.2 g/kg/day. According to a meta-analysis of 49 studies, protein enhances the muscle gain from strength training. Beyond about 1.6 g/kg/day, it brought no further gain, and the additional benefit was smaller with increasing age. There is no specific guideline for women aged 40 to 65; the range of 1.2–1.6 g/kg/day is derived from these recommendations.",
+  "dose_de": "Healthy older adults: 1.0–1.2 g/kg/day (PROT-AGE, ESPEN). Physically active people: at least 1.2 g/kg/day (PROT-AGE). In acute or chronic illness: 1.2–1.5 g/kg/day. More than approx. 1.6 g/kg/day brought no additional muscle gain with training (confidence interval 1.03–2.20; Morton 2018). Ideally via normal foods and spread across meals.",
+  "safety_de": "Anyone with severe kidney disease (eGFR below 30) who is not on dialysis may need to limit their protein intake (PROT-AGE). In case of known kidney disease, diabetes with kidney involvement or gout, have the target amount set by a doctor or a nutrition counsellor. Protein powders are a food, not a must.",
+  "sources": [
+   {
+    "type": "Position Statement",
+    "authors": "Bauer et al.",
+    "title": "Evidence-based recommendations for optimal dietary protein intake in older people: a position paper from the PROT-AGE Study Group",
+    "journal": "Journal of the American Medical Directors Association",
+    "year": 2013,
+    "pmid": "23867520",
+    "doi": "10.1016/j.jamda.2013.05.021",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23867520/"
+   },
+   {
+    "type": "Guideline",
+    "authors": "Deutz et al.",
+    "title": "Protein intake and exercise for optimal muscle function with aging: recommendations from the ESPEN Expert Group",
+    "journal": "Clinical Nutrition",
+    "year": 2014,
+    "pmid": "24814383",
+    "doi": "10.1016/j.clnu.2014.04.007",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24814383/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Morton et al.",
+    "title": "A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults",
+    "journal": "British Journal of Sports Medicine",
+    "year": 2018,
+    "pmid": "28698222",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28698222/"
+   }
+  ]
+ },
+ "isoflavones": {
+  "name": "Soy isoflavones",
+  "claims": [
+   {
+    "claim_de": "Fewer and milder hot flushes",
+    "evidence": "niedrig"
+   }
+  ],
+  "summary_de": "A meta-analysis of 19 studies found about 20.6 % fewer hot flushes with soy isoflavones (median 54 mg per day) than with placebo. A JAMA meta-analysis also saw a small reduction of around 1.3 hot flushes per day. The Cochrane review, by contrast, finds no conclusive evidence; only extracts with more than 30 mg genistein per day were effective in individual studies. In 2023, The Menopause Society rated the evidence as inconsistent and does not recommend soy supplements for hot flushes.",
+  "dose_de": "Mostly 35–150 mg isoflavones per day were studied (median in the meta-analysis: 54 mg aglycone equivalents) for 6 weeks to 12 months. According to Cochrane, it was mainly extracts with more than 30 mg genistein per day that were effective in individual studies. According to EFSA, the doses and durations from studies can serve as guidance; there is no fixed limit.",
+  "safety_de": "In 2015, EFSA found no evidence of harm to the breast, uterus or thyroid in healthy peri- and postmenopausal women. Up to 30 months at 150 mg per day, there was no effect on the endometrium. After 60 months, some benign tissue changes were observed. Anyone who has or has had hormone-dependent cancer (e.g. breast cancer), or who takes thyroid medication or anti-hormonal therapy, should discuss taking it with a doctor. Soy as a food is to be distinguished from this.",
+  "sources": [
+   {
+    "type": "Meta-analysis",
+    "authors": "Taku et al.",
+    "title": "Extracted or synthesized soybean isoflavones reduce menopausal hot flash frequency and severity: systematic review and meta-analysis of randomized controlled trials",
+    "journal": "Menopause",
+    "year": 2012,
+    "pmid": "22433977",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/22433977/"
+   },
+   {
+    "type": "Cochrane Review",
+    "authors": "Lethaby et al.",
+    "title": "Phytoestrogens for menopausal vasomotor symptoms",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2013,
+    "pmid": "24323914",
+    "doi": "10.1002/14651858.CD001395.pub4",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24323914/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Franco et al.",
+    "title": "Use of Plant-Based Therapies and Menopausal Symptoms: A Systematic Review and Meta-analysis",
+    "journal": "JAMA",
+    "year": 2016,
+    "pmid": "27327802",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27327802/"
+   },
+   {
+    "type": "Authority",
+    "authors": "EFSA Panel on Food Additives and Nutrient Sources added to Food (ANS)",
+    "title": "Risk assessment for peri- and post-menopausal women taking food supplements containing isolated isoflavones",
+    "journal": "EFSA Journal",
+    "year": 2015,
+    "pmid": null,
+    "doi": "10.2903/j.efsa.2015.4246",
+    "url": "https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2015.4246"
+   }
+  ]
+ },
+ "black_cohosh": {
+  "name": "Black cohosh",
+  "claims": [
+   {
+    "claim_de": "Fewer hot flushes and less sweating",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "A Cochrane review with 16 studies and 2027 women found insufficient evidence of an effect. For the frequency of hot flushes, there was no difference from placebo (0.07 hot flushes per day; 3 studies, 393 women). In 2023, The Menopause Society did not recommend black cohosh. The EMA, on the other hand, authorises certain products for menopausal symptoms on the basis of long-standing use.",
+  "dose_de": "In the studies, a median of 40 mg extract per day was taken for an average of 23 weeks. The EMA specifies 40 mg per day and no use for more than 6 months without medical advice. The dose depends on the respective product.",
+  "safety_de": "There are case reports of severe liver damage, up to and including liver transplants. Whether the remedy caused them is disputed; the USP review classified the cases as «possible». The EMA advises stopping it immediately and seeing a doctor in case of fatigue, loss of appetite, yellowing of the skin or eyes, severe upper abdominal pain with nausea, or dark urine. Anyone with liver disease, who regularly drinks alcohol, takes medicines that strain the liver or has had hormone-dependent cancer should consult a doctor beforehand.",
+  "sources": [
+   {
+    "type": "Cochrane Review",
+    "authors": "Leach et al.",
+    "title": "Black cohosh (Cimicifuga spp.) for menopausal symptoms",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "year": 2012,
+    "pmid": "22972105",
+    "doi": "10.1002/14651858.CD007244.pub2",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/22972105/"
+   },
+   {
+    "type": "Position Statement",
+    "authors": "Shufelt et al.",
+    "title": "The 2023 nonhormone therapy position statement of The North American Menopause Society",
+    "journal": "Menopause",
+    "year": 2023,
+    "pmid": "37252752",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37252752/"
+   },
+   {
+    "type": "Authority",
+    "authors": "European Medicines Agency (HMPC)",
+    "title": "Cimicifugae rhizoma - herbal medicinal product",
+    "journal": "European Medicines Agency",
+    "year": null,
+    "pmid": null,
+    "doi": null,
+    "url": "https://www.ema.europa.eu/en/medicines/herbal/cimicifugae-rhizoma"
+   },
+   {
+    "type": "Authority",
+    "authors": "European Medicines Agency (EMEA)",
+    "title": "EMEA Public Statement on herbal medicinal products containing Cimicifugae racemosae rhizoma - Serious hepatic reactions",
+    "journal": "European Medicines Agency",
+    "year": 2006,
+    "pmid": null,
+    "doi": null,
+    "url": "https://ema.europa.eu/en/news/emea-public-statement-herbal-medicinal-products-containing-cimicifugae-racemosae-rhizoma-serious"
+   },
+   {
+    "type": "Review",
+    "authors": "Mahady et al.",
+    "title": "United States Pharmacopeia review of the black cohosh case reports of hepatotoxicity",
+    "journal": "Menopause",
+    "year": 2008,
+    "pmid": "18340277",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/18340277/"
+   }
+  ]
+ },
+ "nonhormonal": {
+  "name": "Non-hormonal treatment of hot flushes (overview)",
+  "claims": [
+   {
+    "claim_de": "Cognitive behavioural therapy and clinical hypnosis for hot flushes",
+    "evidence": "hoch"
+   },
+   {
+    "claim_de": "Prescription medicines (SSRIs/SNRIs, gabapentin, fezolinetant)",
+    "evidence": "hoch"
+   },
+   {
+    "claim_de": "Dietary supplements and herbal products (e.g. soy, black cohosh, omega-3)",
+    "evidence": "unzureichend"
+   }
+  ],
+  "summary_de": "The 2023 position statement of The Menopause Society (formerly NAMS) recommends cognitive behavioural therapy, clinical hypnosis, SSRIs/SNRIs, gabapentin and fezolinetant for hot flushes (highest evidence level, Level I). It does not recommend dietary supplements and herbal products (Level I–II), nor breathing techniques such as slow breathing (paced respiration). A JAMA meta-analysis saw only small effects for phytoestrogens; the studies were inconsistent.",
+  "dose_de": "No dose information for dietary supplements, because they are not recommended. Medicines are prescribed and dosed by a doctor.",
+  "safety_de": "If hot flushes are distressing, medical advice is worthwhile: effective hormonal and non-hormonal treatments are available. Dietary supplements are tested less rigorously than medicines and can interact with medicines.",
+  "sources": [
+   {
+    "type": "Position Statement",
+    "authors": "Shufelt et al.",
+    "title": "The 2023 nonhormone therapy position statement of The North American Menopause Society",
+    "journal": "Menopause",
+    "year": 2023,
+    "pmid": "37252752",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37252752/"
+   },
+   {
+    "type": "Meta-analysis",
+    "authors": "Franco et al.",
+    "title": "Use of Plant-Based Therapies and Menopausal Symptoms: A Systematic Review and Meta-analysis",
+    "journal": "JAMA",
+    "year": 2016,
+    "pmid": "27327802",
+    "doi": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27327802/"
+   }
+  ]
+ }
+}
