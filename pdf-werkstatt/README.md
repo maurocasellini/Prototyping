@@ -28,6 +28,18 @@ das **Dock** (App aus dem Programme-Ordner ins Dock ziehen). Kein Terminal mehr 
 
 Für Entwickler: `bash start.command` startet die App direkt im Terminal.
 
+## Web-Version (ohne Upload)
+
+Dieselbe Oberfläche läuft auch als Website – **komplett im Browser**. Die PDF-Engine (PyMuPDF) läuft per
+WebAssembly ([Pyodide](https://pyodide.org)) im Tab, ein Service Worker beantwortet alle `api/…`-Anfragen lokal.
+Es gibt keinen Server, der Dateien entgegennehmen könnte; eine Content-Security-Policy (`connect-src 'self'`)
+verbietet der Seite zusätzlich jede Verbindung nach aussen. Nach dem ersten Besuch funktioniert sie offline.
+
+- Bauen: `python3 web/build.py` → `web/dist/pdf/` (lädt die Engine-Dateien, geprüft per SHA-256)
+- Lokal testen: `python3 web/serve.py` → http://127.0.0.1:8800/pdf (meldet jede /api-Anfrage, die den Server erreicht – es sollten null sein)
+- Deployment: Vercel liest `vercel.json` im Repo-Hauptordner.
+- Nicht verfügbar im Web (brauchen externe Programme): OCR, Office → PDF, PDF → Word/PowerPoint/Excel.
+
 ## Funktionen
 
 | Bereich | Werkzeuge |
@@ -65,6 +77,11 @@ Einige Werkzeuge brauchen kostenlose Zusatzprogramme. Ohne sie funktioniert alle
 | Office → PDF, PDF → Excel/ODT | `brew install --cask libreoffice` |
 
 Danach die App neu starten.
+
+## Lizenz
+
+Die PDF-Engine MuPDF/PyMuPDF steht unter der [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html); deshalb ist auch
+dieser Code unter der AGPL-3.0 veröffentlicht. Schriften: SIL Open Font License 1.1 (siehe `static/fonts`, `web/pdf-fonts`).
 
 ## Technik
 

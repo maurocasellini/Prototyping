@@ -804,7 +804,7 @@ def font_for(code):
     fam_mac, fam_lib = _FAMILY.get(code[:2], _FAMILY["he"])
     mac_sfx, lib_sfx = _STYLE.get(code[2:], ("", "Regular"))
     for path in (f"{_MAC}{fam_mac}{mac_sfx}.ttf", f"/Library/Fonts/{fam_mac}{mac_sfx}.ttf",
-                 f"{_LIB}{fam_lib}-{lib_sfx}.ttf"):
+                 f"{_LIB}{fam_lib}-{lib_sfx}.ttf", f"/fonts/{fam_lib}-{lib_sfx}.ttf"):
         if os.path.exists(path):
             res = ({"fontname": "W" + code, "fontfile": path}, pymupdf.Font(fontfile=path))
             break

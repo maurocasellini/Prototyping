@@ -500,7 +500,7 @@ const Editor = (() => {
   const cv = $('#sig-canvas');
   const ctx = cv.getContext('2d');
   let sigTab = 'draw', penColor = '#111111', drawn = false, typedFont = null, uploaded = null;
-  const SIG_FONTS = ['Snell Roundhand', 'Bradley Hand', 'Apple Chancery', 'Brush Script MT', 'Savoye LET', 'Zapfino', 'Noteworthy', 'Segoe Script', 'cursive'];
+  const SIG_FONTS = ['Great Vibes', 'Dancing Script', 'Allura', 'Snell Roundhand', 'Bradley Hand', 'Apple Chancery', 'Brush Script MT', 'Savoye LET', 'Zapfino', 'Noteworthy', 'Segoe Script', 'cursive'];
   const SIG_KEY = 'pdfw-signatures';
   const loadSigs = () => { try { return JSON.parse(localStorage.getItem(SIG_KEY)) || []; } catch { return []; } };
   const saveSigs = (a) => { try { localStorage.setItem(SIG_KEY, JSON.stringify(a.slice(0, 8))); } catch { /* voll */ } };
@@ -566,11 +566,22 @@ const Editor = (() => {
   cv.addEventListener('pointercancel', endStroke);
 
   // Tippen
+  // Nur Schriften zeigen, die es auf diesem Gerät wirklich gibt (sonst erscheint die Ersatzschrift mehrfach)
+  const WEB_FONTS = new Set(['Great Vibes', 'Dancing Script', 'Allura', 'cursive']);
+  let usableFonts = null;
+  function fontAvailable(f) {
+    if (WEB_FONTS.has(f)) return true;
+    const c = document.createElement('canvas').getContext('2d');
+    const w = (font) => { c.font = font; return c.measureText('Mauro Casellini 123 Wg').width; };
+    return ['monospace', 'serif', 'sans-serif'].some((fb) => w(`40px "${f}", ${fb}`) !== w(`40px ${fb}`));
+  }
   function renderFonts() {
     const list = $('#sig-fonts');
     const name = $('#sig-name').value || 'Max Muster';
     list.innerHTML = '';
-    SIG_FONTS.forEach((f) => list.append(h('button', { type: 'button', class: 'sig-font' + (typedFont === f ? ' active' : ''), style: { fontFamily: `"${f}", cursive`, color: penColor }, onclick: () => { typedFont = f; renderFonts(); } }, name)));
+    usableFonts = usableFonts || SIG_FONTS.filter(fontAvailable).filter((f) => f !== 'cursive');
+    if (!usableFonts.includes(typedFont)) typedFont = usableFonts[0];
+    usableFonts.forEach((f) => list.append(h('button', { type: 'button', class: 'sig-font' + (typedFont === f ? ' active' : ''), style: { fontFamily: `"${f}", cursive`, color: penColor }, onclick: () => { typedFont = f; renderFonts(); } }, name)));
   }
   $('#sig-name').addEventListener('input', renderFonts);
 
@@ -603,7 +614,7 @@ const Editor = (() => {
       if (!name) return toast('Bitte Namen eingeben.', 'error');
       const c = h('canvas', { width: 2000, height: 500 });
       const x = c.getContext('2d');
-      const font = typedFont || SIG_FONTS[0];
+      const font = typedFont || (usableFonts || SIG_FONTS)[0];
       await document.fonts.load(`150px "${font}"`).catch(() => {});
       x.font = `150px "${font}", cursive`;
       x.fillStyle = penColor;

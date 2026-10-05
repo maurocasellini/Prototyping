@@ -14,18 +14,18 @@ const h = (tag, attrs = {}, ...kids) => {
   return el;
 };
 const fmtSize = (n) => n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(0)} KB` : `${(n / 1048576).toFixed(1)} MB`;
-const thumb = (id, n, w = 200) => `/api/file/${id}/page/${n}?w=${w}`;
+const thumb = (id, n, w = 200) => `api/file/${id}/page/${n}?w=${w}`;
 
 const api = {
   async upload(fileList) {
     const fd = new FormData();
     for (const f of fileList) fd.append('files', f, f.name);
-    const r = await fetch('/api/upload', { method: 'POST', body: fd });
+    const r = await fetch('api/upload', { method: 'POST', body: fd });
     if (!r.ok) throw new Error('Upload fehlgeschlagen');
     return r.json();
   },
   async run(tool, files, params) {
-    const r = await fetch(`/api/run/${tool}`, {
+    const r = await fetch(`api/run/${tool}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ files: files.map((f) => f.id), params }),
     });
@@ -52,9 +52,9 @@ let CAPS = {};
 // Natives Mac-Fenster: Download → „Sichern unter …“, Vorschau → App „Vorschau“
 const native = () => window.pywebview && window.pywebview.api;
 document.addEventListener('click', async (e) => {
-  const a = e.target.closest('a[href^="/api/file/"]');
+  const a = e.target.closest('a[href^="api/file/"]');
   if (!a || !native()) return;
-  const [, , , fid, action] = a.getAttribute('href').split('/');
+  const [, , fid, action] = a.getAttribute('href').split('/');
   if (action !== 'download' && action !== 'raw') return;
   e.preventDefault();
   if (action === 'raw') return native().preview(fid);
@@ -66,7 +66,7 @@ document.addEventListener('click', async (e) => {
 let APP_MODE = false;
 async function ping() {
   try {
-    const r = await (await fetch('/api/ping', { cache: 'no-store' })).json();
+    const r = await (await fetch('api/ping', { cache: 'no-store' })).json();
     APP_MODE = r.app;
     // Im eigenen Fenster beendet man per ⌘Q / Fenster schliessen – kein Knopf nötig
     $('#quit').classList.toggle('hidden', !APP_MODE || r.window);
@@ -78,10 +78,10 @@ setInterval(ping, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) ping(); });
 $('#quit').addEventListener('click', async () => {
   if (!confirm('PDF Werkstatt beenden? Nicht heruntergeladene Ergebnisse gehen verloren.')) return;
-  await fetch('/api/quit', { method: 'POST' }).catch(() => {});
+  await fetch('api/quit', { method: 'POST' }).catch(() => {});
   document.body.innerHTML = '<div class="bye"><h1>PDF Werkstatt ist beendet.</h1><p>Du kannst dieses Fenster schliessen. Neu starten: App „PDF Werkstatt“ öffnen.</p></div>';
 });
-fetch('/api/capabilities').then((r) => r.json()).then((c) => { CAPS = c; renderHome(); });
+fetch('api/capabilities').then((r) => r.json()).then((c) => { CAPS = c; renderHome(); });
 
 const NEEDS_HINT = {
   ocr: 'Benötigt Tesseract. Einmalig im Terminal: <code>brew install tesseract tesseract-lang</code>, danach die App neu starten.',
@@ -434,12 +434,12 @@ function showResult(box, res) {
   });
   box.append(
     h('div', { class: 'res-head' }, h('span', { class: 'ok' }, '✓'), h('strong', {}, 'Fertig!')),
-    isPdf && res.pages ? h('a', { href: `/api/file/${res.id}/raw`, target: '_blank', class: 'res-thumb', title: 'Vorschau öffnen' }, h('img', { src: thumb(res.id, 0, 360), alt: '' })) : null,
+    isPdf && res.pages ? h('a', { href: `api/file/${res.id}/raw`, target: '_blank', class: 'res-thumb', title: 'Vorschau öffnen' }, h('img', { src: thumb(res.id, 0, 360), alt: '' })) : null,
     h('div', { class: 'res-name' }, res.name),
     h('div', { class: 'muted' }, [res.pages ? `${res.pages} Seiten` : '', fmtSize(res.size), delta !== null && delta < 0 ? `${fmtSize(-delta)} gespart` : ''].filter(Boolean).join(' · ')),
     res.info ? h('div', { class: 'res-info' }, res.info) : null,
-    h('a', { class: 'primary big btn', href: `/api/file/${res.id}/download` }, 'Herunterladen'),
-    isPdf ? h('a', { class: 'btn', href: `/api/file/${res.id}/raw`, target: '_blank' }, 'Vorschau öffnen') : null,
+    h('a', { class: 'primary big btn', href: `api/file/${res.id}/download` }, 'Herunterladen'),
+    isPdf ? h('a', { class: 'btn', href: `api/file/${res.id}/raw`, target: '_blank' }, 'Vorschau öffnen') : null,
     isPdf ? next : null);
   box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
