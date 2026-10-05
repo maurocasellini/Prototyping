@@ -1,21 +1,21 @@
 "use client";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-
-function Submit({ label, pending: pendingLabel, kind }) {
-  const { pending } = useFormStatus();
-  return <button className={`btn ${kind || ""}`} type="submit" disabled={pending}>{pending ? pendingLabel || "Einen Moment …" : label}</button>;
-}
+import { useActionState, startTransition } from "react";
 
 // Formular mit Server-Aktion: zeigt Fehler und Bestätigung direkt darunter.
-export default function Form({ action, submit, pending, kind, children, className = "form" }) {
-  const [state, act] = useActionState(action, null);
+// Absenden über onSubmit, damit die Eingaben bei einem Fehler stehen bleiben (React leert Formulare sonst nach jeder Aktion).
+export default function Form({ action, submit, pending: pendingLabel, kind, children, className = "form" }) {
+  const [state, act, pending] = useActionState(action, null);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    startTransition(() => act(fd));
+  };
   return (
-    <form action={act} className={className}>
+    <form onSubmit={onSubmit} className={className}>
       {children}
       {state?.error && <p className="msg err" role="alert">{state.error}</p>}
       {state?.ok && <p className="msg ok" role="status">{state.ok}</p>}
-      <Submit label={submit} pending={pending} kind={kind} />
+      <button className={`btn ${kind || ""}`} type="submit" disabled={pending}>{pending ? pendingLabel || "Einen Moment …" : submit}</button>
     </form>
   );
 }

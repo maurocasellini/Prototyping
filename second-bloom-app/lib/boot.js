@@ -16,7 +16,7 @@ export async function wearFor(userId, state) {
 export async function bootUser(user) {
   const state = await repo.getState(user.id);
   const cfg = await aiConfig();
-  return { mode: "user", user: { name: user.name, email: user.email, role: user.role }, state, wear: await wearFor(user.id, state), ai: Boolean(cfg.key) };
+  return { mode: "user", user: { name: user.name, email: user.email, role: user.role }, state, wear: await wearFor(user.id, state), ai: Boolean(cfg.key && state?.consent?.ai) };
 }
 
 export async function bootDemo() {

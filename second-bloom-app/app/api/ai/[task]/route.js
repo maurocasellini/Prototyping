@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { cookRecipe, weekPlan, dayNote, AiError } from "@/lib/ai";
+import * as repo from "@/lib/repo";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -13,6 +14,8 @@ export async function POST(req, { params }) {
   const { task } = await params;
   const me = await currentUser().catch(() => null);
   const who = me ? me.id : "demo";
+  if (me && !(await repo.getState(me.id))?.consent?.ai)
+    return NextResponse.json({ error: "Die KI-Funktionen sind in deinem Konto ausgeschaltet. Du kannst sie unter Konto einschalten." }, { status: 503 });
   let b; try { b = await req.json(); } catch { return NextResponse.json({ error: "Ungültige Anfrage." }, { status: 400 }); }
   try {
     if (task === "cook") {

@@ -5,6 +5,7 @@ import * as repo from "@/lib/repo";
 import { createSession, destroySession, requireUser, requireAdmin } from "@/lib/auth";
 import { connectIntervals, syncUser } from "@/lib/sync";
 import { encrypt } from "@/lib/crypto";
+import { PRIVACY_VERSION } from "@/lib/privacy";
 
 const s = (form, k) => String(form.get(k) || "").trim();
 
@@ -26,10 +27,17 @@ export async function register(_prev, form) {
   if (!name) return { error: "Bitte deinen Vornamen angeben." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Die E-Mail-Adresse sieht nicht gültig aus." };
   if (pw.length < 8) return { error: "Bitte ein Passwort mit mindestens 8 Zeichen wählen." };
-  if (form.get("consent") !== "on") return { error: "Bitte der Verarbeitung deiner Gesundheitsdaten zustimmen. Ohne diese Zustimmung kann die App nicht arbeiten." };
+  if (form.get("adult") !== "on") return { error: "Second Bloom ist für Erwachsene ab 18 Jahren." };
+  if (form.get("privacy") !== "on") return { error: "Bitte bestätige, dass du die Datenschutzerklärung gelesen hast." };
+  if (form.get("consent") !== "on") return { error: "Ohne Einwilligung zu den Gesundheitsdaten kann die App nicht arbeiten. Du kannst sie jederzeit widerrufen." };
   let u;
   try { u = await repo.createUser({ name, email, password: pw }); } catch (e) { return { error: e.message }; }
-  await repo.saveState(u.id, { consent_at: new Date().toISOString() });
+  const at = new Date().toISOString(), ai = form.get("consent_ai") === "on";
+  // Nachweis der Einwilligung (Art. 7 Abs. 1 DSGVO): Zeitpunkt, Art und Version der Erklärung
+  await repo.saveState(u.id, {
+    consent: { version: PRIVACY_VERSION, health_at: at, privacy_at: at, adult: true, ai, ai_at: ai ? at : null },
+    consent_log: [{ at, type: "health", value: true, version: PRIVACY_VERSION }, { at, type: "ai", value: ai, version: PRIVACY_VERSION }],
+  });
   await createSession(u);
   redirect("/app");
 }
@@ -72,6 +80,19 @@ export async function deleteAccount(_prev, form) {
   await repo.deleteUser(me.id);
   await destroySession();
   redirect("/?geloescht=1");
+}
+
+// Einwilligung KI ein- oder ausschalten (jederzeit widerrufbar, Art. 7 Abs. 3 DSGVO)
+export async function setAiConsent(_prev, form) {
+  const me = await requireUser();
+  const on = form.get("ai") === "on", at = new Date().toISOString();
+  await repo.patchState(me.id, (st) => {
+    st.consent = { ...(st.consent || {}), ai: on, ai_at: at };
+    st.consent_log = [...(st.consent_log || []), { at, type: "ai", value: on, version: PRIVACY_VERSION }].slice(-50);
+    return st;
+  });
+  revalidatePath("/konto");
+  return { ok: on ? "KI-Funktionen eingeschaltet." : "KI-Funktionen ausgeschaltet. Es werden keine Daten mehr an Anthropic gesendet." };
 }
 
 // ---------- Geräte ----------

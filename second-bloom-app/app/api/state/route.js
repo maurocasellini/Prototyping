@@ -20,7 +20,9 @@ async function save(req) {
   let s; try { s = JSON.parse(text); } catch { return NextResponse.json({ error: "Ungültige Daten." }, { status: 400 }); }
   if (!s || typeof s !== "object" || Array.isArray(s)) return NextResponse.json({ error: "Ungültige Daten." }, { status: 400 });
   const prev = (await repo.getState(me.id)) || {};
-  await repo.saveState(me.id, { ...s, consent_at: prev.consent_at || s.consent_at || null });
+  // Einwilligungen gehören dem Server: die App kann sie nicht überschreiben
+  delete s.consent; delete s.consent_log; delete s.consent_at;
+  await repo.saveState(me.id, { ...s, consent: prev.consent || null, consent_log: prev.consent_log || [] });
   return NextResponse.json({ ok: true });
 }
 export const PUT = save;

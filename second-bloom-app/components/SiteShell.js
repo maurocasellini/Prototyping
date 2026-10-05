@@ -4,7 +4,7 @@ import { currentUser } from "@/lib/auth";
 import { logout } from "@/app/actions";
 
 // Rahmen für die Website-Seiten (Start, Anmeldung, Konto, Admin)
-export default async function SiteShell({ children, narrow }) {
+export default async function SiteShell({ children }) {
   const me = await currentUser().catch(() => null);
   return (
     <>
@@ -23,8 +23,8 @@ export default async function SiteShell({ children, narrow }) {
           </>)}
         </nav>
       </header>
-      <main className={`site-main${narrow ? " narrow" : ""}`}>{children}</main>
-      <footer className="foot">Second Bloom ist ein Lifestyle-Begleiter und ersetzt keine ärztliche Beratung. · <Link href="/datenschutz">Datenschutz</Link></footer>
+      <main className="site-main">{children}</main>
+      <footer className="foot">Second Bloom ist ein Lifestyle-Begleiter und kein Medizinprodukt. Die App ersetzt keine ärztliche Beratung. · <Link href="/datenschutz">Datenschutzerklärung</Link></footer>
     </>
   );
 }

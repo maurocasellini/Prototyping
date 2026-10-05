@@ -4,7 +4,7 @@ import Form from "@/components/Form";
 import SyncButton from "@/components/SyncButton";
 import { requireUser } from "@/lib/auth";
 import * as repo from "@/lib/repo";
-import { updateAccount, changePassword, deleteAccount, connectDevice, disconnectDevice, syncNow } from "../actions";
+import { updateAccount, changePassword, deleteAccount, connectDevice, disconnectDevice, syncNow, setAiConsent } from "../actions";
 
 export const dynamic = "force-dynamic";
 const when = (s) => (s ? new Date(s).toLocaleString("de-CH", { dateStyle: "medium", timeStyle: "short" }) : "noch nie");
@@ -14,6 +14,8 @@ export default async function Konto({ searchParams }) {
   const me = await requireUser();
   const conn = await repo.getConnection(me.id, "intervals");
   const days = conn ? (await repo.getDaily(me.id)).length : 0;
+  const consent = (await repo.getState(me.id))?.consent || {};
+  const d = (s) => (s ? new Date(s).toLocaleDateString("de-CH", { dateStyle: "long" }) : "–");
   return (
     <SiteShell>
       <div className="stack"><span className="eyebrow">Konto{me.username ? ` · ${me.username}` : ""}</span><h1>Hallo, <em>{me.name}</em>.</h1></div>
@@ -65,6 +67,19 @@ export default async function Konto({ searchParams }) {
             <label>Neues Passwort<input type="password" name="password" autoComplete="new-password" minLength={8} required /></label>
             <label>Neues Passwort wiederholen<input type="password" name="password2" autoComplete="new-password" minLength={8} required /></label>
           </Form>
+        </section>
+        <section className="card">
+          <span className="eyebrow">Einwilligungen</span>
+          <h2>Datenschutz</h2>
+          <div className="kv">
+            <span>Gesundheitsdaten</span><b>erteilt am {d(consent.health_at)}</b>
+            <span>KI-Funktionen</span><b>{consent.ai ? `eingeschaltet seit ${d(consent.ai_at)}` : "ausgeschaltet"}</b>
+            <span>Fassung der Erklärung</span><b>{consent.version || "–"}</b>
+          </div>
+          <Form action={setAiConsent} submit="Speichern">
+            <label className="check"><input type="checkbox" name="ai" defaultChecked={Boolean(consent.ai)} /> <span>KI-Funktionen nutzen: Für Rezeptvorschläge, Wochenpläne und die Tageseinordnung wird ein knapper Auszug ohne Name und E-Mail an Anthropic (USA) gesendet.</span></label>
+          </Form>
+          <p className="small muted">Die Einwilligung zu den Gesundheitsdaten widerrufst du, indem du dein Konto löschst. Ohne sie kann die App nicht arbeiten. Alles Weitere steht in der <Link href="/datenschutz">Datenschutzerklärung</Link>.</p>
         </section>
         <section className="card">
           <span className="eyebrow">Deine Daten</span>

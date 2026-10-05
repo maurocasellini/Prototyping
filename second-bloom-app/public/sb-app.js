@@ -490,7 +490,7 @@ function renderToday(){
     </div>
     <div class="col">
     <div class="metrics">
-      <button class="metric" data-a="go" data-v="food:heute">${ring(p/g, p+'g', 'var(--sage)')}<span class="lbl">Protein</span><span class="val">${p} / ${g} g</span></button>
+      <button class="metric" data-a="go" data-v="food:heute">${ring(p/g, p+'g', 'var(--salbei)')}<span class="lbl">Protein</span><span class="val">${p} / ${g} g</span></button>
       <div class="metric">${ring(water/8, water, 'var(--sky)')}<span class="lbl">Gläser Wasser</span>${stepper('water', water+'/8', 'Wasser')}</div>
       <button class="metric" data-a="tab" data-v="koerper">${ring(mine.length?taken/mine.length:0, taken+'/'+mine.length, 'var(--accent)')}<span class="lbl">Supplements</span><span class="val">heute</span></button>
     </div>
@@ -1105,7 +1105,7 @@ const pctTxt = (v) => (v > 0 ? '+' : '') + v + ' %';
 function recoveryMini(){
   const t = wt();
   if(!t || t.recovery == null) return '';
-  const col = t.recovery >= 65 ? 'var(--sage)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)';
+  const col = t.recovery >= 65 ? 'var(--salbei)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)';
   return `<div class="card">
     <div class="row between"><div><span class="eyebrow">${WEAR.demo ? 'Uhr · Beispieldaten' : 'Deine Uhr'}</span><h2>Erholung <em>${esc(t.label || '')}</em></h2></div>
       <button class="ringbtn" data-a="tab" data-v="koerper" aria-label="Details zur Erholung">${ring(t.recovery/100, t.recovery, col)}</button></div>
@@ -1116,7 +1116,7 @@ function recoveryMini(){
 function bars(days){
   const d = days.slice(-14), W = 280, H = 56, bw = W / 14 - 3;
   return `<svg viewBox="0 0 ${W} ${H + 14}" class="bars" role="img" aria-label="Erholung der letzten 14 Tage">${d.map((x, i) => {
-    const v = x.recovery, h = v == null ? 2 : Math.max(3, v / 100 * H), col = v == null ? 'var(--line)' : v >= 65 ? 'var(--sage)' : v >= 45 ? 'var(--sun)' : 'var(--accent)';
+    const v = x.recovery, h = v == null ? 2 : Math.max(3, v / 100 * H), col = v == null ? 'var(--line)' : v >= 65 ? 'var(--salbei)' : v >= 45 ? 'var(--sun)' : 'var(--accent)';
     return `<rect x="${i * (W / 14)}" y="${H - h}" width="${bw}" height="${h}" rx="1.5" style="fill:${col}"/>`;
   }).join('')}<text x="0" y="${H + 12}">${d.length ? shortDate(new Date(d[0].day + 'T12:00:00')) : ''}</text><text x="${W}" y="${H + 12}" text-anchor="end">heute</text></svg>`;
 }
@@ -1131,7 +1131,7 @@ function wearCard(){
   const m = (lbl, val, sub) => `<div class="metric" style="background:var(--surface-2)"><span class="lbl">${lbl}</span><b style="font-family:var(--font-display);font-weight:500;color:var(--head);font-size:20px">${val}</b><span class="small muted">${sub || '&nbsp;'}</span></div>`;
   return `<div class="card">
     <div class="row between wrap"><div><span class="eyebrow">${esc(w.provider || 'Uhr')}${w.lastSync ? ' · ' + new Date(w.lastSync).toLocaleDateString('de-CH', {day:'numeric', month:'short'}) : ''}</span><h2>Erholung & <em>Schlaf</em></h2></div>
-      ${t && t.recovery != null ? ring(t.recovery/100, t.recovery, t.recovery >= 65 ? 'var(--sage)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)') : ''}</div>
+      ${t && t.recovery != null ? ring(t.recovery/100, t.recovery, t.recovery >= 65 ? 'var(--salbei)' : t.recovery >= 45 ? 'var(--sun)' : 'var(--accent)') : ''}</div>
     ${w.error ? `<p class="msg err small">${esc(w.error)}</p>` : ''}
     ${t ? `
       ${t.stale ? `<p class="small muted">Letzte Werte vom ${new Date(t.day + 'T12:00:00').toLocaleDateString('de-CH', {day:'numeric', month:'long'})}.</p>` : ''}
@@ -1145,7 +1145,7 @@ function wearCard(){
       ${t.unrest ? `<div class="banner"><b>Unruhige Nacht</b><p class="small">${esc(t.unrest.text)}</p></div>` : ''}
       ${w.days.length ? `<div class="chart">${bars(w.days)}</div>` : ''}` : '<p class="small muted">Noch keine Werte. Der erste Abgleich kann ein paar Minuten dauern.</p>'}
     ${w.cycle && w.cycle.note ? `<div class="card flat" style="gap:6px"><span class="eyebrow">Zyklus</span><p class="small">${esc(w.cycle.note)}</p>${w.cycle.lens && w.cycle.lens.length ? `<p class="small muted">Letzte Zykluslängen: ${w.cycle.lens.join(', ')} Tage</p>` : ''}</div>` : ''}
-    ${w.insights && w.insights.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Was dir gut tut</span>${w.insights.map(i => `<p class="small">${esc(i.text)} <span class="muted">(${i.n} Tage)</span></p>`).join('')}</div>` : ''}
+    ${w.insights && w.insights.length ? `<div class="insight stack" style="gap:6px"><span class="eyebrow" style="color:var(--sage)">Was dir gut tut</span>${w.insights.map(i => `<p class="small">${esc(i.text)} <span class="muted">(${i.n} Tage)</span></p>`).join('')}</div>` : ''}
     ${USER ? '<a class="link" href="/konto#geraete">Gerät verwalten</a>' : '<p class="small muted">Beispieldaten einer Garmin. Mit einem Konto verbindest du deine eigene Uhr.</p>'}
   </div>`;
 }
