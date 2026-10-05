@@ -7,7 +7,6 @@ import { connectIntervals, syncUser } from "@/lib/sync";
 import { encrypt } from "@/lib/crypto";
 import { PRIVACY_VERSION } from "@/lib/privacy";
 import { readProfile } from "@/lib/profile";
-import { needsConsent } from "@/lib/consent";
 import { setLangCookie } from "@/lib/lang";
 
 const s = (form, k) => String(form.get(k) || "").trim();
@@ -22,7 +21,7 @@ export async function login(_prev, form) {
   await createSession(u);
   const lang = (await repo.getState(u.id))?.profile?.lang;
   if (lang) await setLangCookie(lang);
-  redirect(u.must_change ? "/konto?neu=1" : (await needsConsent(u.id)) ? "/einwilligung" : "/app");
+  redirect(u.must_change ? "/konto?neu=1" : "/app");
 }
 
 export async function register(_prev, form) {
