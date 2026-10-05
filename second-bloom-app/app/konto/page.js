@@ -73,11 +73,11 @@ export default async function Konto({ searchParams }) {
           <h2>Datenschutz</h2>
           <div className="kv">
             <span>Gesundheitsdaten</span><b>erteilt am {d(consent.health_at)}</b>
-            <span>KI-Funktionen</span><b>{consent.ai ? `eingeschaltet seit ${d(consent.ai_at)}` : "ausgeschaltet"}</b>
+            <span>KI-Funktionen</span><b>{consent.ai === false ? "ausgeschaltet" : consent.ai_at ? `eingeschaltet seit ${d(consent.ai_at)}` : "eingeschaltet"}</b>
             <span>Fassung der Erklärung</span><b>{consent.version || "–"}</b>
           </div>
           <Form action={setAiConsent} submit="Speichern">
-            <label className="check"><input type="checkbox" name="ai" defaultChecked={Boolean(consent.ai)} /> <span>KI-Funktionen nutzen: Für Rezeptvorschläge, Wochenpläne und die Tageseinordnung wird ein knapper Auszug ohne Name und E-Mail an Anthropic (USA) gesendet.</span></label>
+            <label className="check"><input type="checkbox" name="ai" defaultChecked={consent.ai !== false} /> <span>KI-Funktionen nutzen: Für Rezeptvorschläge, Wochenpläne und die Tageseinordnung wird ein knapper Auszug ohne Name und E-Mail an Anthropic (USA) gesendet.</span></label>
           </Form>
           <p className="small muted">Die Einwilligung zu den Gesundheitsdaten widerrufst du, indem du dein Konto löschst. Ohne sie kann die App nicht arbeiten. Alles Weitere steht in der <Link href="/datenschutz">Datenschutzerklärung</Link>.</p>
         </section>

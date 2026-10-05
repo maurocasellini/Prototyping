@@ -6,6 +6,8 @@ import { createSession, destroySession, requireUser, requireAdmin } from "@/lib/
 import { connectIntervals, syncUser } from "@/lib/sync";
 import { encrypt } from "@/lib/crypto";
 import { PRIVACY_VERSION } from "@/lib/privacy";
+import { readProfile } from "@/lib/profile";
+import { needsConsent } from "@/lib/consent";
 
 const s = (form, k) => String(form.get(k) || "").trim();
 
@@ -17,7 +19,7 @@ export async function login(_prev, form) {
   if (u.username === "ADMIN" && u.must_change && (await repo.listUsers()).some((x) => x.id !== u.id && x.role === "admin" && !x.must_change))
     return { error: "Dieses Start-Konto ist aus Sicherheitsgründen gesperrt. Bitte mit deinem eigenen Admin-Konto anmelden." };
   await createSession(u);
-  redirect(u.must_change ? "/konto?neu=1" : "/app");
+  redirect(u.must_change ? "/konto?neu=1" : (await needsConsent(u.id)) ? "/einwilligung" : "/app");
 }
 
 export async function register(_prev, form) {
@@ -27,18 +29,41 @@ export async function register(_prev, form) {
   if (!name) return { error: "Bitte deinen Vornamen angeben." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Die E-Mail-Adresse sieht nicht gültig aus." };
   if (pw.length < 8) return { error: "Bitte ein Passwort mit mindestens 8 Zeichen wählen." };
-  if (form.get("adult") !== "on") return { error: "Second Bloom ist für Erwachsene ab 18 Jahren." };
-  if (form.get("privacy") !== "on") return { error: "Bitte bestätige, dass du die Datenschutzerklärung gelesen hast." };
-  if (form.get("consent") !== "on") return { error: "Ohne Einwilligung zu den Gesundheitsdaten kann die App nicht arbeiten. Du kannst sie jederzeit widerrufen." };
+  if (pw !== String(form.get("password2") || "")) return { error: "Die beiden Passwörter sind nicht gleich." };
+  const p = readProfile(form, name);
+  if (p.error) return { error: p.error };
+  const c = consentError(form);
+  if (c) return { error: c };
   let u;
   try { u = await repo.createUser({ name, email, password: pw }); } catch (e) { return { error: e.message }; }
-  const at = new Date().toISOString(), ai = form.get("consent_ai") === "on";
-  // Nachweis der Einwilligung (Art. 7 Abs. 1 DSGVO): Zeitpunkt, Art und Version der Erklärung
-  await repo.saveState(u.id, {
-    consent: { version: PRIVACY_VERSION, health_at: at, privacy_at: at, adult: true, ai, ai_at: ai ? at : null },
-    consent_log: [{ at, type: "health", value: true, version: PRIVACY_VERSION }, { at, type: "ai", value: ai, version: PRIVACY_VERSION }],
-  });
+  await repo.saveState(u.id, { profile: p.profile, household: p.household, diet: p.diet, prefs: p.prefs, ...consentRecord() });
   await createSession(u);
+  redirect("/app");
+}
+
+// Pflicht-Häkchen: Datenschutz akzeptiert, Gesundheitsdaten (inkl. KI), kein Ersatz für ärztliche Beratung
+function consentError(form) {
+  if (form.get("privacy") !== "on") return "Bitte lies und akzeptiere die Datenschutzerklärung.";
+  if (form.get("consent") !== "on") return "Ohne Einwilligung zu den Gesundheitsdaten kann die App nicht arbeiten. Du kannst sie jederzeit widerrufen.";
+  if (form.get("medical") !== "on") return "Bitte bestätige, dass Second Bloom keine ärztliche Beratung ersetzt.";
+  return null;
+}
+// Nachweis der Einwilligung (Art. 7 Abs. 1 DSGVO): Zeitpunkt, Art und Version der Erklärung
+function consentRecord(prev = {}) {
+  const at = new Date().toISOString(), ai = prev.consent?.ai !== false;
+  return {
+    consent: { ...(prev.consent || {}), version: PRIVACY_VERSION, health_at: at, privacy_at: at, medical_at: at, adult: true, ai, ai_at: prev.consent?.ai_at || at },
+    consent_log: [...(prev.consent_log || []), { at, type: "privacy", value: true, version: PRIVACY_VERSION }, { at, type: "health", value: true, version: PRIVACY_VERSION }, { at, type: "ai", value: ai, version: PRIVACY_VERSION }].slice(-50),
+  };
+}
+
+// Bestätigung nach dem Login, wenn noch keine oder eine ältere Einwilligung vorliegt
+export async function acceptConsent(_prev, form) {
+  const me = await requireUser();
+  if (form.get("adult") !== "on") return { error: "Second Bloom ist für Erwachsene ab 18 Jahren." };
+  const c = consentError(form);
+  if (c) return { error: c };
+  await repo.patchState(me.id, (st) => ({ ...st, ...consentRecord(st) }));
   redirect("/app");
 }
 

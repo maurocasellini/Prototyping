@@ -1307,4 +1307,6 @@ function videoBlock(key, name){
     <p class="small muted">Beim Abspielen lädt YouTube (Google) das Video. Erst dann werden Daten an YouTube übertragen.</p>`;
 }
 
+// Profil kommt aus der Registrierung: Plan und Einkaufsliste beim ersten Start anlegen
+if(USER && S.profile && !S.plan){ generatePlan(); buildShop(); save(); }
 render();

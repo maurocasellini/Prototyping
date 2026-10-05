@@ -54,7 +54,7 @@ export default function Datenschutz() {
             <ul>
               <li>Second Bloom verarbeitet <b>Gesundheitsdaten</b>. Das tun wir nur mit deiner <b>ausdrücklichen Einwilligung</b> und nur, um dir persönliche Empfehlungen zu geben.</li>
               <li>Server und Datenspeicher stehen in der <b>EU (Frankfurt am Main)</b>. Betreiber der Infrastruktur ist ein US-Unternehmen, siehe Abschnitt 12 und 13.</li>
-              <li>Die <b>KI-Funktionen sind freiwillig</b> und separat einschaltbar. Dabei geht ein knapper Auszug ohne Name und E-Mail an Anthropic.</li>
+              <li>Die <b>KI-Funktionen</b> sind standardmässig eingeschaltet und lassen sich unter Konto jederzeit ausschalten. Dabei geht ein knapper Auszug ohne Name und E-Mail an Anthropic.</li>
               <li><b>Keine Werbung, kein Verkauf von Daten, kein Tracking</b>, keine Analyse-Werkzeuge von Dritten.</li>
               <li>Du kannst jederzeit <b>alle Daten herunterladen</b> und dein <b>Konto mit allen Daten sofort löschen</b> (unter <Link href="/konto">Konto</Link>).</li>
             </ul>
@@ -85,7 +85,7 @@ export default function Datenschutz() {
             <tr><td>Konto bereitstellen, Anmeldung, Passwort ändern</td><td>Kontodaten</td><td>Vertrag, Art. 6 Abs. 1 lit. b DSGVO</td></tr>
             <tr><td>Persönliche Empfehlungen: Tagesplan, Training, Ernährung, Übungen, Verlauf, Bericht fürs Arztgespräch</td><td>Profil, Gesundheitsdaten, Gerätewerte</td><td>ausdrückliche Einwilligung, Art. 9 Abs. 2 lit. a und Art. 6 Abs. 1 lit. a DSGVO, Art. 6 Abs. 7 lit. a DSG</td></tr>
             <tr><td>Uhr verbinden und täglich abgleichen</td><td>Zugangsdaten, Gerätewerte</td><td>ausdrückliche Einwilligung wie oben, Vertrag für die Funktion</td></tr>
-            <tr><td>KI-Vorschläge</td><td>KI-Anfragen</td><td>gesonderte, freiwillige Einwilligung, Art. 9 Abs. 2 lit. a und Art. 49 Abs. 1 lit. a DSGVO, soweit für die Übermittlung nötig</td></tr>
+            <tr><td>KI-Vorschläge</td><td>KI-Anfragen</td><td>Einwilligung bei der Registrierung, jederzeit separat abschaltbar, Art. 9 Abs. 2 lit. a und Art. 49 Abs. 1 lit. a DSGVO, soweit für die Übermittlung nötig</td></tr>
             <tr><td>Nachweis der Einwilligungen</td><td>Einwilligungsprotokoll</td><td>rechtliche Pflicht, Art. 6 Abs. 1 lit. c i. V. m. Art. 7 Abs. 1 DSGVO</td></tr>
             <tr><td>Sicherheit, Missbrauchsschutz, Kostenbegrenzung der KI, Fehlerbehebung</td><td>Nutzungs- und Sicherheitsdaten</td><td>berechtigtes Interesse an einem sicheren, bezahlbaren Betrieb, Art. 6 Abs. 1 lit. f DSGVO</td></tr>
             <tr><td>Erfüllung gesetzlicher Pflichten, Durchsetzung von Ansprüchen</td><td>soweit nötig</td><td>Art. 6 Abs. 1 lit. c und f DSGVO, Art. 9 Abs. 2 lit. f DSGVO</td></tr>
@@ -93,7 +93,7 @@ export default function Datenschutz() {
           <p>Wir verwenden deine Daten nicht für andere Zwecke. Eine Weiterverarbeitung zu einem neuen Zweck würden wir dir vorher mitteilen und, wo nötig, deine Einwilligung einholen.</p>
 
           <h2 id="einwilligung">6. Einwilligung und Widerruf</h2>
-          <p>Bei der Registrierung bittest du uns um zwei voneinander getrennte Einwilligungen: die <b>Einwilligung zu den Gesundheitsdaten</b>, ohne die die App ihre Aufgabe nicht erfüllen kann, und die <b>freiwillige Einwilligung zu den KI-Funktionen</b>. Wir speichern Zeitpunkt, Art und Fassung jeder Einwilligung, um sie nachweisen zu können.</p>
+          <p>Bei der Registrierung bitten wir dich um eine ausdrückliche <b>Einwilligung zu den Gesundheitsdaten</b>, ohne die die App ihre Aufgabe nicht erfüllen kann. Sie umfasst ausdrücklich auch die KI-Funktionen und die dafür nötige Übermittlung an Anthropic. Die KI-Funktionen kannst du unter Konto jederzeit separat ausschalten, ohne die übrige App zu verlieren. Wir speichern Zeitpunkt, Art und Fassung jeder Einwilligung, um sie nachweisen zu können.</p>
           <p>Du kannst jede Einwilligung <b>jederzeit mit Wirkung für die Zukunft widerrufen</b> (Art. 7 Abs. 3 DSGVO). Die KI schaltest du unter <Link href="/konto">Konto</Link> mit einem Klick aus. Die Einwilligung zu den Gesundheitsdaten widerrufst du, indem du dein Konto löschst oder uns schreibst. Dann löschen wir deine Gesundheitsdaten. Die Rechtmässigkeit der bis dahin erfolgten Verarbeitung bleibt unberührt.</p>
 
           <h2 id="gesundheit">7. Gesundheitsdaten</h2>
@@ -104,7 +104,7 @@ export default function Datenschutz() {
           <p>Wir speichern deinen API-Schlüssel <b>verschlüsselt (AES-256-GCM)</b> und rufen damit einmal täglich sowie auf deinen Wunsch die Werte der letzten Tage ab, beim ersten Verbinden die letzten 120 Tage. Wir übernehmen nur die in Abschnitt 4 genannten Gesundheitswerte, keine GPS-Daten, Strecken oder Trainingsdetails. Du kannst die Verbindung unter Konto jederzeit trennen und dabei alle gespeicherten Gerätewerte löschen.</p>
 
           <h2 id="ki">9. KI-Funktionen</h2>
-          <p>Nur wenn du die KI-Funktionen eingeschaltet hast, senden wir für die jeweilige Anfrage einen knappen Auszug an die Claude-API von <b>Anthropic</b>:</p>
+          <p>Solange du die KI-Funktionen nicht ausgeschaltet hast (Standard: eingeschaltet), senden wir für die jeweilige Anfrage einen knappen Auszug an die Claude-API von <b>Anthropic</b>:</p>
           <ul>
             <li><b>Rezept aus Zutaten:</b> Zutaten, Mahlzeit, Zeit, Personenzahl, Ernährungsweise.</li>
             <li><b>Rezept aus Foto:</b> zusätzlich das Foto, vorher auf höchstens 1024 Pixel verkleinert. Wir speichern das Foto nicht. Achte bitte darauf, dass keine Personen oder persönlichen Unterlagen zu sehen sind.</li>
@@ -188,7 +188,7 @@ export default function Datenschutz() {
           </ul>
 
           <h2 id="pflicht">20. Pflicht zur Angabe von Daten</h2>
-          <p>Für ein Konto brauchen wir Vorname, E-Mail und Passwort sowie deine Einwilligung zu den Gesundheitsdaten. Alle weiteren Angaben, das Verbinden einer Uhr und die KI-Funktionen sind freiwillig. Ohne sie stehen einzelne Funktionen nicht oder nur eingeschränkt zur Verfügung.</p>
+          <p>Für ein Konto brauchen wir Vorname, E-Mail und Passwort sowie deine Einwilligung zu den Gesundheitsdaten. Alle weiteren Angaben und das Verbinden einer Uhr sind freiwillig; die KI-Funktionen kannst du ausschalten. Ohne sie stehen einzelne Funktionen nicht oder nur eingeschränkt zur Verfügung.</p>
 
           <h2 id="alter">21. Mindestalter</h2>
           <p>Second Bloom richtet sich an Erwachsene. Die Nutzung ist erst ab 18 Jahren erlaubt. Bei der Registrierung bestätigst du dein Alter.</p>

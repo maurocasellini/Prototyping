@@ -16,8 +16,11 @@ export async function POST(req, { params }) {
   const { task } = await params;
   const me = await currentUser().catch(() => null);
   const who = me ? me.id : "demo";
-  if (me && !(await repo.getState(me.id))?.consent?.ai)
-    return NextResponse.json({ error: "Die KI-Funktionen sind in deinem Konto ausgeschaltet. Du kannst sie unter Konto einschalten." }, { status: 503 });
+  if (me) {
+    const c = (await repo.getState(me.id))?.consent;
+    if (!c?.health_at) return NextResponse.json({ error: "Bitte zuerst der Datenschutzerklärung zustimmen." }, { status: 403 });
+    if (c.ai === false) return NextResponse.json({ error: "Die KI-Funktionen sind in deinem Konto ausgeschaltet. Du kannst sie unter Konto einschalten." }, { status: 503 });
+  }
   let b; try { b = await req.json(); } catch { return NextResponse.json({ error: "Ungültige Anfrage." }, { status: 400 }); }
   try {
     if (task === "cook") {

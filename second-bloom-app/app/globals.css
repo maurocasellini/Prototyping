@@ -389,3 +389,23 @@ nav.tabs button[aria-current="page"] svg{color:var(--sage)}
 /* Quellenlisten */
 .srcs{margin:10px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13px;line-height:1.55}
 .srcs .tag{margin-right:4px}
+
+/* Registrierung: Gruppen, zweispaltige Felder, Optionen */
+.fs{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.fs legend{font-family:var(--head);font-size:19px;color:var(--accent);padding:0;margin-bottom:10px}
+.fs + .fs{border-top:1px solid var(--line);padding-top:18px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+.form select{font:inherit;font-size:15px;letter-spacing:0;text-transform:none;color:var(--ink);padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.form .opt{flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;background:var(--salbei-soft)}
+.form .opt:has(input:checked){border-color:var(--sage);box-shadow:inset 0 0 0 1px var(--sage)}
+.form .opt input{margin-top:3px;accent-color:var(--sage)}
+.form .opt span{display:flex;flex-direction:column;gap:2px}
+.form .opt small{color:var(--muted);font-size:12.5px}
+.form .chipc{flex-direction:row;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--ink);cursor:pointer}
+.chipc input{position:absolute;opacity:0;pointer-events:none}
+.chipc span{display:inline-block;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.chipc input:checked + span{background:var(--rosa-soft);border-color:var(--rosa);color:var(--accent)}
+.chipc input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
