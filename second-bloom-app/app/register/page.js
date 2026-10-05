@@ -4,6 +4,7 @@ import AuthLayout from "@/components/AuthLayout";
 import Form from "@/components/Form";
 import ConsentFields from "@/components/ConsentFields";
 import AutoPhase from "@/components/AutoPhase";
+import BmiHint from "@/components/BmiHint";
 import { register } from "../actions";
 import { getLang } from "@/lib/lang";
 import { PHASE_OPTS, GOAL_OPTS, DIET_OPTS, INTOL_OPTS, COUNTRY_OPTS, LANG_OPTS } from "@/lib/profile";
@@ -37,7 +38,12 @@ export default async function Register() {
               <label>Grösse in cm (optional)<input type="number" name="height" min={120} max={220} inputMode="numeric" /></label>
               <label>Gewicht in kg (optional)<input type="number" name="weight" min={35} max={250} inputMode="numeric" /></label>
             </div>
-            <p className="small muted">Das Gewicht dient nur deinem Proteinziel (1,4 g pro kg). Ohne Angabe rechnen wir mit 68 kg.</p>
+            <div className="row2">
+              <label>Taillenumfang in cm (optional)<input type="number" name="waist" min={50} max={160} inputMode="numeric" placeholder="auf Nabelhöhe gemessen" /></label>
+              <label className="check" style={{ alignSelf: "end" }}><input type="checkbox" name="muscular" /> <span>Ich trainiere regelmässig Kraft oder bin muskulös</span></label>
+            </div>
+            <BmiHint />
+            <p className="small muted">Das Gewicht dient auch deinem Proteinziel (1,4 g pro kg). Ohne Angabe rechnen wir mit 68 kg.</p>
             <label>Sprache<select name="lang" defaultValue={lang} translate="no">{LANG_OPTS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
           </fieldset>
           <fieldset className="fs"><legend>Deine Phase</legend>

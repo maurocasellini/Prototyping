@@ -429,3 +429,4 @@ a.chip{text-decoration:none}
 .tag.ev-niedrig{background:var(--sun-soft);color:var(--sun)}
 .tag.ev-unzureichend{background:var(--rosa-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--rosa)}
 .tag.t-src{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+body.cookie-open .site-main,body.cookie-open #main{padding-bottom:180px}

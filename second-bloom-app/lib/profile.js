@@ -30,7 +30,8 @@ export function readProfile(form, name) {
   if (age > 110) return { error: "Bitte das Geburtsdatum prüfen." };
   const phase = String(form.get("phase") || "");
   if (!PHASE_OPTS.some(([k]) => k === phase)) return { error: "Bitte wähle deine Phase. Wenn du unsicher bist: «Noch unsicher»." };
-  const weight = num(form.get("weight"), 35, 250), height = num(form.get("height"), 120, 220);
+  const weight = num(form.get("weight"), 35, 250), height = num(form.get("height"), 120, 220), waist = num(form.get("waist"), 50, 160);
+  if (form.get("waist") && !waist) return { error: "Bitte den Taillenumfang in cm prüfen." };
   if (form.get("weight") && !weight) return { error: "Bitte das Gewicht in kg prüfen." };
   if (form.get("height") && !height) return { error: "Bitte die Grösse in cm prüfen." };
   const country = COUNTRY_OPTS.some(([k]) => k === form.get("country")) ? String(form.get("country")) : "CH";
@@ -40,7 +41,7 @@ export function readProfile(form, name) {
   const diet = DIET_OPTS.some(([k]) => k === form.get("diet")) ? String(form.get("diet")) : "all";
   const household = num(form.get("household"), 1, 8) || 2;
   return {
-    profile: { name, lastname: String(form.get("lastname") || "").trim().slice(0, 60) || null, birth, age, weight: weight || 68, height, phase, goals, country, lang },
+    profile: { name, lastname: String(form.get("lastname") || "").trim().slice(0, 60) || null, birth, age, weight: weight || 68, height, waist, muscular: form.get("muscular") === "on", phase, goals, country, lang },
     household, diet, prefs: { avoid, dislike: [], like: [] },
   };
 }

@@ -284,7 +284,23 @@ const R = id => RECIPES.find(r=>r.id===id) || RECIPES[0];
 
 // Phase aus dem Alter vorschlagen (Menopause im Mittel um 51); eine selbst gewählte Phase bleibt
 const phaseForAge = (a) => a < 40 ? 'unsure' : a < 50 ? 'peri' : a < 53 ? 'meno' : 'post';
-let ob = {step:0, phaseManual:false, name:(BOOT.user && BOOT.user.name) || 'Sandra', age:49, weight:68, household:2, phase:'peri', goals:['Besser schlafen','Stimmung stabilisieren','Konzentration im Job'], agree:false};
+// BMI nur als grober Indikator (unterscheidet nicht zwischen Muskeln und Fett), neutral formuliert
+const bmiOf = (w, h) => (w && h) ? Math.round(w / ((h/100) ** 2) * 10) / 10 : null;
+const bmiNote = (b) => b == null ? '' : b < 18.5 ? 'unter dem Richtbereich (18,5–24,9)' : b < 25 ? 'im Richtbereich (18,5–24,9)' : b < 30 ? 'etwas über dem Richtbereich (18,5–24,9)' : 'über dem Richtbereich (18,5–24,9)';
+const BMI_HINT = 'Nur ein grober Richtwert: Er unterscheidet nicht zwischen Muskeln und Fett. Ab der Lebensmitte sagt der Taillenumfang mehr aus.';
+const bmiNum = (b) => String(b).replace('.', LANG === 'en' ? '.' : ',');
+const MUSCLE_HINT = 'Bei viel Muskelmasse ist ein höherer BMI häufig unbedenklich. Aussagekräftiger ist der Taillenumfang.';
+// Taille-zu-Grösse-Verhältnis (WHtR), Richtwerte nach NICE 2022: unter 0,5 günstig, 0,5–0,59 erhöht, ab 0,6 deutlich erhöht
+const whtrOf = (waist, h) => (waist && h) ? Math.round(waist / h * 100) / 100 : null;
+const whtrNote = (r) => r < 0.5 ? 'günstig (Taille unter der halben Körpergrösse)' : r < 0.6 ? 'erhöht (Richtwert unter 0,5)' : 'deutlich erhöht (Richtwert unter 0,5)';
+const bmiHint = (b, muscular) => muscular && b >= 25 ? MUSCLE_HINT : BMI_HINT;
+const bmiLine = (w, h, muscular, waist) => {
+  const b = bmiOf(w, h); if(b == null) return '';
+  const r = whtrOf(waist, h);
+  return `<span>BMI ${bmiNum(b)}:</span> <span>${bmiNote(b)}</span>. <span>${bmiHint(b, muscular)}</span>`
+    + (r ? `<br><span>Taille zu Grösse ${bmiNum(r)}:</span> <span>${whtrNote(r)}</span>.` : '');
+};
+let ob = {step:0, phaseManual:false, height:166, waist:null, muscular:false, name:(BOOT.user && BOOT.user.name) || 'Sandra', age:49, weight:68, household:2, phase:'peri', goals:['Besser schlafen','Stimmung stabilisieren','Konzentration im Job'], agree:false};
 let draft = null, wDraft = null, breathTimer = null, sheetRender = null, confirmReset = false, recN = 2;
 let cook = {photo:null, photoUrl:'', text:'', picks:[], servings:null, meal:'Abend', time:30, busy:false, result:null, err:'', note:'', ctl:null};
 let planWish = '', planBusy = false;
@@ -396,6 +412,19 @@ function prefsSummary(){
   return parts.join(' · ');
 }
 function aiPrefs(){ const p = prefs(); return {avoid: p.avoid.map(k=>INTOL[k]?.n).filter(Boolean), dislike: p.dislike, like: p.like}; }
+function openBody(){
+  const p = S.profile;
+  openSheet('Körpermasse', () => `
+    <div class="row">
+      <label class="f" style="flex:1">Alter<input type="number" id="body-age" min="18" max="100" value="${p.age||''}"></label>
+      <label class="f" style="flex:1">Grösse (cm)<input type="number" id="body-height" min="120" max="220" value="${p.height||''}"></label>
+      <label class="f" style="flex:1">Gewicht (kg)<input type="number" id="body-weight" min="35" max="250" value="${p.weight||''}"></label>
+    </div>
+    <label class="f">Taillenumfang in cm (optional)<input type="number" id="body-waist" min="50" max="160" value="${p.waist||''}" placeholder="auf Nabelhöhe gemessen"></label>
+    <label class="check"><input type="checkbox" id="body-muscular" ${p.muscular?'checked':''}> <span>Ich trainiere regelmässig Kraft oder bin muskulös</span></label>
+    <p class="small muted" id="body-bmi">${bmiLine(p.weight, p.height, p.muscular, p.waist)}</p>
+    <button class="btn accent block" data-a="body-save">Speichern</button>`);
+}
 function openPrefs(){
   openSheet('Unverträglichkeiten & Vorlieben', () => { const p = prefs(); return `
     <p class="small muted">Gilt für Wochenplan, Rezeptvorschläge, Kochen mit dem, was da ist, und die Einkaufsliste.</p>
@@ -508,9 +537,15 @@ function renderOnboarding(){
     <label class="f">Vorname<input type="text" id="ob-name" value="${esc(ob.name)}" autocomplete="given-name"></label>
     <div class="row">
       <label class="f" style="flex:1">Alter<input type="number" id="ob-age" min="35" max="80" value="${ob.age}"></label>
+      <label class="f" style="flex:1">Grösse (cm)<input type="number" id="ob-height" min="130" max="210" value="${ob.height}"></label>
       <label class="f" style="flex:1">Gewicht (kg)<input type="number" id="ob-weight" min="40" max="160" value="${ob.weight}"></label>
     </div>
-    <p class="small muted">Das Gewicht brauche ich nur für dein Proteinziel (1,4 g pro kg Körpergewicht).</p>
+    <div class="row">
+      <label class="f" style="flex:1">Taillenumfang in cm (optional)<input type="number" id="ob-waist" min="50" max="160" value="${ob.waist||''}" placeholder="auf Nabelhöhe gemessen"></label>
+      <label class="check" style="flex:1;align-self:end"><input type="checkbox" id="ob-muscular" ${ob.muscular?'checked':''}> <span>Ich trainiere regelmässig Kraft oder bin muskulös</span></label>
+    </div>
+    <p class="small muted" id="ob-bmi">${bmiLine(ob.weight, ob.height, ob.muscular, ob.waist)}</p>
+    <p class="small muted">Das Gewicht brauche ich auch für dein Proteinziel (1,4 g pro kg Körpergewicht).</p>
     <div class="row between"><b class="small">Für wie viele Personen kochst du meistens?</b>${stepper('ob-hh', ob.household, 'Personen')}</div>
     <div class="stack"><b class="small">In welcher Phase bist du?</b><span class="small muted">Vorschlag nach deinem Alter. Tippe an, was für dich passt.</span>
       ${Object.entries(PHASES).map(([k,p])=>`<button class="radio ${ob.phase===k?'on':''}" data-a="ob-phase" data-v="${k}"><b>${p.name}</b><span>${p.desc}</span></button>`).join('')}
@@ -1017,7 +1052,10 @@ function renderBody(){
       <h3>Profil</h3>
       <div class="list small">
         <div class="li"><div class="grow">Name</div><b>${esc(S.profile.name)}</b></div>
-        <div class="li"><div class="grow">Alter · Gewicht</div><b class="num">${S.profile.age} · ${S.profile.weight} kg</b></div>
+        <div class="li"><div class="grow">Alter · Grösse · Gewicht</div><b class="num">${S.profile.age} · ${S.profile.height ? S.profile.height + ' cm' : '–'} · ${S.profile.weight} kg</b></div>
+        ${S.profile.height ? `<div class="li"><div class="grow">BMI<div class="small muted"><span>${bmiNote(bmiOf(S.profile.weight, S.profile.height))}</span>. <span>${bmiHint(bmiOf(S.profile.weight, S.profile.height), S.profile.muscular)}</span></div></div><b class="num">${bmiNum(bmiOf(S.profile.weight, S.profile.height))}</b></div>` : ''}
+        ${whtrOf(S.profile.waist, S.profile.height) ? `<div class="li"><div class="grow">Taille zu Grösse<div class="small muted"><span>${whtrNote(whtrOf(S.profile.waist, S.profile.height))}</span>. <span>Taillenumfang ${S.profile.waist} cm</span></div></div><b class="num">${bmiNum(whtrOf(S.profile.waist, S.profile.height))}</b></div>` : ''}
+        <div class="li"><div class="grow">Körpermasse</div><button class="link" data-a="body-edit">Bearbeiten</button></div>
         <div class="li"><div class="grow">Proteinziel</div><b class="num">${proteinGoal()} g pro Tag</b></div>
         <div class="li"><div class="grow">Haushalt</div><b class="num">${S.household} ${S.household===1?'Person':'Personen'}</b></div>
         <div class="li"><div class="grow">Essen<div class="small muted">${esc(prefsSummary() || 'Keine Unverträglichkeiten oder Vorlieben hinterlegt')}</div></div><button class="link" data-a="prefs">Bearbeiten</button></div>
@@ -1098,7 +1136,11 @@ function go(v){
   else if(k==='recipe') openRecipe(a);
 }
 function readOb(){
-  const n = document.getElementById('ob-name'), a = document.getElementById('ob-age'), w = document.getElementById('ob-weight');
+  const n = document.getElementById('ob-name'), a = document.getElementById('ob-age'), w = document.getElementById('ob-weight'), h = document.getElementById('ob-height');
+  if(h) ob.height = Math.min(220, Math.max(120, parseInt(h.value)||166));
+  const wa = document.getElementById('ob-waist'), mu = document.getElementById('ob-muscular');
+  if(wa){ const v = parseInt(wa.value); ob.waist = v >= 50 && v <= 160 ? v : null; }
+  if(mu) ob.muscular = mu.checked;
   if(n) ob.name = n.value.trim() || 'Du';
   if(a) ob.age = Math.min(90, Math.max(30, parseInt(a.value)||49));
   if(w) ob.weight = Math.min(200, Math.max(35, parseInt(w.value)||68));
@@ -1117,7 +1159,7 @@ document.addEventListener('click', e => {
     case 'ob-goal': ob.goals = ob.goals.includes(v) ? ob.goals.filter(g=>g!==v) : [...ob.goals, v]; render(); break;
     case 'ob-agree': ob.agree = el.checked; render(); break;
     case 'ob-finish':
-      S.profile = {name:ob.name, age:ob.age, weight:ob.weight, phase:ob.phase, goals:ob.goals};
+      S.profile = {name:ob.name, age:ob.age, height:ob.height, weight:ob.weight, waist:ob.waist, muscular:ob.muscular, phase:ob.phase, goals:ob.goals};
       S.household = ob.household; if(!USER) seedExamples(); generatePlan(); buildShop(); S.tab = 'heute'; save(); render(); break;
     case 'step': {
       const [k, d] = v.split(':'), dd = +d;
@@ -1179,6 +1221,13 @@ document.addEventListener('click', e => {
     case 'prefs': openPrefs(); break;
     case 'ob-avoid': { const a = prefs().avoid; S.prefs.avoid = a.includes(v) ? a.filter(x=>x!==v) : [...a, v]; render(); break; }
     case 'pref-avoid': { const a = prefs().avoid; S.prefs.avoid = a.includes(v) ? a.filter(x=>x!==v) : [...a, v]; rerenderSheet(); break; }
+    case 'body-edit': openBody(); break;
+    case 'body-save': {
+      const n = (id, lo, hi) => { const v = parseInt(document.getElementById(id)?.value); return v >= lo && v <= hi ? v : null; };
+      const p = S.profile;
+      p.age = n('body-age', 18, 100) || p.age; p.height = n('body-height', 120, 220) || p.height; p.weight = n('body-weight', 35, 250) || p.weight;
+      p.waist = n('body-waist', 50, 160); p.muscular = Boolean(document.getElementById('body-muscular')?.checked);
+      save(); closeSheet(); render(); toast('Gespeichert.'); break; }
     case 'pref-save': {
       const split = (id) => (document.getElementById(id)?.value || '').split(',').map(x=>x.trim()).filter(x=>x.length>=2).slice(0,15);
       S.prefs.dislike = split('pref-dislike'); S.prefs.like = split('pref-like');
@@ -1190,6 +1239,11 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => {
   if(e.target.id==='cook-text') cook.text = e.target.value;
+  if(['ob-height','ob-weight','ob-waist','ob-muscular','body-height','body-weight','body-waist','body-muscular'].includes(e.target.id)){
+    const pre = e.target.id.split('-')[0], val = (k) => document.getElementById(pre+'-'+k);
+    const hh = parseInt(val('height')?.value), ww = parseInt(val('weight')?.value), wa = parseInt(val('waist')?.value), el = document.getElementById(pre+'-bmi');
+    if(el) el.innerHTML = (hh >= 120 && hh <= 220 && ww >= 35 && ww <= 250) ? bmiLine(ww, hh, val('muscular')?.checked, wa >= 50 && wa <= 160 ? wa : null) : '';
+  }
   if(e.target.id==='ob-age' && !ob.phaseManual){
     const a = parseInt(e.target.value);
     if(a >= 30 && a <= 90){ ob.age = a; ob.phase = phaseForAge(a); document.querySelectorAll('[data-a=ob-phase]').forEach(b => b.classList.toggle('on', b.dataset.v === ob.phase)); }
