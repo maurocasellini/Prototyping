@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Local test server for the web version – behaves like Vercel (headers from vercel.json,
-/pdf → /pdf/index.html). Testing only:  python3 web/serve.py  → http://127.0.0.1:8800/pdf"""
+redirects). Testing only:  python3 web/serve.py  → http://127.0.0.1:8800/"""
 import http.server
 import json
 import os
@@ -44,5 +44,5 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 Handler.extensions_map[".wasm"] = "application/wasm"
 Handler.extensions_map[".webmanifest"] = "application/manifest+json"
 port = int(sys.argv[1]) if len(sys.argv) > 1 else 8800
-print(f"http://127.0.0.1:{port}/pdf")
+print(f"http://127.0.0.1:{port}/")
 http.server.ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()

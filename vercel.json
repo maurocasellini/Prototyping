@@ -6,12 +6,6 @@
   "outputDirectory": "pdf-werkstatt/web/dist",
   "cleanUrls": false,
   "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/pdf",
-      "destination": "/pdf/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -43,12 +37,8 @@
       ]
     },
     {
-      "source": "/pdf/sw.js",
+      "source": "/sw.js",
       "headers": [
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/pdf"
-        },
         {
           "key": "Cache-Control",
           "value": "no-cache"
@@ -56,7 +46,7 @@
       ]
     },
     {
-      "source": "/pdf/vendor/(.*)",
+      "source": "/vendor/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -67,9 +57,14 @@
   ],
   "redirects": [
     {
-      "source": "/",
-      "destination": "/pdf",
-      "permanent": false
+      "source": "/pdf",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pdf/:path*",
+      "destination": "/",
+      "permanent": true
     }
   ]
 }

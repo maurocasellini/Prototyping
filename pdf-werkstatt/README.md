@@ -51,8 +51,8 @@ is available as **“Export as scan”** when saving, so signing and “scanning
 ## Development
 
 ```
-python3 pdf-werkstatt/web/build.py     # build → pdf-werkstatt/web/dist/pdf/
-python3 pdf-werkstatt/web/serve.py     # local test server → http://127.0.0.1:8800/pdf
+python3 pdf-werkstatt/web/build.py     # build → pdf-werkstatt/web/dist/
+python3 pdf-werkstatt/web/serve.py     # local test server → http://127.0.0.1:8800/
 ```
 
 - `build.py` downloads the pinned engine files (Pyodide from npm, wheels from PyPI/Pyodide) and verifies them via SHA-256.

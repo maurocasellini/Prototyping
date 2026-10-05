@@ -5,8 +5,8 @@ Everything runs in the browser (Pyodide + PyMuPDF as WebAssembly). Engine files 
 downloaded from pinned sources and verified via SHA-256, so exactly these versions are
 shipped. Only the Python standard library is required (works on Vercel too).
 
-    python3 web/build.py            # output in web/dist/pdf/
-    python3 web/build.py --base /tools/pdf/
+    python3 web/build.py                # app at the domain root, output in web/dist/
+    python3 web/build.py --base /pdf/   # app below a sub-path
 """
 import hashlib
 import io
@@ -21,11 +21,11 @@ import urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)  # pdf-werkstatt/
 CACHE = os.path.join(HERE, ".vendor-cache")
-BASE = "/pdf/"
+BASE = "/"
 if "--base" in sys.argv:
-    BASE = "/" + sys.argv[sys.argv.index("--base") + 1].strip("/") + "/"
+    BASE = ("/" + sys.argv[sys.argv.index("--base") + 1].strip("/") + "/").replace("//", "/")
 DIST = os.path.join(HERE, "dist")
-OUT = os.path.join(DIST, BASE.strip("/"))
+OUT = os.path.join(DIST, BASE.strip("/")) if BASE != "/" else DIST
 
 PYODIDE = "0.29.5"
 PYODIDE_TGZ = (f"https://registry.npmjs.org/pyodide/-/pyodide-{PYODIDE}.tgz",
@@ -199,13 +199,14 @@ def main():
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as fh:
         fh.write(build_index(version))
     # project root → app
-    with open(os.path.join(DIST, "index.html"), "w", encoding="utf-8") as fh:
-        # Fallback only – normally Vercel redirects "/" to the app before this page is served
-        fh.write(f'<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
-                 f'<meta name="viewport" content="width=device-width, initial-scale=1">'
-                 f'<meta http-equiv="refresh" content="0; url={BASE}"><title>PDF Werkstatt</title>'
-                 f'<style>html,body{{margin:0;height:100%;background:#f1f1ec}}'
-                 f'@media (prefers-color-scheme: dark){{html,body{{background:#1d2336}}}}</style>')
+    if BASE != "/":
+        with open(os.path.join(DIST, "index.html"), "w", encoding="utf-8") as fh:
+            # Fallback only – normally Vercel redirects "/" to the app before this page is served
+            fh.write(f'<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
+                     f'<meta name="viewport" content="width=device-width, initial-scale=1">'
+                     f'<meta http-equiv="refresh" content="0; url={BASE}"><title>PDF Werkstatt</title>'
+                     f'<style>html,body{{margin:0;height:100%;background:#f1f1ec}}'
+                     f'@media (prefers-color-scheme: dark){{html,body{{background:#1d2336}}}}</style>')
     with open(os.path.join(DIST, "robots.txt"), "w") as fh:
         fh.write("User-agent: *\nDisallow: /\n")
 

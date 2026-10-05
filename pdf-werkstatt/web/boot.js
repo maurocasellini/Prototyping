@@ -2,7 +2,8 @@
    then loads the same UI as the Mac app. */
 (async () => {
   const BASE = document.baseURI; // e.g. https://example.com/pdf/
-  const scope = new URL(BASE).pathname.replace(/\/$/, ''); // /pdf
+  const path = new URL(BASE).pathname;
+  const scope = path === '/' ? '/' : path.replace(/\/$/, ''); // '/' or e.g. /pdf
   const loader = document.getElementById('engine');
   const loaderText = document.getElementById('engine-text');
   const fail = (text) => {
