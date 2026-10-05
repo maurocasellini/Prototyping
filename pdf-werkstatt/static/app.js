@@ -102,6 +102,8 @@ function route() {
   if (kind === 'tool' && TOOLS[id]) {
     if (TOOLS[id].view === 'editor') return Editor.open(id, state.carry);
     openTool(id);
+  } else if (kind === 'datenschutz' || kind === 'privacy') {
+    show('privacy');
   } else {
     show('home');
     $('#search').focus();
