@@ -54,15 +54,16 @@
   window.SB_T = function (s) { var t = tr(String(s)); return t == null ? s : t; };
   window.SB_LANG = L;
   function skip(el) { return el && el.closest && el.closest('[translate="no"],script,style,textarea,code'); }
+  function skipAttr(el) { return el && el.closest && el.closest('[translate="no"],script,style'); } // Platzhalter in Textfeldern übersetzen
   function node(n) {
     if (n.nodeType === 3) { if (!skip(n.parentElement)) { var t = tr(n.nodeValue); if (t != null) n.nodeValue = t; } return; }
-    if (n.nodeType !== 1 || skip(n)) return;
+    if (n.nodeType !== 1 || skipAttr(n)) return;
     for (var a = 0; a < ATTRS.length; a++) { var v = n.getAttribute(ATTRS[a]); if (v) { var t2 = tr(v); if (t2 != null) n.setAttribute(ATTRS[a], t2); } }
     if (n.tagName === 'INPUT' && (n.type === 'submit' || n.type === 'button') && n.value) { var t3 = tr(n.value); if (t3 != null) n.value = t3; }
     var w = document.createTreeWalker(n, 5 /* Element + Text */), c;
     while ((c = w.nextNode())) {
       if (c.nodeType === 3) { if (!skip(c.parentElement)) { var t4 = tr(c.nodeValue); if (t4 != null) c.nodeValue = t4; } }
-      else if (!skip(c)) for (var b = 0; b < ATTRS.length; b++) { var v2 = c.getAttribute(ATTRS[b]); if (v2) { var t5 = tr(v2); if (t5 != null) c.setAttribute(ATTRS[b], t5); } }
+      else if (!skipAttr(c)) for (var b = 0; b < ATTRS.length; b++) { var v2 = c.getAttribute(ATTRS[b]); if (v2) { var t5 = tr(v2); if (t5 != null) c.setAttribute(ATTRS[b], t5); } }
     }
   }
   function run() {

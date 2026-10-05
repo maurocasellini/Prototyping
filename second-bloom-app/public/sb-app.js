@@ -1033,7 +1033,7 @@ function openSupp(id){
   const body = () => {
     const ev = EVID ? (EVID_KEYS[id] || []).map(k => EVID[k]).filter(Boolean) : null;
     return `
-    <p class="small">${esc(s.for)}. ${esc(s.note)}</p>
+    <p class="small"><span>${esc(s.for)}</span>. <span>${esc(s.note)}</span></p>
     ${ev === null ? '<p class="small muted">Studienlage wird geladen …</p>' : ev.length ? ev.map(evidenceBlock).join('') : '<p class="small muted">Für dieses Mittel ist die Auswertung noch nicht hinterlegt.</p>'}
     <div class="card flat"><p class="small"><b>Evidenzstufen:</b> Hoch = mehrere gute Studien oder Meta-Analysen kommen übereinstimmend zum Ergebnis. Moderat = gute Hinweise, aber Einschränkungen. Niedrig = wenige oder widersprüchliche Studien. Unzureichend = kein belastbarer Nutzen gezeigt. <a href="/quellen" target="_blank">Alle Quellen und Methodik</a></p></div>
     <p class="small muted">Keine Dosierungsempfehlung für dich persönlich. Bitte Einnahme mit Ärztin, Arzt oder Apotheke abstimmen, vor allem bei Medikamenten oder Vorerkrankungen.</p>`;
