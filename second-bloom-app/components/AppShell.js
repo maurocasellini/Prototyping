@@ -8,7 +8,7 @@ export default function AppShell({ boot }) {
     <>
       <div className="app" id="app" dangerouslySetInnerHTML={{ __html: SHELL }} />
       <div id="sb-boot" hidden data-boot={JSON.stringify(boot)} />
-      <Script src="/sb-app.js?v=13" strategy="afterInteractive" />
+      <Script src="/sb-app.js?v=14" strategy="afterInteractive" />
     </>
   );
 }

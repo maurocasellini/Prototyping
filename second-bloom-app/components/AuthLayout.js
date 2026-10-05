@@ -11,7 +11,7 @@ export default function AuthLayout({ children }) {
           <li>Proteinreiches, hormonfreundliches Essen mit Wochenplan und Einkaufsliste</li>
           <li>Krafttraining, das sich an deinen Tag anpasst</li>
           <li>Mental Coaching bei Stimmungsschwankungen, Brain Fog und Druck im Job</li>
-          <li>Optional: Schlaf und Erholung aus deiner Uhr, gemessen an deiner eigenen Normalität</li>
+          <li>Optional: deine Gesundheitsdaten von Uhr oder Ring, gemessen an deiner eigenen Normalität</li>
         </ul>
         <div className="impulse"><span className="eyebrow">Impuls des Tages</span><p className="q">„Dein Körper baut nicht ab. Er baut um. Du darfst dabei mitbestimmen.“</p></div>
       </aside>

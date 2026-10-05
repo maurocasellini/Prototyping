@@ -1284,7 +1284,7 @@ function bars(days){
 function wearCard(){
   const w = WEAR;
   if(!w || (!w.connected && !w.today)) return `<div class="card">
-    <span class="eyebrow">Optional · Uhr & Ring</span><h2>Erholung <em>messen</em></h2>
+    <span class="eyebrow">Optional · Gesundheitsdaten</span><h2>Erholung <em>messen</em></h2>
     <p class="small">Verbinde Garmin, Oura, WHOOP oder Polar. Dann siehst du Schlaf, HRV und Ruhepuls gegen deine eigene Normalität, unruhige Nächte und wie sich dein Zyklus verändert.</p>
     ${USER ? '<a class="btn accent" href="/konto#geraete">Gerät verbinden</a>' : '<a class="btn accent" href="/register">Konto erstellen und verbinden</a>'}
   </div>`;

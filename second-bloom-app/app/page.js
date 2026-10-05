@@ -16,7 +16,7 @@ export default async function Home({ searchParams }) {
           <span className="eyebrow">Perimenopause · Menopause · danach</span>
           <div className="word">Second Bloom</div>
           <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
-          <p className="muted">Hormone und Zyklus verstehen, dazu Ernährung, Krafttraining und tägliches Mental Coaching. Abgestimmt auf deine Phase und deinen Tag. Auf Wunsch mit den Werten deiner Uhr.</p>
+          <p className="muted">Hormone und Zyklus verstehen, dazu Ernährung, Krafttraining und tägliches Mental Coaching. Abgestimmt auf deine Phase und deinen Tag. Auf Wunsch ergänzt mit deinen Gesundheitsdaten.</p>
           <div className="row wrap">
             <Link className="btn accent" href="/register">Konto erstellen</Link>
             <Link className="btn line" href="/demo">Demo ansehen</Link>
@@ -32,7 +32,7 @@ export default async function Home({ searchParams }) {
           ["Essen, das passt", "Proteinreich und hormonfreundlich: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
           ["Kraft für Muskeln und Knochen", "Ein Wochenplan mit Krafteinheiten, der sich an deine Energie und deinen Tag anpasst."],
           ["Kopf und Gefühle", "Atemübungen, Coaching-Programme und Antworten auf Fragen zu Dünnhäutigkeit, Brain Fog und Leistung im Job."],
-          ["Optional: deine Uhr", "Wer mag, verbindet Garmin, Oura & Co. Schlaf, HRV und Ruhepuls ergänzen das Bild, immer gemessen an deiner eigenen Normalität."],
+          ["Optional: deine Gesundheitsdaten", "Wer mag, verbindet Uhr oder Ring, etwa von Garmin, Oura oder Polar. Schlaf, HRV und Ruhepuls ergänzen das Bild, immer gemessen an deiner eigenen Normalität."],
         ].map(([t, x]) => <div key={t} className="card"><h3>{t}</h3><p className="small muted">{x}</p></div>)}
       </section>
     </SiteShell>
