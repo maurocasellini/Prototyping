@@ -6,6 +6,7 @@ const OFFICE = '.doc,.docx,.odt,.rtf,.txt,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.odp,.
 const PAGES_FIELD = { name: 'pages', label: 'Seiten', type: 'text', placeholder: 'leer = alle, z. B. 1-3, 5, 8-ende' };
 
 const CATEGORIES = [
+  { name: 'Am häufigsten gebraucht', tools: ['compress', 'merge', 'sign', 'edit', 'remove', 'scan'] },
   { name: 'Bearbeiten & Unterschreiben', tools: ['edit', 'sign', 'scan', 'watermark', 'page_numbers', 'crop', 'flatten', 'metadata'] },
   { name: 'Organisieren', tools: ['merge', 'split', 'remove', 'extract', 'organize', 'rotate'] },
   { name: 'Optimieren', tools: ['compress', 'repair', 'ocr', 'grayscale'] },
@@ -131,14 +132,15 @@ const TOOLS = {
     ],
   },
   compress: {
-    title: 'PDF verkleinern', icon: '🗜️', color: '#059669', accept: PDF,
-    desc: 'Dateigrösse reduzieren, indem Bilder neu berechnet und Daten optimiert werden.',
+    title: 'PDF komprimieren', keywords: 'verkleinern kleiner grösse grosse mb reduzieren compress', icon: '🗜️', color: '#059669', accept: PDF,
+    desc: 'PDF kleiner machen – z. B. 50 MB auf 5 MB. Zielgrösse eingeben, den Rest erledigt die App.',
     fields: [
-      { name: 'level', label: 'Stärke', type: 'cards', default: 'empfohlen', options: [
-        ['niedrig', 'Gering', 'Beste Qualität'], ['empfohlen', 'Empfohlen', 'Gute Qualität, viel kleiner'],
-        ['extrem', 'Stark', 'Kleinste Datei, sichtbarer Qualitätsverlust'], ['raster', 'Maximal', 'Seiten als Bild – Text nicht mehr markierbar'] ] },
-      { name: 'dpi', label: 'Auflösung (dpi)', type: 'number', default: 100, showIf: { level: 'raster' } },
-      { name: 'gray', label: 'In Graustufen umwandeln', type: 'checkbox', default: false },
+      { name: 'level', label: 'Methode', type: 'cards', default: 'ziel', options: [
+        ['ziel', 'Zielgrösse', 'Auf eine bestimmte Grösse in MB bringen'], ['empfohlen', 'Empfohlen', 'Gute Qualität, viel kleiner'],
+        ['niedrig', 'Gering', 'Beste Qualität, etwas kleiner'], ['extrem', 'Stark', 'Kleinste Datei, sichtbarer Qualitätsverlust'] ] },
+      { name: 'target_mb', label: 'Zielgrösse (MB)', type: 'number', default: 5, hint: 'Typisch: 5 MB für E-Mail-Anhänge, 2 MB für Upload-Portale.', showIf: { level: 'ziel' } },
+      { name: 'allow_raster', label: 'Notfalls Seiten in Bilder umwandeln, um das Ziel zu erreichen', type: 'checkbox', default: true, showIf: { level: 'ziel' } },
+      { name: 'gray', label: 'In Graustufen umwandeln (noch kleiner)', type: 'checkbox', default: false },
     ],
   },
   repair: {

@@ -260,48 +260,80 @@ COMPRESS = {
     "empfohlen": dict(dpi_threshold=150, dpi_target=110, quality=65),
     "extrem": dict(dpi_threshold=96, dpi_target=72, quality=45),
 }
+# Stufen für „Zielgrösse“: erst Bilder immer stärker verkleinern, zuletzt Seiten rastern
+TARGET_STEPS = [(170, 80), (150, 70), (130, 62), (110, 55), (96, 48), (85, 42), (72, 38), (60, 32), (50, 28)]
+RASTER_STEPS = [(110, 55), (96, 48), (80, 42), (68, 36), (56, 30)]
+
+
+def _optimize(path, gray, dpi_threshold, dpi_target, quality):
+    doc = pymupdf.open(path)
+    try:
+        doc.rewrite_images(dpi_threshold=dpi_threshold, dpi_target=dpi_target, quality=quality,
+                           lossy=True, lossless=True, bitonal=True, color=True, gray=True,
+                           set_to_gray=bool(gray))
+    except Exception:
+        pass
+    for fn in (doc.subset_fonts, doc.del_xml_metadata):
+        try:
+            fn()
+        except Exception:
+            pass
+    return doc.tobytes(garbage=4, deflate=True, deflate_images=True, deflate_fonts=True,
+                       clean=True, use_objstms=1)
+
+
+def _rasterize(path, gray, dpi, quality):
+    doc = pymupdf.open(path)
+    out = pymupdf.open()
+    for page in doc:
+        pix = page.get_pixmap(dpi=dpi, alpha=False, colorspace=pymupdf.csGRAY if gray else pymupdf.csRGB)
+        img = Image.frombytes("L" if gray else "RGB", (pix.width, pix.height), pix.samples)
+        buf = io.BytesIO()
+        img.save(buf, "JPEG", quality=quality, optimize=True)
+        np_ = out.new_page(width=page.rect.width, height=page.rect.height)
+        np_.insert_image(np_.rect, stream=buf.getvalue())
+    return out.tobytes(garbage=4, deflate=True)
 
 
 def compress(files, p):
     f = files[0]
     level = p.get("level", "empfohlen")
+    gray = p.get("gray")
     before = os.path.getsize(f["path"])
-    doc = open_pdf(f)
-    if level == "raster":
-        dpi = int(p.get("dpi") or 100)
-        out = pymupdf.open()
-        for page in doc:
-            pix = page.get_pixmap(dpi=dpi, alpha=False,
-                                  colorspace=pymupdf.csGRAY if p.get("gray") else pymupdf.csRGB)
-            img = Image.frombytes("L" if p.get("gray") else "RGB", (pix.width, pix.height), pix.samples)
-            buf = io.BytesIO()
-            img.save(buf, "JPEG", quality=55, optimize=True)
-            np_ = out.new_page(width=page.rect.width, height=page.rect.height)
-            np_.insert_image(np_.rect, stream=buf.getvalue())
-        doc = out
+    open_pdf(f).close()
+    note = ""
+    if level == "ziel":
+        target = float(str(p.get("target_mb") or 5).replace(",", ".")) * 1024 * 1024
+        best = None
+        for dpi, q in TARGET_STEPS:
+            data = _optimize(f["path"], gray, int(dpi * 1.15), dpi, q)
+            if best is None or len(data) < len(best):
+                best = data
+            if len(data) <= target:
+                note = f" · Bilder auf {dpi} dpi"
+                break
+        else:
+            if p.get("allow_raster", True):
+                for dpi, q in RASTER_STEPS:
+                    data = _rasterize(f["path"], gray, dpi, q)
+                    if len(data) < len(best):
+                        best = data
+                    if len(data) <= target:
+                        note = f" · Seiten als Bild mit {dpi} dpi"
+                        break
+        data = best
+        if len(data) > target:
+            note += f" · Ziel {human(target)} nicht ganz erreicht – kleiner geht es ohne unlesbare Qualität nicht"
+    elif level == "raster":
+        data = _rasterize(f["path"], gray, int(p.get("dpi") or 100), 55)
     else:
-        cfg = COMPRESS.get(level, COMPRESS["empfohlen"])
-        try:
-            doc.rewrite_images(lossy=True, lossless=True, bitonal=True, color=True, gray=True,
-                               set_to_gray=bool(p.get("gray")), **cfg)
-        except Exception:
-            pass
-        try:
-            doc.subset_fonts()
-        except Exception:
-            pass
-        try:
-            doc.del_xml_metadata()
-        except Exception:
-            pass
-    data = doc.tobytes(garbage=4, deflate=True, deflate_images=True, deflate_fonts=True,
-                       clean=True, use_objstms=1)
-    if len(data) >= before and level != "raster":
+        data = _optimize(f["path"], gray, **COMPRESS.get(level, COMPRESS["empfohlen"]))
+    if len(data) >= before:
         with open(f["path"], "rb") as fh:
             data = fh.read()
         info = "Die Datei ist bereits optimal komprimiert – keine weitere Verkleinerung möglich."
     else:
-        info = f"{human(before)} → {human(len(data))} ({100 - len(data) * 100 // max(before, 1)} % kleiner)"
+        info = f"{human(before)} → {human(len(data))} ({100 - len(data) * 100 // max(before, 1)} % kleiner){note}"
     return {"data": data, "name": f"{stem(f['name'])}_komprimiert.pdf", "info": info}
 
 

@@ -24,7 +24,7 @@ Alternativ im Terminal: `cd pdf-werkstatt && bash start.command`
 |---|---|
 | Bearbeiten & Unterschreiben | **PDF bearbeiten** (Text, Datum, Bilder, Häkchen/Kreuz, Abdecken, Markieren, Formen, Schwärzen), **PDF unterschreiben** (zeichnen, tippen oder als Bild einfügen, auch für spätere Verwendung gespeichert), **Wie gescannt**, Wasserzeichen, Seitenzahlen, Zuschneiden, Verflachen, Metadaten |
 | Organisieren | Zusammenfügen (auch mit Bildern), Teilen, Seiten entfernen, Seiten extrahieren, Organisieren (Seiten ziehen, drehen, duplizieren, leere Seiten einfügen, auch über mehrere PDFs), Drehen |
-| Optimieren | Verkleinern (4 Stufen), Reparieren, OCR (Text erkennen), Graustufen |
+| Optimieren | **Komprimieren auf Zielgrösse** (z. B. 50 MB → 5 MB) oder in 3 Stufen, Reparieren, OCR (Text erkennen), Graustufen |
 | In PDF umwandeln | Bilder (JPG, PNG, HEIC …) → PDF, Word/Excel/PowerPoint/HTML → PDF |
 | Aus PDF umwandeln | PDF → JPG/PNG, PDF → Word, PDF → PowerPoint/Excel, Text extrahieren, Bilder extrahieren |
 | Sicherheit | Passwortschutz (AES-256), Entsperren, Schwärzen (Begriffe, E-Mails, IBANs, Telefonnummern), zwei PDFs vergleichen |

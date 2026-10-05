@@ -89,7 +89,7 @@ function renderHome() {
   for (const cat of CATEGORIES) {
     const items = cat.tools.filter((id) => {
       const t = TOOLS[id];
-      return !q || (t.title + ' ' + t.desc).toLowerCase().includes(q);
+      return !q || (t.title + ' ' + t.desc + ' ' + (t.keywords || '')).toLowerCase().includes(q);
     });
     if (!items.length) continue;
     num++;
