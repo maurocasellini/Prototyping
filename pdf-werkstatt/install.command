@@ -62,7 +62,7 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundleShortVersionString</key><string>1.0</string>
   <key>CFBundleVersion</key><string>1</string>
   <key>LSMinimumSystemVersion</key><string>11.0</string>
-  <key>LSUIElement</key><true/>
+  <key>NSHighResolutionCapable</key><true/>
   <key>LSArchitecturePriority</key><array><string>arm64</string><string>x86_64</string></array>
 </dict>
 </plist>
@@ -70,7 +70,7 @@ PLIST
 
 cat > "$APP/Contents/MacOS/$NAME" <<'LAUNCHER'
 #!/bin/bash
-# Startet den lokalen PDF-Werkstatt-Server im Hintergrund und öffnet den Browser.
+# Startet die PDF Werkstatt in einem eigenen Fenster.
 SUP="$HOME/Library/Application Support/PDF-Werkstatt"
 RES="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
 PY="$SUP/venv/bin/python"
@@ -91,22 +91,8 @@ rm -f "$SUP/port"
 # Auf Apple-Chips nativ starten (sonst lädt macOS die App evtl. unter Rosetta/x86_64)
 RUN=""
 [ "$(sysctl -n hw.optional.arm64 2>/dev/null)" = "1" ] && RUN="arch -arm64"
-nohup $RUN "$PY" app.py --app --no-browser >"$SUP/log.txt" 2>&1 &
-disown
-# Warten, bis der Server antwortet, dann Browser öffnen – sonst Fehler anzeigen
-for i in $(seq 1 60); do
-  sleep 0.5
-  if [ -f "$SUP/port" ]; then
-    PORT="$(cat "$SUP/port")"
-    if curl -s -m 1 "http://127.0.0.1:$PORT/api/ping" >/dev/null 2>&1; then
-      open "http://127.0.0.1:$PORT"
-      exit 0
-    fi
-  fi
-done
-MSG="$(tail -n 6 "$SUP/log.txt" 2>/dev/null | tr '"\\' "' " )"
-osascript -e "display alert \"PDF Werkstatt konnte nicht starten.\" message \"$MSG\""
-exit 1
+# Eigenes Fenster (exec: der Prozess bleibt „PDF Werkstatt“ im Dock, ⌘Q beendet)
+exec $RUN "$PY" app.py --app --window >"$SUP/log.txt" 2>&1
 LAUNCHER
 chmod +x "$APP/Contents/MacOS/$NAME"
 

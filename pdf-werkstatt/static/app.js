@@ -49,13 +49,27 @@ function busy(on, text = 'Wird verarbeitet …') {
 
 let CAPS = {};
 
+// Natives Mac-Fenster: Download → „Sichern unter …“, Vorschau → App „Vorschau“
+const native = () => window.pywebview && window.pywebview.api;
+document.addEventListener('click', async (e) => {
+  const a = e.target.closest('a[href^="/api/file/"]');
+  if (!a || !native()) return;
+  const [, , , fid, action] = a.getAttribute('href').split('/');
+  if (action !== 'download' && action !== 'raw') return;
+  e.preventDefault();
+  if (action === 'raw') return native().preview(fid);
+  const r = await native().save(fid);
+  if (r && r.ok) toast(`Gespeichert: ${r.name}`);
+}, true);
+
 // Lebenszeichen an den lokalen Server; „Beenden“-Knopf
 let APP_MODE = false;
 async function ping() {
   try {
     const r = await (await fetch('/api/ping', { cache: 'no-store' })).json();
     APP_MODE = r.app;
-    $('#quit').classList.toggle('hidden', !APP_MODE);
+    // Im eigenen Fenster beendet man per ⌘Q / Fenster schliessen – kein Knopf nötig
+    $('#quit').classList.toggle('hidden', !APP_MODE || r.window);
     $('#offline').classList.add('hidden');
   } catch { $('#offline').classList.remove('hidden'); }
 }

@@ -1,7 +1,7 @@
 # PDF-Werkstatt
 
 Ein PDF-Werkzeugkasten im Stil von iLovePDF, der **komplett lokal auf deinem Mac** läuft.
-Deine Dateien werden nirgends hochgeladen: Ein kleiner Server läuft nur auf `127.0.0.1` und wird über den Browser bedient.
+Deine Dateien werden nirgends hochgeladen: Ein kleiner Server läuft nur auf `127.0.0.1`, die Oberfläche erscheint in einem eigenen Mac-Fenster.
 
 ## Installieren (einmalig)
 
@@ -16,8 +16,10 @@ Deine Dateien werden nirgends hochgeladen: Ein kleiner Server läuft nur auf `12
 Danach startest du die App wie jede andere über **Launchpad**, **Spotlight** (`⌘ + Leertaste` → „PDF Werkstatt“) oder
 das **Dock** (App aus dem Programme-Ordner ins Dock ziehen). Kein Terminal mehr nötig.
 
-- Die Oberfläche öffnet sich im Browser. Ein erneuter Klick auf das App-Icon öffnet einfach wieder das Fenster.
-- **Beenden:** Knopf „Beenden“ oben rechts. Ohne offenes Fenster beendet sich die App nach 15 Minuten von selbst.
+- Die App öffnet sich in einem **eigenen Fenster** (kein Browser). „Herunterladen“ öffnet den Mac-Dialog
+  „Sichern unter …“, „Vorschau“ öffnet das PDF in der App Vorschau.
+- **Beenden:** `⌘Q` oder Fenster schliessen.
+- Sollte das Fenster einmal nicht starten, öffnet sich die App automatisch im Browser (dann oben rechts „Beenden“).
 - **Update:** neue Version in den Ordner legen und `install.command` nochmals ausführen.
 - **Deinstallieren:** „PDF Werkstatt“ aus Programme löschen, optional auch `~/Library/Application Support/PDF-Werkstatt`.
 
