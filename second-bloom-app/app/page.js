@@ -68,13 +68,15 @@ export default async function Home({ searchParams }) {
       <section className="lp-section lp-about" id="sara">
         <img src="/sara.webp?v=3" alt="Sara Casellini-Machado Sousa" className="lp-photo" width={360} height={360} />
         <div className="stack" style={{ gap: 14 }}>
-          <span className="eyebrow">Wer hinter Second Bloom steht</span>
+          <span className="eyebrow">Hallo, ich bin Sara</span>
           <h2>Sara Casellini-<wbr />Machado Sousa</h2>
           <p className="lp-role">Fachärztin für Gynäkologie und Geburtshilfe</p>
-          <p>Geboren in Lissabon, aufgewachsen in Basel, wo sie Humanmedizin studierte. Ihre Ausbildung zur Fachärztin absolvierte sie in Grabs und Chur. Heute lebt sie mit ihrem Mann und den zwei Kindern in Liechtenstein und gehört seit 2023 zum Team der Praxis Gynorina.</p>
-          <blockquote className="lp-cite">„Es ist mir wichtig, Frauen auf ihrem persönlichen Lebens- und Gesundheitsweg zu begleiten. Vertrauen steht dabei immer an erster Stelle.“</blockquote>
-          <p className="small muted">Sara berät auf Deutsch, Portugiesisch, Englisch, Spanisch und Französisch. Deshalb wird auch Second Bloom diese fünf Sprachen sprechen.</p>
+          <p>Ich bin Sara, Fachärztin für Gynäkologie und Geburtshilfe. Geboren bin ich in Lissabon, aufgewachsen in Basel, wo ich auch Medizin studiert habe. Meine Ausbildung zur Fachärztin habe ich in Grabs und Chur gemacht. Heute lebe ich mit meinem Mann und unseren zwei Kindern in Liechtenstein und arbeite seit 2023 in der Praxis Gynorina.</p>
+          <p>In meiner Sprechstunde erlebe ich jeden Tag, wie viele Fragen die Wechseljahre mit sich bringen und wie wenig Zeit oft bleibt, sie in Ruhe zu beantworten. Mit Second Bloom möchte ich dich auch zwischen den Terminen begleiten: mit Wissen, das du verstehst, mit kleinen Schritten, die in deinen Alltag passen, und mit dem Gefühl, mit diesen Veränderungen nicht allein zu sein.</p>
+          <blockquote className="lp-cite">„Mir ist wichtig, dich auf deinem ganz persönlichen Weg zu begleiten: ehrlich, fundiert und mit viel Vertrauen.“</blockquote>
+          <p className="small muted">Ich berate auf Deutsch, Portugiesisch, Englisch, Spanisch und Französisch. Deshalb wird auch Second Bloom diese fünf Sprachen sprechen.</p>
           <div className="chips" translate="no">{LANGS.map((l) => <span key={l} className="lp-chip">{l}</span>)}</div>
+          <p className="lp-sign">Herzlich, Sara</p>
         </div>
       </section>
 
