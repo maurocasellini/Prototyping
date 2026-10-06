@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CM Ventures Tools</title>
+<meta name="description" content="Alltags-Tools, die komplett im Browser laufen – ohne Upload.">
+<meta name="theme-color" content="#242b41">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="shared/fonts/fonts.css">
+<link rel="stylesheet" href="shared/base.css">
+<link rel="stylesheet" href="hub.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./">
+    <img class="logo-img" src="logo.svg" alt="" width="30" height="30"><span class="logo-word"><b>CM Ventures</b> <em>Tools</em></span>
+  </a>
+  <span class="local-badge" title="Alle Dateien bleiben auf deinem Gerät. Nichts wird hochgeladen.">Kein Upload</span>
+  <div class="spacer"></div>
+  <div class="lang-switch" role="group" aria-label="Sprache / Language"><button type="button" data-lang="de">DE</button><button type="button" data-lang="en">EN</button></div>
+</header>
+
+<main>
+  <section id="home">
+    <div class="hero">
+      <div class="eyebrow accent">Open-Source-Werkzeuge im Browser</div>
+      <div class="eyebrow">PDF · Scan · Sprache · Bild · Video</div>
+      <h1>Tools für jeden Tag. <em>Ohne Upload.</em></h1>
+      <p>Jedes Tool läuft vollständig auf deinem Gerät – die Rechenarbeit übernehmen bewährte Open-Source-Engines als WebAssembly direkt im Browser. Deine Dateien verlassen nie dein Gerät.</p>
+      <ul class="facts">
+        <li>Keine Konten, kein Tracking, keine Cookies</li>
+        <li>Technisch abgesichert: die Seiten dürfen nichts senden</li>
+        <li>Funktioniert nach dem ersten Laden auch offline</li>
+      </ul>
+    </div>
+
+    <div class="cat"><span class="num">01</span> Verfügbar</div>
+    <div class="apps">
+      <a class="app" data-tool-link="pdf">
+        <img src="apps/pdf.svg" alt="" width="52" height="52">
+        <strong>PDF Toolkit</strong>
+        <span>Bearbeiten, unterschreiben, zusammenfügen, komprimieren, „wie gescannt“ – über 20 Werkzeuge.</span>
+        <small>MuPDF · Pyodide</small>
+        <em class="go">Öffnen →</em>
+      </a>
+      <a class="app" data-tool-link="scan">
+        <img src="apps/scan.svg" alt="" width="52" height="52">
+        <strong>Doc Scanner</strong>
+        <span>Dokumente mit dem Handy fotografieren, automatisch geraderichten und als durchsuchbares PDF speichern.</span>
+        <small>OpenCV · Tesseract OCR</small>
+        <em class="go">Öffnen →</em>
+      </a>
+    </div>
+
+    <div class="cat"><span class="num">02</span> In Arbeit</div>
+    <div class="apps soon">
+      <div class="app">
+        <img src="apps/transcribe.svg" alt="" width="52" height="52">
+        <strong>Sprachmemo → Text</strong>
+        <span>Sprachnachrichten und Meetings lokal transkribieren – Deutsch, Englisch und mehr.</span>
+        <small>Whisper</small>
+        <em class="badge">Bald</em>
+      </div>
+      <div class="app">
+        <img src="apps/image.svg" alt="" width="52" height="52">
+        <strong>Bild-Toolkit</strong>
+        <span>HEIC → JPG, verkleinern, komprimieren, Standort-Daten entfernen, Hintergrund freistellen.</span>
+        <small>Squoosh-Codecs · ONNX</small>
+        <em class="badge">Bald</em>
+      </div>
+      <div class="app">
+        <img src="apps/video.svg" alt="" width="52" height="52">
+        <strong>Video-Toolkit</strong>
+        <span>Videos kürzen, für WhatsApp oder E-Mail verkleinern, in GIF umwandeln, Ton extrahieren.</span>
+        <small>FFmpeg</small>
+        <em class="badge">Bald</em>
+      </div>
+      <div class="app">
+        <img src="apps/translate.svg" alt="" width="52" height="52">
+        <strong>Übersetzer</strong>
+        <span>Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.</span>
+        <small>Mozilla Bergamot</small>
+        <em class="badge">Bald</em>
+      </div>
+      <div class="app">
+        <img src="apps/qr.svg" alt="" width="52" height="52">
+        <strong>QR-Codes</strong>
+        <span>QR-Codes für Links, WLAN und Visitenkarten – im eigenen Design, als PNG oder SVG.</span>
+        <small>Open Source</small>
+        <em class="badge">Bald</em>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="legal hidden">
+    <a class="back" href="#">← Zurück</a>
+    <h2>Hinweise zu den Tools</h2>
+    <p>Alle Tools laufen vollständig in deinem Browser. Dateien werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet. Eine Content Security Policy verbietet den Seiten technisch, Verbindungen zu anderen Servern aufzubauen.</p>
+    <p>Die verwendeten Engines sind Open Source und werden von den Seiten selbst ausgeliefert – es werden keine Drittanbieter geladen, es gibt kein Tracking und keine Cookies.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>CM Ventures Tools</span>
+  <nav class="foot-links">
+    <a href="https://cmventures.xyz/data-protection.html" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+    <a href="https://cmventures.xyz/" target="_blank" rel="noopener noreferrer">Impressum</a>
+    <a href="#about">Hinweise zu den Tools</a>
+  </nav>
+</footer>
+
+<script src="i18n-en.js"></script>
+<script src="shared/i18n.js"></script>
+<script src="shared/common.js"></script>
+<script src="hub.js"></script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+/* Doc Scanner: photo → corners → straightened “scan” → PDF (optionally searchable via OCR).
+   Everything happens in this tab; images never leave the device. */
+(() => {
+  const { $, toast, busy, download, share, fmtSize } = window.CMV;
+  const t = (s) => window.i18n(s);
+
+  const SRC_MAX = 3200;     // longest side of a photo kept in memory
+  const OUT_MAX = 2800;     // longest side of the straightened page
+  const QUALITY = { small: [1500, 0.7], normal: [2200, 0.8], high: [2800, 0.88] };
+  const PAGE = { a4: [595.28, 841.89], letter: [612, 792] };
+
+  const pages = [];         // { id, src: canvas, corners, rotate, out: { blob, url, w, h } | null, busy }
+  let filter = 'color';
+  let seq = 0;
+
+  // ---------------------------------------------------------------- OpenCV worker
+  let cvWorker = null;
+  const pending = new Map();
+  function cv(cmd, args, transfer = []) {
+    if (!cvWorker) {
+      cvWorker = new Worker('cv-worker.js');
+      cvWorker.onmessage = (e) => {
+        const p = pending.get(e.data.id);
+        pending.delete(e.data.id);
+        if (e.data.ok) p.resolve(e.data.res); else p.reject(new Error(e.data.error));
+      };
+      cvWorker.onerror = (e) => { for (const p of pending.values()) p.reject(new Error(e.message || 'Worker-Fehler')); pending.clear(); };
+    }
+    const id = ++seq;
+    return new Promise((resolve, reject) => {
+      pending.set(id, { resolve, reject });
+      cvWorker.postMessage({ id, cmd, args }, transfer);
+    });
+  }
+  const warmUp = () => { cv('load').catch(() => {}); };
+
+  // ---------------------------------------------------------------- Images
+  async function decode(file) {
+    try {
+      return await createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = new Image();
+        img.src = url;
+        await img.decode();
+        return img;
+      } finally { URL.revokeObjectURL(url); }
+    }
+  }
+
+  function toCanvas(img, maxSide) {
+    const w0 = img.width || img.naturalWidth, h0 = img.height || img.naturalHeight;
+    const s = Math.min(1, maxSide / Math.max(w0, h0));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w0 * s); c.height = Math.round(h0 * s);
+    const g = c.getContext('2d', { willReadFrequently: true });
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(img, 0, 0, c.width, c.height);
+    return c;
+  }
+
+  function pixels(canvas, maxSide) {
+    const c = maxSide && Math.max(canvas.width, canvas.height) > maxSide ? toCanvas(canvas, maxSide) : canvas;
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height);
+    return { data: d.data, width: d.width, height: d.height };
+  }
+
+  function canvasToBlob(c, type, q) {
+    return new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('Bild konnte nicht erstellt werden.'))), type, q));
+  }
+
+  const FULL = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }];
+  const INSET = [{ x: 0.04, y: 0.04 }, { x: 0.96, y: 0.04 }, { x: 0.96, y: 0.96 }, { x: 0.04, y: 0.96 }];
+
+  async function detect(page) {
+    const px = pixels(page.src, 900);
+    const { corners } = await cv('detect', px, [px.data.buffer]);
+    return corners;
+  }
+
+  async function render(page) {
+    page.busy = true;
+    drawGrid();
+    try {
+      const px = pixels(page.src);
+      const res = await cv('process', { ...px, corners: page.corners || FULL, filter, rotate: page.rotate, maxSide: OUT_MAX }, [px.data.buffer]);
+      const c = document.createElement('canvas');
+      c.width = res.width; c.height = res.height;
+      c.getContext('2d').putImageData(new ImageData(res.data, res.width, res.height), 0, 0);
+      const blob = await canvasToBlob(c, 'image/jpeg', 0.9);
+      if (page.out) URL.revokeObjectURL(page.out.url);
+      page.out = { blob, url: URL.createObjectURL(blob), w: res.width, h: res.height };
+      invalidateResult();
+    } catch (e) {
+      toast(t('Seite konnte nicht verarbeitet werden: ') + e.message, true);
+    } finally {
+      page.busy = false;
+      drawGrid();
+    }
+  }
+
+  // Render one page after the other (the worker is single-threaded anyway)
+  let queue = Promise.resolve();
+  const enqueue = (page) => (queue = queue.then(() => (pages.includes(page) ? render(page) : null)));
+
+  // ---------------------------------------------------------------- Adding photos
+  async function addFiles(files) {
+    files = [...files].filter((f) => f.type.startsWith('image/') || /\.(heic|heif|jpe?g|png|webp)$/i.test(f.name));
+    if (!files.length) return;
+    warmUp();
+    const added = [];
+    busy(t('Fotos werden geladen …'));
+    for (const f of files) {
+      try {
+        const img = await decode(f);
+        const src = toCanvas(img, SRC_MAX);
+        if (img.close) img.close();
+        const page = { id: ++seq, src, corners: null, rotate: 0, out: null, busy: true };
+        pages.push(page);
+        added.push(page);
+      } catch {
+        toast(t('Dieses Bildformat kann der Browser nicht öffnen: ') + f.name, true);
+      }
+    }
+    busy(false);
+    if (!added.length) return;
+    showPages();
+    if (added.length === 1) {
+      openCrop(added[0], true);
+    } else {
+      busy(t('Kanten werden erkannt …'));
+      for (const p of added) {
+        try { p.corners = (await detect(p)) || INSET; } catch (e) { p.corners = INSET; }
+      }
+      busy(false);
+      added.forEach(enqueue);
+    }
+  }
+
+  document.querySelectorAll('[data-pick]').forEach((inp) => {
+    inp.addEventListener('click', warmUp);
+    inp.addEventListener('change', () => { addFiles(inp.files); inp.value = ''; });
+  });
+  const drop = $('#drop');
+  ['dragenter', 'dragover'].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); if (ev === 'drop' || !e.relatedTarget) drop.classList.remove('over'); }));
+  document.addEventListener('drop', (e) => { if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+
+  // ---------------------------------------------------------------- Views
+  function showPages() {
+    $('#start').classList.add('hidden');
+    $('#about').classList.add('hidden');
+    $('#pages').classList.remove('hidden');
+    if (!$('#name').value) $('#name').value = defaultName();
+  }
+  function showStart() {
+    $('#pages').classList.add('hidden');
+    $('#about').classList.add('hidden');
+    $('#start').classList.remove('hidden');
+  }
+  function route() {
+    if (location.hash === '#about') {
+      $('#start').classList.add('hidden'); $('#pages').classList.add('hidden'); $('#about').classList.remove('hidden');
+      window.scrollTo(0, 0);
+    } else if (pages.length) showPages(); else showStart();
+  }
+  window.addEventListener('hashchange', route);
+
+  function defaultName() {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return `Scan ${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}.${p(d.getMinutes())}`;
+  }
+
+  // ---------------------------------------------------------------- Page grid
+  const grid = $('#grid');
+  function drawGrid() {
+    const n = pages.length;
+    $('#pages-title').textContent = n === 1 ? t('1 Seite') : `${n} ${t('Seiten')}`;
+    grid.textContent = '';
+    pages.forEach((p, i) => {
+      const el = document.createElement('div');
+      el.className = 'page';
+      el.innerHTML = `
+        <button type="button" class="thumb" title="${t('Ecken anpassen')}">${p.out && !p.busy ? `<img alt="" src="${p.out.url}">` : '<div class="spinner"></div>'}<span class="num">${i + 1}</span></button>
+        <div class="page-tools">
+          <button type="button" data-a="left" title="${t('Nach vorne')}" ${i === 0 ? 'disabled' : ''}>←</button>
+          <button type="button" data-a="rotate" title="${t('Drehen')}">↻</button>
+          <button type="button" data-a="right" title="${t('Nach hinten')}" ${i === n - 1 ? 'disabled' : ''}>→</button>
+          <button type="button" data-a="del" class="del" title="${t('Seite löschen')}">✕</button>
+        </div>`;
+      el.querySelector('.thumb').addEventListener('click', () => openCrop(p));
+      el.querySelectorAll('[data-a]').forEach((b) => b.addEventListener('click', () => pageAction(p, b.dataset.a)));
+      grid.append(el);
+    });
+    $('#make').disabled = !n || pages.some((p) => p.busy || !p.out);
+  }
+
+  function pageAction(p, a) {
+    const i = pages.indexOf(p);
+    if (a === 'left' && i > 0) [pages[i - 1], pages[i]] = [pages[i], pages[i - 1]];
+    else if (a === 'right' && i < pages.length - 1) [pages[i + 1], pages[i]] = [pages[i], pages[i + 1]];
+    else if (a === 'rotate') { p.rotate = (p.rotate + 90) % 360; enqueue(p); }
+    else if (a === 'del') {
+      pages.splice(i, 1);
+      if (p.out) URL.revokeObjectURL(p.out.url);
+      if (!pages.length) { reset(); return; }
+    }
+    invalidateResult();
+    drawGrid();
+  }
+
+  document.querySelectorAll('[data-filter]').forEach((b) => b.addEventListener('click', () => {
+    if (filter === b.dataset.filter) return;
+    filter = b.dataset.filter;
+    document.querySelectorAll('[data-filter]').forEach((x) => x.classList.toggle('active', x === b));
+    pages.forEach(enqueue);
+  }));
+
+  function reset() {
+    pages.splice(0).forEach((p) => p.out && URL.revokeObjectURL(p.out.url));
+    invalidateResult();
+    $('#name').value = '';
+    if (location.hash) history.replaceState(null, '', location.pathname);
+    showStart();
+    window.scrollTo(0, 0);
+  }
+  $('#restart').addEventListener('click', () => { if (confirm(t('Alle Seiten verwerfen und neu beginnen?'))) reset(); });
+
+  // ---------------------------------------------------------------- Crop editor
+  const crop = $('#crop'), stage = $('#stage'), canvas = $('#crop-canvas'), svg = $('#crop-svg'), loupe = $('#loupe');
+  let cur = null, pts = null, view = null, isNew = false;
+
+  async function openCrop(page, fresh = false) {
+    cur = page; isNew = fresh;
+    pts = (page.corners || INSET).map((p) => ({ ...p }));
+    crop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    layout();
+    if (!page.corners) {
+      $('#crop-busy').classList.remove('hidden');
+      try {
+        const c = await detect(page);
+        if (cur === page) { pts = (c || INSET).map((p) => ({ ...p })); if (!c) toast(t('Keine Blattkanten gefunden – bitte Ecken von Hand setzen.')); }
+      } catch (e) {
+        toast(t('Kantenerkennung nicht verfügbar: ') + e.message, true);
+      } finally {
+        $('#crop-busy').classList.add('hidden');
+      }
+      drawQuad();
+    }
+  }
+
+  function closeCrop() {
+    crop.classList.add('hidden');
+    document.body.style.overflow = '';
+    cur = null;
+  }
+
+  function layout() {
+    if (!cur) return;
+    const r = stage.getBoundingClientRect();
+    const pad = 22;
+    const s = Math.min((r.width - 2 * pad) / cur.src.width, (r.height - 2 * pad) / cur.src.height);
+    const w = Math.round(cur.src.width * s), h = Math.round(cur.src.height * s);
+    view = { x: Math.round((r.width - w) / 2), y: Math.round((r.height - h) / 2), w, h };
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    Object.assign(canvas.style, { left: view.x + 'px', top: view.y + 'px', width: w + 'px', height: h + 'px' });
+    const g = canvas.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(cur.src, 0, 0, canvas.width, canvas.height);
+    drawQuad();
+  }
+  window.addEventListener('resize', layout);
+
+  const toScreen = (p) => ({ x: view.x + p.x * view.w, y: view.y + p.y * view.h });
+  function drawQuad() {
+    if (!view) return;
+    const r = stage.getBoundingClientRect();
+    const S = pts.map(toScreen);
+    const poly = S.map((p) => `${p.x},${p.y}`).join(' ');
+    const mids = S.map((p, i) => { const q = S[(i + 1) % 4]; return { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2, i }; });
+    svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    svg.innerHTML = `
+      <path class="shade" d="M${view.x},${view.y}h${view.w}v${view.h}h${-view.w}z M${S.map((p) => `${p.x},${p.y}`).join(' L')}z"/>
+      <polygon class="edge" points="${poly}"/>
+      ${mids.map((m) => `<rect class="mid" data-m="${m.i}" x="${m.x - 9}" y="${m.y - 4}" width="18" height="8" rx="4" transform="rotate(${angle(S[m.i], S[(m.i + 1) % 4])} ${m.x} ${m.y})"/>`).join('')}
+      ${S.map((p, i) => `<circle class="handle${drag && drag.i === i ? ' active' : ''}" data-i="${i}" cx="${p.x}" cy="${p.y}" r="15"/>`).join('')}`;
+  }
+  const angle = (a, b) => (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+
+  // Dragging: corners move freely, edge handles move both corners of that edge
+  let drag = null;
+  svg.addEventListener('pointerdown', (e) => {
+    const r = stage.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    // nearest corner within reach (generous touch target)
+    const S = pts.map(toScreen);
+    let best = -1, bd = 44;
+    S.forEach((p, i) => { const d = Math.hypot(p.x - x, p.y - y); if (d < bd) { bd = d; best = i; } });
+    if (best >= 0) drag = { i: best, ox: S[best].x - x, oy: S[best].y - y };
+    else if (e.target.dataset.m != null) {
+      const i = +e.target.dataset.m;
+      drag = { m: i, x, y, start: pts.map((p) => ({ ...p })) };
+    } else return;
+    svg.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    move(e);
+  });
+  svg.addEventListener('pointermove', (e) => { if (drag) move(e); });
+  const end = () => { drag = null; loupe.classList.add('hidden'); drawQuad(); };
+  svg.addEventListener('pointerup', end);
+  svg.addEventListener('pointercancel', end);
+
+  const clamp = (v) => Math.min(1, Math.max(0, v));
+  function move(e) {
+    const r = stage.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    if (drag.i != null) {
+      const p = { x: clamp((x + drag.ox - view.x) / view.w), y: clamp((y + drag.oy - view.y) / view.h) };
+      pts[drag.i] = p;
+      showLoupe(p, x, y);
+    } else {
+      const dx = (x - drag.x) / view.w, dy = (y - drag.y) / view.h;
+      for (const k of [drag.m, (drag.m + 1) % 4]) pts[k] = { x: clamp(drag.start[k].x + dx), y: clamp(drag.start[k].y + dy) };
+    }
+    drawQuad();
+  }
+
+  // Magnifier next to the finger so the corner can be placed precisely
+  function showLoupe(p, fx, fy) {
+    const L = 120, zoom = 2.5;
+    const g = loupe.getContext('2d');
+    const sx = p.x * cur.src.width, sy = p.y * cur.src.height;
+    const span = (L / zoom) * (cur.src.width / view.w);
+    g.fillStyle = '#151a2a';
+    g.fillRect(0, 0, L, L);
+    g.drawImage(cur.src, sx - span / 2, sy - span / 2, span, span, 0, 0, L, L);
+    g.strokeStyle = '#c47d45'; g.lineWidth = 1.5;
+    g.beginPath(); g.moveTo(L / 2, 0); g.lineTo(L / 2, L); g.moveTo(0, L / 2); g.lineTo(L, L / 2); g.stroke();
+    const r = stage.getBoundingClientRect();
+    let lx = fx - L - 30, ly = fy - L - 30;
+    if (lx < 4) lx = fx + 30;
+    if (ly < 4) ly = fy + 30;
+    loupe.style.left = Math.min(lx, r.width - L - 4) + 'px';
+    loupe.style.top = Math.min(ly, r.height - L - 4) + 'px';
+    loupe.classList.remove('hidden');
+  }
+
+  $('#crop-full').addEventListener('click', () => { pts = FULL.map((p) => ({ ...p })); drawQuad(); });
+  $('#crop-auto').addEventListener('click', async () => {
+    $('#crop-busy').classList.remove('hidden');
+    try {
+      const c = await detect(cur);
+      if (c) pts = c; else toast(t('Keine Blattkanten gefunden – bitte Ecken von Hand setzen.'));
+    } catch (e) { toast(e.message, true); }
+    $('#crop-busy').classList.add('hidden');
+    drawQuad();
+  });
+  $('#crop-cancel').addEventListener('click', () => {
+    const p = cur;
+    closeCrop();
+    if (isNew && p && !p.out) {          // a fresh photo that was never accepted: drop it
+      pages.splice(pages.indexOf(p), 1);
+      if (!pages.length) { reset(); return; }
+    }
+    drawGrid();
+  });
+  $('#crop-ok').addEventListener('click', () => {
+    const p = cur;
+    p.corners = pts.map((q) => ({ ...q }));
+    closeCrop();
+    enqueue(p);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (crop.classList.contains('hidden')) return;
+    if (e.key === 'Escape') $('#crop-cancel').click();
+    if (e.key === 'Enter') $('#crop-ok').click();
+  });
+
+  // ---------------------------------------------------------------- PDF export
+  let result = null;
+  function invalidateResult() {
+    result = null;
+    $('#result').classList.add('hidden');
+  }
+
+  async function exportJpeg(page, quality) {
+    const [maxSide, q] = QUALITY[quality];
+    const { w, h } = page.out;
+    if (quality === 'high' && Math.max(w, h) <= maxSide) return { blob: page.out.blob, w, h };
+    const img = await decode(page.out.blob);
+    const c = toCanvas(img, maxSide);
+    if (img.close) img.close();
+    if (filter === 'bw' || filter === 'gray') {   // keep files small: store gray pages as grayscale-looking JPEG
+      const g = c.getContext('2d');
+      g.globalCompositeOperation = 'saturation';
+      g.fillStyle = '#000';
+      g.fillRect(0, 0, c.width, c.height);
+    }
+    return { blob: await canvasToBlob(c, 'image/jpeg', q), w: c.width, h: c.height };
+  }
+
+  let ocrWorker = null, ocrLang = null;
+  async function getOcr(langs) {
+    if (ocrWorker && ocrLang === langs) return ocrWorker;
+    if (ocrWorker) { await ocrWorker.terminate(); ocrWorker = null; }
+    if (!window.Tesseract) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'vendor/tesseract/tesseract.min.js';
+        s.onload = res; s.onerror = () => rej(new Error(t('Texterkennung konnte nicht geladen werden.')));
+        document.head.append(s);
+      });
+    }
+    const base = new URL('vendor/', location.href).href;
+    ocrWorker = await window.Tesseract.createWorker(langs.split('+'), 1, {
+      workerPath: base + 'tesseract/worker.min.js',
+      corePath: base + 'tesseract',
+      langPath: base + 'tessdata',
+      workerBlobURL: false,
+      gzip: true,
+      logger: (m) => {
+        if (m.status && /loading|initializ/i.test(m.status) && ocrProgress) ocrProgress(m);
+      },
+    });
+    ocrLang = langs;
+    return ocrWorker;
+  }
+  let ocrProgress = null;
+
+  $('#ocr').addEventListener('change', () => $('.ocr-lang').classList.toggle('hidden', !$('#ocr').checked));
+  $('#ocr-lang').value = (window.I18N && window.I18N.lang === 'en') ? 'eng' : 'deu+eng';
+  ['#size', '#quality', '#ocr', '#ocr-lang', '#name'].forEach((s) => $(s).addEventListener('change', invalidateResult));
+
+  $('#make').addEventListener('click', async () => {
+    if (!pages.length || pages.some((p) => !p.out)) return;
+    if (!window.PDFLib) { toast(t('PDF-Bibliothek wird noch geladen …')); return; }
+    const { PDFDocument } = window.PDFLib;
+    const size = $('#size').value, quality = $('#quality').value, ocr = $('#ocr').checked;
+    let name = ($('#name').value.trim() || defaultName()).replace(/[\\/:*?"<>|]+/g, '-');
+    if (!/\.pdf$/i.test(name)) name += '.pdf';
+    let words = 0, text = [];
+    try {
+      busy(t('PDF wird erstellt …'), 0);
+      let worker = null;
+      if (ocr) {
+        ocrProgress = () => busy(t('Texterkennung wird geladen …'), 0);
+        busy(t('Texterkennung wird geladen …'), 0);
+        worker = await getOcr($('#ocr-lang').value);
+      }
+      const doc = await PDFDocument.create();
+      doc.setTitle(name.replace(/\.pdf$/i, ''));
+      doc.setCreator('Doc Scanner – CM Ventures');
+      doc.setProducer('Doc Scanner (pdf-lib, Tesseract)');
+      for (let i = 0; i < pages.length; i++) {
+        busy(`${t('Seite')} ${i + 1} / ${pages.length}${ocr ? ' · ' + t('Text wird erkannt …') : ''}`, i / pages.length);
+        const { blob, w, h } = await exportJpeg(pages[i], quality);
+        const img = await doc.embedJpg(new Uint8Array(await blob.arrayBuffer()));
+        let pw, ph;
+        if (size === 'fit') { const s = 841.89 / Math.max(w, h); pw = w * s; ph = h * s; }
+        else { [pw, ph] = PAGE[size]; if (w > h) [pw, ph] = [ph, pw]; }
+        const s = Math.min(pw / w, ph / h);
+        const iw = w * s, ih = h * s, x = (pw - iw) / 2, y = (ph - ih) / 2;
+        const pg = doc.addPage([pw, ph]);
+        pg.drawImage(img, { x, y, width: iw, height: ih });
+        if (worker) {
+          const dpi = String(Math.max(70, Math.round(w / (iw / 72))));
+          await worker.setParameters({ user_defined_dpi: dpi });
+          const { data } = await worker.recognize(blob, { pdfTitle: name, pdfTextOnly: true }, { text: true, pdf: true });
+          if (data.text) { text.push(data.text.trim()); words += data.text.split(/\s+/).filter(Boolean).length; }
+          if (data.pdf) {
+            const [layer] = await doc.embedPdf(new Uint8Array(data.pdf));
+            pg.drawPage(layer, { x, y, width: iw, height: ih });
+          }
+        }
+      }
+      busy(t('PDF wird gespeichert …'), 1);
+      const bytes = await doc.save();
+      result = { blob: new Blob([bytes], { type: 'application/pdf' }), name, text: text.join('\n\n') };
+      $('#res-name').textContent = name;
+      const meta = [`${pages.length} ${pages.length === 1 ? t('Seite') : t('Seiten')}`, fmtSize(result.blob.size)];
+      if (ocr) meta.push(words ? `${words} ${t('Wörter erkannt')}` : t('Kein Text erkannt'));
+      $('#res-meta').textContent = meta.join(' · ');
+      $('#res-text').classList.toggle('hidden', !words);
+      $('#res-text-box').classList.toggle('hidden', !words);
+      $('#res-text-pre').textContent = result.text;
+      $('#result').classList.remove('hidden');
+      $('#result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {
+      console.error(e);
+      toast(t('PDF konnte nicht erstellt werden: ') + e.message, true);
+    } finally {
+      ocrProgress = null;
+      busy(false);
+    }
+  });
+
+  $('#res-share').addEventListener('click', () => result && share(result.blob, result.name));
+  $('#res-dl').addEventListener('click', () => result && download(result.blob, result.name));
+  $('#res-text').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(result.text); toast(t('Text kopiert.')); }
+    catch { toast(t('Kopieren nicht möglich – Text bitte im Feld markieren.'), true); }
+  });
+  // The share sheet only makes sense on phones/tablets
+  if (!(navigator.canShare && navigator.canShare({ files: [new File([''], 'a.pdf', { type: 'application/pdf' })] }))) {
+    $('#res-share').classList.add('hidden');
+    $('#res-dl').classList.add('primary');
+  }
+
+  document.addEventListener('langchange', drawGrid);
+  route();
+  window.CMV.registerSW();
+  window.__scan = { pages, addFiles };   // for automated tests
+})();

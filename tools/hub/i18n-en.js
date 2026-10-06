@@ -1,0 +1,30 @@
+/* English texts of the hub (source texts are German). */
+window.I18N_EN = {
+  'CM Ventures Tools': 'CM Ventures Tools', 'Open-Source-Werkzeuge im Browser': 'Open-source tools in your browser',
+  'PDF · Scan · Sprache · Bild · Video': 'PDF · Scan · Voice · Image · Video',
+  'Tools für jeden Tag.': 'Everyday tools.', 'Ohne Upload.': 'No upload.',
+  'Jedes Tool läuft vollständig auf deinem Gerät – die Rechenarbeit übernehmen bewährte Open-Source-Engines als WebAssembly direkt im Browser. Deine Dateien verlassen nie dein Gerät.':
+    'Every tool runs entirely on your device – proven open-source engines do the work as WebAssembly right in your browser. Your files never leave your device.',
+  'Keine Konten, kein Tracking, keine Cookies': 'No accounts, no tracking, no cookies',
+  'Technisch abgesichert: die Seiten dürfen nichts senden': 'Technically enforced: the pages cannot send anything',
+  'Funktioniert nach dem ersten Laden auch offline': 'Works offline after the first load',
+  'Verfügbar': 'Available', 'In Arbeit': 'In the works', 'Öffnen →': 'Open →', 'Bald': 'Soon',
+  'Bearbeiten, unterschreiben, zusammenfügen, komprimieren, „wie gescannt“ – über 20 Werkzeuge.': 'Edit, sign, merge, compress, “make it look scanned” – 20+ tools.',
+  'Dokumente mit dem Handy fotografieren, automatisch geraderichten und als durchsuchbares PDF speichern.': 'Photograph documents with your phone, straighten them automatically and save them as a searchable PDF.',
+  'Sprachmemo → Text': 'Voice memo → text',
+  'Sprachnachrichten und Meetings lokal transkribieren – Deutsch, Englisch und mehr.': 'Transcribe voice messages and meetings locally – German, English and more.',
+  'Bild-Toolkit': 'Image Toolkit',
+  'HEIC → JPG, verkleinern, komprimieren, Standort-Daten entfernen, Hintergrund freistellen.': 'HEIC → JPG, resize, compress, remove location data, remove backgrounds.',
+  'Video-Toolkit': 'Video Toolkit',
+  'Videos kürzen, für WhatsApp oder E-Mail verkleinern, in GIF umwandeln, Ton extrahieren.': 'Trim videos, shrink them for WhatsApp or email, convert to GIF, extract audio.',
+  'Übersetzer': 'Translator',
+  'Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and documents – offline, without sending anything to a service.',
+  'QR-Codes': 'QR codes',
+  'QR-Codes für Links, WLAN und Visitenkarten – im eigenen Design, als PNG oder SVG.': 'QR codes for links, Wi-Fi and business cards – in your own design, as PNG or SVG.',
+  'Squoosh-Codecs · ONNX': 'Squoosh codecs · ONNX',
+  'Hinweise zu den Tools': 'About the tools',
+  'Alle Tools laufen vollständig in deinem Browser. Dateien werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet. Eine Content Security Policy verbietet den Seiten technisch, Verbindungen zu anderen Servern aufzubauen.':
+    'All tools run entirely in your browser. Files are only processed in your device’s memory and never sent to a server. A Content Security Policy technically prevents the pages from connecting to other servers.',
+  'Die verwendeten Engines sind Open Source und werden von den Seiten selbst ausgeliefert – es werden keine Drittanbieter geladen, es gibt kein Tracking und keine Cookies.':
+    'The engines used are open source and served by the pages themselves – no third parties are loaded, there is no tracking and there are no cookies.',
+};
