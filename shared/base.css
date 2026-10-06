@@ -141,7 +141,7 @@ main { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; fle
 .foot-brand { display: inline-flex; }
 .foot-brand img { height: 21px; width: auto; display: block; }
 .foot-id > span { border-left: 1px solid #4a5372; padding-left: 14px; }
-@media (max-width: 640px) { .cmv-logo { height: 32px; } }
+@media (max-width: 640px) { .cmv-logo { height: 24px; } }
 
 /* Light / dark toggle in the header */
 .theme-toggle { display: inline-grid; place-items: center; width: 32px; height: 30px; padding: 0; flex: none; color: var(--muted); border: 1px solid var(--line); background: transparent; }
@@ -154,3 +154,8 @@ main { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; fle
   :root:not([data-theme="light"]) .cmv-logo.on-light { display: none; }
   :root:not([data-theme="light"]) .cmv-logo.on-dark { display: block; }
 }
+
+/* Header never overlaps: the brand shrinks, the controls keep their size */
+.brand { flex-shrink: 1; overflow: hidden; }
+.lang-switch, .theme-toggle { flex-shrink: 0; }
+@media (max-width: 640px) { .brand .logo-word { font-size: 18px; } .topbar { gap: 10px; } }

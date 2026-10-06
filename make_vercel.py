@@ -31,7 +31,9 @@ def config():
             {"key": "Permissions-Policy", "value": "camera=(self), microphone=(self), geolocation=(), payment=(), usb=()"},
             {"key": "Cross-Origin-Opener-Policy", "value": "same-origin"}]},
         {"source": "/(.*)cv-worker.js", "headers": [{"key": "Content-Security-Policy", "value": CSP_EVAL}]},
-        {"source": "/(.*)sw.js", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
+        # pages, styles and scripts: always revalidate (they also carry ?v=<build>); big engine files below are cached
+        {"source": "/(.*).(html|css|js|mjs|json|webmanifest)", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
+        {"source": "/", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
         {"source": "/(.*)vendor/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=2592000"}]},
     ]
     for folder in ISOLATED:

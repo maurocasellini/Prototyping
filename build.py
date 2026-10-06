@@ -301,12 +301,24 @@ def add_bergamot(out):
         json.dump(registry, fh, indent=1)
 
 
+def bust_cache(html_path, version):
+    """Append ?v=<build> to the page's own CSS/JS so a new deployment never mixes with cached old files."""
+    import re
+    with open(html_path, encoding="utf-8") as fh:
+        h = fh.read()
+    h = re.sub(r'((?:href|src)=")(?!https?:|data:|#|/)([^"?]+\.(?:css|js|mjs))(")', lambda m: f"{m.group(1)}{m.group(2)}?v={version}{m.group(3)}", h)
+    with open(html_path, "w", encoding="utf-8") as fh:
+        fh.write(h)
+
+
 def build_pdf():
     """The PDF Toolkit (Pyodide + PyMuPDF) has its own build; copy its output to dist/pdf/."""
     subprocess.run([sys.executable, os.path.join(HERE, "pdf", "web", "build.py")], check=True)
     out = os.path.join(DIST, "pdf")
     shutil.rmtree(out, ignore_errors=True)
     shutil.copytree(os.path.join(HERE, "pdf", "web", "dist"), out)
+    with open(os.path.join(out, "sw.js"), "rb") as fh:
+        bust_cache(os.path.join(out, "index.html"), hashlib.sha256(fh.read()).hexdigest()[:10])
     size = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(out) for f in fs)
     log(f"pdf: {size / 1e6:.1f} MB")
 
@@ -357,6 +369,7 @@ def build(app):
     if os.path.isdir(os.path.join(out, "vendor")):
         rewrite_imports(os.path.join(out, "vendor"))
         split_large(os.path.join(out, "vendor"))
+    bust_cache(os.path.join(out, "index.html"), version.hexdigest()[:10])
     with open(os.path.join(SHARED, "sw.js"), encoding="utf-8") as fh:
         sw = fh.read().replace("__BUILD__", version.hexdigest()[:12]).replace("__APP__", "cmv-" + app)
     with open(os.path.join(out, "sw.js"), "w", encoding="utf-8") as fh:
