@@ -342,7 +342,7 @@ const I = {
   swap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/></svg>',
   pot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h20M9 6c0-1 1-1 1-2M14 6c0-1 1-1 1-2"/></svg>',
   calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
-  mark:'<svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--g1)"/><stop offset=".5" style="stop-color:var(--g2)"/><stop offset="1" style="stop-color:var(--g3)"/></linearGradient></defs><g fill="none" stroke="url(#sbg)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 29V17"/><path d="M16 17c-5.5 0-9-4-9-10 4.5 0 7.5 2.4 9 6 1.5-3.6 4.5-6 9-6 0 6-3.5 10-9 10Z"/><path d="M16 13V4"/><path d="M16 24c-2.5 0-4.5-1.2-5.5-3.2M16 24c2.5 0 4.5-1.2 5.5-3.2"/></g></svg>'
+  mark:'<img src="/frauenraum.webp?v=1" alt="" aria-hidden="true" class="mark" width="30" height="40">'
 };
 
 /* ---------- Helpers ---------- */
