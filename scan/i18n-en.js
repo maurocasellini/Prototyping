@@ -1,6 +1,6 @@
 /* English texts of the Doc Scanner (source texts are German). */
 window.I18N_EN = {
-  'Scanner': 'Scanner', 'Dokument-Scanner': 'Document scanner', 'Fotografieren · Geraderichten · PDF': 'Snap · Straighten · PDF',
+  'Scanner': 'Scanner', 'Doc Scanner': 'Doc Scanner', 'Dokument-Scanner': 'Document scanner', 'Fotografieren · Geraderichten · PDF': 'Snap · Straighten · PDF',
   'Papier rein,': 'Paper in,', 'sauberes PDF': 'clean PDF', 'raus.': 'out.',
   'Blatt fotografieren – die Kanten werden automatisch erkannt, das Bild entzerrt und wie ein Scan aufbereitet. Auf Wunsch mit Texterkennung, damit das PDF durchsuchbar ist.':
     'Take a photo of a page – the edges are detected automatically, the image is straightened and cleaned up like a real scan. Optionally with text recognition, so the PDF is searchable.',

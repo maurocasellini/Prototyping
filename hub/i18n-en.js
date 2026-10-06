@@ -1,7 +1,7 @@
 /* English texts of the hub (source texts are German). */
 window.I18N_EN = {
   'CM Ventures Tools': 'CM Ventures Tools', 'Open-Source-Werkzeuge im Browser': 'Open-source tools in your browser',
-  'PDF · Scan · Sprache · Bild · Video': 'PDF · Scan · Voice · Image · Video',
+  'PDF · Scan · Sprache · Bild · Video': 'PDF · Scan · Voice · Image · Video', 'PDF · Scan · Sprache · Bild · Video · Übersetzen · QR': 'PDF · Scan · Voice · Image · Video · Translate · QR', 'Werkzeuge': 'Tools',
   'Tools für jeden Tag.': 'Everyday tools.', 'Ohne Upload.': 'No upload.',
   'Jedes Tool läuft vollständig auf deinem Gerät – die Rechenarbeit übernehmen bewährte Open-Source-Engines als WebAssembly direkt im Browser. Deine Dateien verlassen nie dein Gerät.':
     'Every tool runs entirely on your device – proven open-source engines do the work as WebAssembly right in your browser. Your files never leave your device.',
