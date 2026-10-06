@@ -10,6 +10,7 @@ WebAssembly.
 | PDF Toolkit | `pdf.cmventures.xyz` | [`pdf/`](pdf) | MuPDF / PyMuPDF on Pyodide |
 | Doc Scanner | `scan.cmventures.xyz` | [`scan/`](scan) | OpenCV.js, Tesseract.js (OCR), pdf-lib |
 | Voice to Text | `voice.cmventures.xyz` | [`voice/`](voice) | Whisper via Transformers.js / ONNX Runtime, FFmpeg.wasm |
+| Blockchain Demo (Coin Sandbox) | `blockchaindemo.cmventures.xyz` | [`blockchaindemo/`](blockchaindemo) | none – own SHA-256, WebCrypto ECDSA |
 
 In progress: image toolkit ([`image/`](image), not published yet), video toolkit, offline translator, QR codes.
 
@@ -26,6 +27,7 @@ In progress: image toolkit ([`image/`](image), not published yet), video toolkit
 
 ```
 hub/ pdf/ scan/ voice/    one folder per tool (image/ is work in progress)
+blockchaindemo/           blockchain simulation for teaching (no engines, no vendor files)
 shared/                   design (base.css, fonts), DE/EN translation (i18n.js), helpers, service worker
 build.py                  builds dist/<tool>/ – downloads pinned npm packages, verifies SHA-256, self-hosts them;
                           runs pdf/web/build.py for the PDF Toolkit
@@ -36,7 +38,7 @@ vercel.json               headers + host-based routing: <subdomain>.cmventures.x
 
 ```
 python3 build.py          # → dist/
-python3 serve.py          # → http://127.0.0.1:8810/ (all tools as /<tool>/) and :8811 … :8818 (one per subdomain)
+python3 serve.py          # → http://127.0.0.1:8810/ (all tools as /<tool>/) and :8811 … :8819 (one per subdomain)
 ```
 
 ## Deployment (Vercel)

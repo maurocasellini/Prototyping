@@ -80,6 +80,7 @@ FFMPEG = [
 # app: [(package, path inside the tarball, destination below <app>/vendor/)]
 VENDOR = {
     "hub": [],
+    "blockchaindemo": [],
     "scan": [
         ("opencv", "package/dist/opencv.js", "opencv.js"),
         ("opencv", "package/LICENSE", "LICENSE-opencv.txt"),
@@ -129,7 +130,7 @@ VENDOR = {
 # Bare module imports in npm files → relative paths inside vendor/
 IMPORT_MAP = {"wasm-feature-detect": "wasm-feature-detect/index.js"}
 # Published apps (image is still in progress and not built yet)
-APPS = ["hub", "pdf", "scan", "voice"]
+APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo"]
 
 # Files above this size are served in parts (CDN limits); vendor/split.json lists them
 SPLIT_AT = 45 * 1024 * 1024
