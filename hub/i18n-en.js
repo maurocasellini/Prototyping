@@ -18,6 +18,7 @@ window.I18N_EN = {
   'Video-Toolkit': 'Video Toolkit', 'FFmpeg · x264': 'FFmpeg · x264',
   'Videos kürzen, für WhatsApp oder E-Mail verkleinern, in GIF umwandeln, Ton extrahieren.': 'Trim videos, shrink them for WhatsApp or email, convert to GIF, extract audio.',
   'Übersetzer': 'Translator',
+  'Texte und Untertitel übersetzen – Deutsch, Englisch, Französisch, Italienisch, Spanisch. Offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and subtitles – German, English, French, Italian, Spanish. Offline, without sending anything to a service.',
   'Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and documents – offline, without sending anything to a service.',
   'QR-Codes': 'QR codes',
   'QR-Codes für Links, WLAN und Visitenkarten – im eigenen Design, als PNG oder SVG.': 'QR codes for links, Wi-Fi and business cards – in your own design, as PNG or SVG.',

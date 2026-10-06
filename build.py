@@ -65,9 +65,40 @@ PACKAGES = {
     # IS-Net background removal model by IMG.LY (AGPL-3.0), stored as hashed chunks
     "imgly-data": (f"{NPM}/@imgly/background-removal-data/-/background-removal-data-1.4.5.tgz",
                    "ca7789abb39370727c9a098310b53bce41518d200000423c7107f8c01bbce946"),
+    "bergamot": (f"{NPM}/@browsermt/bergamot-translator/-/bergamot-translator-0.4.9.tgz",
+                 "9011be93222d839d7448ffdf00549d53ce8f541fd782ffc79779d1756397c41f"),
     "qrcode": (f"{NPM}/qrcode-generator/-/qrcode-generator-2.0.4.tgz",
                "02e2e18a99a90b02dad940851f59b7c3c5fd1ab79cbdece8595cb06328878159"),
 }
+
+# Mozilla Bergamot translation models (Firefox Translations, MPL-2.0), pinned by SHA-256 from registry 0.3.3
+BERGAMOT_BASE = "https://storage.googleapis.com/bergamot-models-sandbox/0.3.3"
+BERGAMOT = [
+    ("deen", "model", "model.deen.intgemm.alphas.bin", 17140837, "1980225d00dc5645491777accff5b3c9d20b92eff67a25135f1cf8fe2ed8fb8f"),
+    ("deen", "lex", "lex.50.50.deen.s2t.bin", 5047568, "2f7c0f7bbce97ae5b52454074a892ba7b7610fb98e3c5d341e4ca79f0850c4de"),
+    ("deen", "vocab", "vocab.deen.spm", 784269, "417668f2ed297970febafb5b079a9d5ebc4ed0b3550ac8386d67a90473a09bd7"),
+    ("ende", "model", "model.ende.intgemm.alphas.bin", 17140835, "b3e980d6602ab0bdfe8d9315cb5fc282a16bb1c8dccf38e70945c584551c4318"),
+    ("ende", "lex", "lex.50.50.ende.s2t.bin", 3943644, "f03eb8245042feb7a5800815b8d0dc215d7a60691632405b65c461d250cedbe6"),
+    ("ende", "vocab", "vocab.deen.spm", 784269, "417668f2ed297970febafb5b079a9d5ebc4ed0b3550ac8386d67a90473a09bd7"),
+    ("fren", "model", "model.fren.intgemm.alphas.bin", 17140961, "185f76d24c2d400fe4ea0cb2487df77722641b97a3ef10633872e8a7fdf40e09"),
+    ("fren", "lex", "lex.50.50.fren.s2t.bin", 8818768, "3148abf21ea98a4d69d0e4504e0d68a6c060204a9b9a39b76855aee1d5b2c8ea"),
+    ("fren", "vocab", "vocab.fren.spm", 831382, "4c84b95b62c930f0791466d73eb996841eef474c96d0c2f0e6c6d80640f2005a"),
+    ("enfr", "model", "model.enfr.intgemm.alphas.bin", 17140961, "0678019c4d74c8c81d2de17e3e58d3aba5f5eb48f5595d9240c17f69d30461de"),
+    ("enfr", "lex", "lex.50.50.enfr.s2t.bin", 7886500, "38fb44bad1fd5f1e6bfdcf15cc8baa09d61aad2a4f9c587914e24e7b5c25c32c"),
+    ("enfr", "vocab", "vocab.fren.spm", 831382, "4c84b95b62c930f0791466d73eb996841eef474c96d0c2f0e6c6d80640f2005a"),
+    ("iten", "model", "model.iten.intgemm.alphas.bin", 17140899, "7dfdf189146d9353fdea264b9e4c8ac36441c770dc4353a8380b64e589dc035b"),
+    ("iten", "lex", "lex.50.50.iten.s2t.bin", 4977500, "e30ec549bd0da9ac42cccdcd3806d3be84d485f7fd329f90f6e40ee027e841d9"),
+    ("iten", "vocab", "vocab.iten.spm", 812781, "603f3349657c3deb9736a0c567452d102a5a03c377dfdf1d32c428608f2cff1b"),
+    ("enit", "model", "model.enit.intgemm.alphas.bin", 17140899, "3d7bbc4d7977e10b35f53faa79f5d5de8211f4f04baed9e7cd9dee1dcceda917"),
+    ("enit", "lex", "lex.50.50.enit.s2t.bin", 4495004, "351ea80fb9f366f07533c7c4836248e72d9d4aa4eb7a05b5d74891a7abb4208c"),
+    ("enit", "vocab", "vocab.enit.spm", 812781, "603f3349657c3deb9736a0c567452d102a5a03c377dfdf1d32c428608f2cff1b"),
+    ("esen", "model", "model.esen.intgemm.alphas.bin", 17140755, "4b6b7f451094aaa447d012658af158ffc708fc8842dde2f871a58404f5457fe0"),
+    ("esen", "lex", "lex.50.50.esen.s2t.bin", 3860888, "f11a2c23ef85ab1fee1c412b908d69bc20d66fd59faa8f7da5a5f0347eddf969"),
+    ("esen", "vocab", "vocab.esen.spm", 825463, "909b1eea1face0d7f90a474fe29a8c0fef8d104b6e41e65616f864c964ba8845"),
+    ("enes", "model", "model.enes.intgemm.alphas.bin", 17140755, "fa7460037a3163e03fe1d23602f964bff2331da6ee813637e092ddf37156ef53"),
+    ("enes", "lex", "lex.50.50.enes.s2t.bin", 3347104, "3a113d713dec3cf1d12bba5b138ae616e28bba4bbc7fe7fd39ba145e26b86d7f"),
+    ("enes", "vocab", "vocab.esen.spm", 825463, "909b1eea1face0d7f90a474fe29a8c0fef8d104b6e41e65616f864c964ba8845"),
+]
 
 FFMPEG = [
     ("ffmpeg", "package/dist/esm/", "ffmpeg/"),
@@ -109,6 +140,13 @@ VENDOR = {
         ("whisper-tiny", "package/models/Xenova/whisper-tiny/", "models/Xenova/whisper-tiny/"),
     ] + FFMPEG,
     "video": FFMPEG,
+    "translate": [
+        ("bergamot", "package/translator.js", "bergamot/translator.js"),
+        ("bergamot", "package/worker/translator-worker.js", "bergamot/worker/translator-worker.js"),
+        ("bergamot", "package/worker/bergamot-translator-worker.js", "bergamot/worker/bergamot-translator-worker.js"),
+        ("bergamot", "package/worker/bergamot-translator-worker.wasm", "bergamot/worker/bergamot-translator-worker.wasm"),
+        ("bergamot", "package/package.json", "bergamot/package.json"),
+    ],
     "image": [
         ("jsq-jpeg", "package/", "jsquash/jpeg/"),
         ("jsq-webp", "package/", "jsquash/webp/"),
@@ -131,7 +169,7 @@ VENDOR = {
 # Bare module imports in npm files → relative paths inside vendor/
 IMPORT_MAP = {"wasm-feature-detect": "wasm-feature-detect/index.js"}
 # Published apps
-APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo", "image", "video"]
+APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo", "image", "video", "translate"]
 
 # Files above this size are served in parts (CDN limits); vendor/split.json lists them
 SPLIT_AT = 45 * 1024 * 1024
@@ -218,6 +256,46 @@ def rewrite_imports(vendor):
                     fh.write(new)
 
 
+def fetch_verified(url, digest):
+    os.makedirs(CACHE, exist_ok=True)
+    path = os.path.join(CACHE, digest[:16] + "-" + os.path.basename(url))
+    if os.path.exists(path):
+        with open(path, "rb") as fh:
+            data = fh.read()
+        if hashlib.sha256(data).hexdigest() == digest:
+            return data
+    for attempt in range(4):
+        try:
+            log("downloading", url)
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "cmv-tools-build"}), timeout=300) as r:
+                data = r.read()
+            break
+        except Exception as e:
+            log("  failed:", e)
+            if attempt == 3:
+                raise SystemExit(f"Could not download {url}")
+            time.sleep(2 ** (attempt + 1))
+    if hashlib.sha256(data).hexdigest() != digest:
+        raise SystemExit(f"Checksum mismatch for {url}")
+    with open(path, "wb") as fh:
+        fh.write(data)
+    return data
+
+
+def add_bergamot(out):
+    """Translation models + a registry in the format translator.js expects (paths relative to the page)."""
+    registry = {}
+    for pair, part, name, size, digest in BERGAMOT:
+        data = fetch_verified(f"{BERGAMOT_BASE}/{pair}/{name}", digest)
+        target = os.path.join(out, "vendor", "models", pair, name)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "wb") as fh:
+            fh.write(data)
+        registry.setdefault(pair, {})[part] = {"name": f"vendor/models/{pair}/{name}", "size": size, "expectedSha256Hash": digest}
+    with open(os.path.join(out, "vendor", "models", "registry.json"), "w") as fh:
+        json.dump(registry, fh, indent=1)
+
+
 def build_pdf():
     """The PDF Toolkit (Pyodide + PyMuPDF) has its own build; copy its output to dist/pdf/."""
     subprocess.run([sys.executable, os.path.join(HERE, "pdf", "web", "build.py")], check=True)
@@ -269,6 +347,8 @@ def build(app):
             with open(target, "wb") as fh:
                 fh.write(data)
         version.update(PACKAGES[pkg][1].encode())
+    if app == "translate":
+        add_bergamot(out)
     if os.path.isdir(os.path.join(out, "vendor")):
         rewrite_imports(os.path.join(out, "vendor"))
         split_large(os.path.join(out, "vendor"))
