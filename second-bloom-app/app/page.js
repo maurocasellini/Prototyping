@@ -58,8 +58,35 @@ export default async function Home({ searchParams }) {
       </section>
 
       <section className="lp-section">
-        <div className="lp-head"><span className="eyebrow">Was geplant ist</span><h2>Eine Begleiterin für <em>jeden Tag</em></h2>
-          <p className="lp-lead">Jeden Tag ein kurzer Check-in, daraus ein passender Plan für Essen, Bewegung und Kopf. Dazu Wissen, das du verstehst, und dein Verlauf über die Wochen.</p></div>
+        <div className="lp-head"><span className="eyebrow">Was geplant ist</span><h2>Alles beginnt <em>bei dir</em></h2>
+          <p className="lp-lead">Second Bloom beginnt nicht mit einem fertigen Programm, sondern mit dir. Am Anfang steht eine ausführliche Standortbestimmung, die dein ganzes Leben in den Blick nimmt. Daraus entsteht ein Plan, der wirklich zu dir passt. Danach bleibt Second Bloom an deiner Seite und entwickelt sich mit dir weiter.</p></div>
+        <div className="lp-phases">
+          <div className="lp-phase lp-phase-1">
+            <span className="lp-num">1</span>
+            <span className="eyebrow">Der Start</span>
+            <h3>Deine ausführliche Standortbestimmung</h3>
+            <p>Du nimmst dir Zeit für dich. Second Bloom fragt nach allem, was in dieser Lebensphase zählt, und setzt die Teile zu einem Gesamtbild zusammen.</p>
+            <ul className="lp-list">
+              <li>Deine Beschwerden: was, wie stark, seit wann und was sie auslöst</li>
+              <li>Zyklus, gynäkologische Vorgeschichte, Medikamente und bisherige Erfahrungen mit Hormonen</li>
+              <li>Ernährung, Bewegung, Schlaf, Stress, Stimmung, Beruf und Familie</li>
+              <li>Auf Wunsch Blutwerte und deine Gesundheitsdaten von Uhr oder Ring</li>
+            </ul>
+            <p className="lp-result"><b>Daraus entsteht:</b> deine persönliche Auswertung, deine Schwerpunkte und ein Plan für Ernährung, Krafttraining, Erholung und Kopf, der zu deinem Alltag passt. Dazu eine klare Zusammenfassung für das Gespräch mit deiner Ärztin oder deinem Arzt.</p>
+          </div>
+          <div className="lp-phase lp-phase-2">
+            <span className="lp-num">2</span>
+            <span className="eyebrow">Die Begleitung</span>
+            <h3>An deiner Seite, Woche für Woche</h3>
+            <ul className="lp-list">
+              <li>Kurze Check-ins und tägliche Impulse, die zu deinem Tag passen</li>
+              <li>Dein Plan passt sich an, wenn sich etwas verändert</li>
+              <li>Wissen zu Hormonen, Ernährung, Training und Psyche, verständlich erklärt</li>
+              <li>Dein Verlauf über Wochen und Monate, damit du Veränderungen erkennst</li>
+            </ul>
+          </div>
+        </div>
+        <p className="lp-subhead">Die Themen, um die es geht</p>
         <div className="lp-feat">
           {PLANNED.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
