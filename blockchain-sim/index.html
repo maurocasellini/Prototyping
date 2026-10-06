@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: a control strip on top, the live network beside the selected node's wallet, then that node's chain, the log and a short primer. */
+/* Layout: controls on top; in teaching mode a lesson + narrator band; then the network beside the selected wallet, the chain, who owns what, the log and a primer. */
 :root {
   --bg: #f3f5f8;
   --surface: #ffffff;
@@ -11,16 +11,17 @@
   --line: #d5dce6;
   --fg: #16202c;
   --muted: #5b6878;
-  --accent: #2557c9;      /* blocks, primary actions */
+  --accent: #2557c9;
   --accent-soft: #dfe8fb;
-  --tx: #b46a00;          /* transactions in flight */
+  --tx: #b46a00;
   --tx-soft: #fbecd2;
-  --sync: #7a45c2;        /* chain sync messages */
+  --sync: #7a45c2;
   --ok: #1d7a4a;
   --ok-soft: #dcf1e4;
   --bad: #b5302a;
   --bad-soft: #f8dfdc;
   --off: #9aa5b3;
+  --on-accent: #ffffff;
   --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --r: 8px;
@@ -30,14 +31,14 @@
     --bg: #0f141b; --surface: #161d27; --surface-2: #1d2633; --line: #2b3646;
     --fg: #e4e9f0; --muted: #94a1b2; --accent: #6f9bff; --accent-soft: #1e2d4d;
     --tx: #f0a83a; --tx-soft: #3a2a12; --sync: #b48cf0; --ok: #4cc488; --ok-soft: #173426;
-    --bad: #f07a6f; --bad-soft: #3c1d1b; --off: #5a6676; color-scheme: dark;
+    --bad: #f07a6f; --bad-soft: #3c1d1b; --off: #5a6676; --on-accent: #0f141b; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0f141b; --surface: #161d27; --surface-2: #1d2633; --line: #2b3646;
   --fg: #e4e9f0; --muted: #94a1b2; --accent: #6f9bff; --accent-soft: #1e2d4d;
   --tx: #f0a83a; --tx-soft: #3a2a12; --sync: #b48cf0; --ok: #4cc488; --ok-soft: #173426;
-  --bad: #f07a6f; --bad-soft: #3c1d1b; --off: #5a6676; color-scheme: dark;
+  --bad: #f07a6f; --bad-soft: #3c1d1b; --off: #5a6676; --on-accent: #0f141b; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 14px; line-height: 1.45; }
@@ -53,11 +54,12 @@ p { margin: 0; }
 button, select, input { font: inherit; color: inherit; }
 button { cursor: pointer; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 6px 12px; font-weight: 500; }
 button:hover { border-color: var(--accent); }
-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 button.primary:hover { filter: brightness(1.08); }
 button:disabled { opacity: .5; cursor: not-allowed; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 input, select { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; min-width: 0; }
+input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
 
 /* header */
 .top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
@@ -67,11 +69,33 @@ input, select { background: var(--surface); border: 1px solid var(--line); borde
 .ctl { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
 .ctl input[type=range] { width: 90px; padding: 0; }
 .ctl output { color: var(--fg); min-width: 56px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; padding: 2px; background: var(--surface); }
+.seg button { border: 0; padding: 5px 12px; border-radius: 5px; background: transparent; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 12px; align-content: start; min-width: 0; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .grid-main { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 16px; align-items: start; }
 @media (max-width: 900px) { .grid-main { grid-template-columns: minmax(0, 1fr); } }
+
+/* lesson band (teaching mode) */
+.lesson { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; }
+@media (max-width: 900px) { .lesson { grid-template-columns: minmax(0, 1fr); } }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.steps li:hover { background: var(--surface-2); }
+.steps li::before { content: counter(step); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 12px; font-weight: 600; color: var(--muted); }
+.steps li.done::before { content: "✓"; background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.steps li.next::before { border-color: var(--accent); color: var(--accent); }
+.steps li.next { background: var(--accent-soft); }
+.steps b { display: block; font-weight: 600; }
+.steps span { color: var(--muted); font-size: 13px; }
+.steps li.done b { color: var(--muted); }
+.narr { background: var(--accent-soft); border-radius: 8px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; align-self: start; }
+.narr .kicker { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+.narr .body { font-size: 15px; line-height: 1.55; max-width: 68ch; }
+.narr .body b { font-weight: 600; }
+.narr .checks { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* network */
 .net svg { width: 100%; height: auto; display: block; }
@@ -92,13 +116,25 @@ input, select { background: var(--surface); border: 1px solid var(--line); borde
 .node .flash.on { animation: flash 1s ease-out; }
 .node text { fill: var(--fg); font-family: var(--font-ui); text-anchor: middle; pointer-events: none; }
 .node .nm { font-size: 13px; font-weight: 600; }
-.node .ht { font-size: 11px; fill: var(--muted); font-family: var(--font-mono); }
+.node .ht { font-size: 10.5px; fill: var(--muted); font-family: var(--font-mono); }
+.node .bal { font-size: 11.5px; font-weight: 600; fill: var(--muted); }
+.badge { opacity: 0; pointer-events: none; }
+.badge circle { stroke: var(--surface); stroke-width: 2; }
+.node .badge text { fill: var(--surface); font-size: 12px; font-weight: 700; }
+.badge.ok circle { fill: var(--ok); }
+.badge.bad circle { fill: var(--bad); }
+.badge.on { animation: badge 1.8s ease-out; }
+@keyframes badge { 0% { opacity: 0; } 10% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
 .dot-tx { fill: var(--tx); }
 .dot-block { fill: var(--accent); }
 .dot-sync { fill: var(--sync); }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .node.mining .ring { animation: none; } .node .flash.on { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .node.mining .ring { animation: none; }
+  .node .flash.on { animation: none; }
+  .badge.on { animation: none; opacity: 1; }
+}
 
 /* tables */
 .tbl-wrap { overflow-x: auto; }
@@ -115,19 +151,21 @@ tr.is-sel td { background: var(--accent-soft); }
 .pill.bad { background: var(--bad-soft); color: var(--bad); }
 .pill.acc { background: var(--accent-soft); color: var(--accent); }
 .pill.tx { background: var(--tx-soft); color: var(--tx); }
+.narr .pill.ok { background: var(--surface); }
 
 /* node panel */
 .who { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .who h3 { font-size: 20px; }
 .addr { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .addr code { font-family: var(--font-mono); font-size: 12px; background: var(--surface-2); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
-.row { display: flex; gap: 8px; flex-wrap: wrap; }
-.bal { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.bal .big { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
-.bal .unit { font-size: 14px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.balrow { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.balrow .big { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+.balrow .unit { font-size: 14px; color: var(--muted); font-weight: 500; margin-left: 4px; }
 .hashbox { background: var(--surface-2); border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; }
 .hashbox .h { font-family: var(--font-mono); font-size: 12px; overflow-wrap: anywhere; }
 .hashbox .h b { color: var(--ok); font-weight: 600; }
+.hashbox .contents { font-size: 12.5px; color: var(--muted); }
 .send { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, .8fr); gap: 8px; }
 .send label { display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
 .send .act { grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
@@ -135,36 +173,53 @@ tr.is-sel td { background: var(--accent-soft); }
 .msg.err { color: var(--bad); }
 .msg.ok { color: var(--ok); }
 .sub { display: grid; gap: 6px; }
-.list { display: grid; gap: 4px; max-height: 168px; overflow-y: auto; }
-.li { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 4px 6px; border-radius: 4px; background: var(--surface-2); }
-.li.click { cursor: pointer; }
-.li.click:hover { outline: 1px solid var(--accent); }
+.list { display: grid; gap: 4px; max-height: 190px; overflow-y: auto; }
+.li { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; padding: 4px 6px; border-radius: 4px; background: var(--surface-2); }
 .li .mono { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.li .grow { flex: 1; min-width: 0; display: flex; justify-content: space-between; gap: 10px; cursor: pointer; }
+.li .grow:hover { text-decoration: underline; }
 .empty { font-size: 13px; color: var(--muted); }
 hr { border: 0; border-top: 1px solid var(--line); margin: 0; width: 100%; }
 
 /* chain */
-.chain { display: flex; gap: 0; overflow-x: auto; padding-bottom: 6px; align-items: stretch; }
-.blk { flex: 0 0 172px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 3px; background: var(--surface); cursor: pointer; text-align: left; font-weight: 400; }
+.chain { display: flex; overflow-x: auto; padding-bottom: 6px; align-items: stretch; }
+.blk { flex: 0 0 204px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 3px; align-content: start; background: var(--surface); cursor: pointer; text-align: left; font-weight: 400; }
 .blk:hover { border-color: var(--accent); }
-.blk .bh { display: flex; justify-content: space-between; align-items: baseline; }
+.blk .bh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .blk .bh strong { font-size: 15px; }
 .blk .kv { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
 .blk .kv span:first-child { color: var(--muted); }
+.blk .txs { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 5px; display: grid; gap: 2px; font-size: 12px; }
+.blk .txs div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.blk .txs .cb { color: var(--accent); }
 .blk.new { animation: pop .6s ease-out; }
 .link { flex: 0 0 22px; align-self: center; height: 2px; background: var(--line); position: relative; }
 .link::after { content: ""; position: absolute; left: 0; top: -3px; border: 4px solid transparent; border-right-color: var(--line); border-left: 0; }
 @keyframes pop { from { background: var(--ok-soft); } to { background: var(--surface); } }
 @media (prefers-reduced-motion: reduce) { .blk.new { animation: none; } }
 
+/* who owns what */
+.owners { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.owner { border: 1px solid var(--line); border-radius: 6px; padding: 10px; display: grid; gap: 6px; align-content: start; }
+.owner-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.owner-head strong { font-size: 15px; }
+.owner-head .tot { font-size: 18px; font-weight: 600; }
+.coin { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 6px 8px; border-radius: 5px; background: var(--surface-2); cursor: pointer; font-size: 12.5px; }
+.coin:hover { outline: 1px solid var(--accent); }
+.coin .amt { font-weight: 600; text-align: right; }
+.coin .where { color: var(--muted); grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.coin.spending { background: var(--tx-soft); }
+
 /* log */
-.log { display: grid; gap: 2px; max-height: 260px; overflow-y: auto; font-size: 13px; }
+.log { display: grid; gap: 2px; max-height: 280px; overflow-y: auto; font-size: 13px; }
 .log div { display: grid; grid-template-columns: 52px 10px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 2px 0; }
 .log .t { color: var(--muted); font-family: var(--font-mono); font-size: 11.5px; }
 .log i { width: 8px; height: 8px; border-radius: 50%; background: var(--off); align-self: center; }
 .log .k-tx i { background: var(--tx); }
 .log .k-block i { background: var(--accent); }
 .log .k-net i { background: var(--sync); }
+.log .k-check i { background: var(--ok); }
+.log .k-check span { color: var(--muted); }
 .log .k-warn i { background: var(--bad); }
 .log .k-warn span { color: var(--bad); }
 
@@ -176,26 +231,34 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 0; width: 100%; }
 .try li::marker { color: var(--accent); font-weight: 600; }
 .note { font-size: 12.5px; color: var(--muted); }
 
-/* dialog */
+/* dialogs */
 dialog { border: 1px solid var(--line); border-radius: 10px; padding: 0; background: var(--surface); color: var(--fg); width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 48px); }
-dialog::backdrop { background: rgb(10 15 25 / .45); }
+dialog::backdrop { background: rgb(10 15 25 / .5); }
 .dlg { padding: 18px; display: grid; gap: 14px; }
 .dlg-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .kvs { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; font-size: 13px; }
 .kvs dt { color: var(--muted); }
 .kvs dd { margin: 0; overflow-wrap: anywhere; }
 .kvs input { width: 140px; font-family: var(--font-mono); }
-.txcard { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; cursor: pointer; }
+.txcard { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; gap: 8px; cursor: pointer; font-size: 13px; }
 .txcard:hover { border-color: var(--accent); }
 .io { display: grid; grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr); gap: 8px; align-items: start; font-size: 12.5px; }
-.io > div { display: grid; gap: 3px; min-width: 0; }
-.io .arrow { color: var(--muted); text-align: center; }
+.io > div { display: grid; gap: 8px; min-width: 0; align-content: start; }
+.io .arrow { color: var(--muted); text-align: center; padding-top: 18px; }
 .io .mono { overflow-wrap: anywhere; }
+.start { padding: 24px; display: grid; gap: 18px; }
+.start p.lead { color: var(--muted); max-width: 60ch; }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.choice { text-align: left; padding: 16px; border-radius: 8px; display: grid; gap: 6px; align-content: start; font-weight: 400; }
+.choice strong { font-size: 17px; }
+.choice span { color: var(--muted); }
+.choice.primary span { color: inherit; opacity: .85; }
 @media (max-width: 560px) {
   .send { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .send label:first-child { grid-column: 1 / -1; }
   .io { grid-template-columns: minmax(0, 1fr); }
-  .io .arrow { text-align: left; }
+  .io .arrow { text-align: left; padding-top: 0; }
+  .choices { grid-template-columns: minmax(0, 1fr); }
 }
 </style>
 
@@ -203,31 +266,49 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
   <header class="top">
     <div class="brand">
       <h1>Coin Sandbox</h1>
-      <p>A live blockchain running in your browser. The coins (SIM) are simulated and have no value.</p>
+      <p>A blockchain running in your browser. The coins (SIM) are simulated and have no value.</p>
     </div>
     <div class="controls">
+      <div class="seg" role="group" aria-label="Mode">
+        <button type="button" data-mode="teach" aria-pressed="true">Teaching</button>
+        <button type="button" data-mode="sim" aria-pressed="false">Simulation</button>
+      </div>
       <button id="btnRun" type="button">Pause</button>
       <label class="ctl" for="difficulty">Difficulty
         <select id="difficulty">
           <option value="2">2 zeros</option>
           <option value="3">3 zeros</option>
-          <option value="4" selected>4 zeros</option>
+          <option value="4">4 zeros</option>
           <option value="5">5 zeros</option>
         </select>
       </label>
       <label class="ctl" for="hashrate">Hash power
-        <input id="hashrate" type="range" min="500" max="10000" step="500" value="3000">
-        <output id="hashrateOut" class="num">3,000 H/s</output>
+        <input id="hashrate" type="range" min="250" max="10000" step="250" value="1500">
+        <output id="hashrateOut" class="num">1,500 H/s</output>
       </label>
       <label class="ctl" for="delay">Network delay
-        <input id="delay" type="range" min="200" max="3000" step="100" value="900">
-        <output id="delayOut" class="num">0.9 s</output>
+        <input id="delay" type="range" min="200" max="5000" step="100" value="1600">
+        <output id="delayOut" class="num">1.6 s</output>
       </label>
-      <label class="ctl" for="autoTx"><input id="autoTx" type="checkbox" checked> Random payments</label>
+      <label class="ctl" for="autoTx"><input id="autoTx" type="checkbox"> Random payments</label>
       <button id="btnAdd" type="button">Add node</button>
       <button id="btnReset" type="button">Reset</button>
     </div>
   </header>
+
+  <section class="panel" id="lessonPanel" aria-label="Lesson">
+    <div class="lesson">
+      <div class="sub">
+        <h2>Lesson: one payment from start to finish</h2>
+        <ol class="steps" id="steps"></ol>
+      </div>
+      <div class="narr" role="status" aria-live="polite">
+        <div class="kicker" id="narrKicker">What just happened</div>
+        <div class="body" id="narrBody"></div>
+        <div class="checks" id="narrChecks"></div>
+      </div>
+    </div>
+  </section>
 
   <div class="grid-main">
     <section class="panel net" aria-label="Peer-to-peer network">
@@ -237,10 +318,11 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
           <span><i style="background:var(--tx)"></i>Transaction</span>
           <span><i style="background:var(--accent)"></i>Block</span>
           <span><i style="background:var(--sync)"></i>Chain sync</span>
+          <span><i style="background:var(--ok)"></i>Checked ✓</span>
         </div>
       </div>
-      <svg id="svg" viewBox="0 0 640 380" role="img" aria-label="Network of nodes"></svg>
-      <p class="note">Click a node to open its wallet. Click a connection to cut it, and click again to restore it. A spinning ring means the node is mining.</p>
+      <svg id="svg" viewBox="0 0 640 390" role="img" aria-label="Network of nodes"></svg>
+      <p class="note">Click a node to open its wallet. Click a connection to cut it, and click again to restore it. A spinning ring means the node is mining. A green ✓ appears when a node has checked a transaction or block and accepted it, a red ✗ when it rejected it.</p>
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Node</th><th>Status</th><th class="num">Height</th><th>Chain tip</th><th class="num">Mempool</th><th class="num">Balance</th><th>Consensus</th></tr></thead>
@@ -250,24 +332,25 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
     </section>
 
     <section class="panel" aria-label="Selected node">
-      <div class="who"><h3 id="nName">Alice</h3><span id="nPills" class="row"></span></div>
-      <div class="addr"><span class="muted">Address</span><code id="nAddr"></code><button id="btnCopy" type="button">Copy</button></div>
+      <div class="who"><h3 id="nName">Bob</h3><span id="nPills" class="row"></span></div>
+      <div class="addr"><span class="muted">Next receive address</span><code id="nAddr"></code><button id="btnCopy" type="button">Copy</button></div>
       <div class="row">
-        <button id="btnMine" type="button">Start mining</button>
+        <button id="btnMine" type="button" class="primary">Mine a block</button>
         <button id="btnOnline" type="button">Go offline</button>
       </div>
-      <div class="bal">
+      <div class="balrow">
         <div><div class="muted">Confirmed balance</div><span class="big num" id="nBal">0</span><span class="unit">SIM</span></div>
         <div><div class="muted">Pending</div><span class="num" id="nPend">0</span></div>
       </div>
       <div class="hashbox" id="hashbox">
         <div class="muted" id="hashLabel">Mining is off</div>
         <div class="h" id="hashLive">–</div>
+        <div class="contents" id="hashContents"></div>
       </div>
       <hr>
       <form class="send" id="sendForm" autocomplete="off">
         <label for="sendTo">Send to<select id="sendTo"></select></label>
-        <label for="sendAmt">Amount<input id="sendAmt" type="number" min="1" step="1" value="10" inputmode="numeric"></label>
+        <label for="sendAmt">Amount<input id="sendAmt" type="number" min="1" step="1" value="30" inputmode="numeric"></label>
         <label for="sendFee">Fee<input id="sendFee" type="number" min="0" step="1" value="1" inputmode="numeric"></label>
         <div class="act">
           <button class="primary" type="submit">Sign &amp; broadcast</button>
@@ -277,11 +360,11 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
       </form>
       <hr>
       <div class="sub">
-        <h2>Coins in wallet (UTXOs)</h2>
+        <h2>Coins in this wallet (UTXOs)</h2>
         <div class="list" id="nUtxo"></div>
       </div>
       <div class="sub">
-        <h2>Mempool of this node</h2>
+        <h2 id="poolTitle">Mempool of this node</h2>
         <div class="list" id="nPool"></div>
       </div>
     </section>
@@ -289,10 +372,18 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
 
   <section class="panel" aria-label="Blockchain">
     <div class="panel-head">
-      <h2 id="chainTitle">Blockchain as seen by Alice</h2>
-      <span class="note">Newest block on the left. Click a block to inspect it.</span>
+      <h2 id="chainTitle">Blockchain as seen by Bob</h2>
+      <span class="note">Newest block on the left. Each block points to the one before it. Click a block to inspect it.</span>
     </div>
     <div class="chain" id="chain"></div>
+  </section>
+
+  <section class="panel" aria-label="Who owns what">
+    <div class="panel-head">
+      <h2 id="ownersTitle">Who owns what: the UTXO set</h2>
+      <span class="note">Every unspent coin, grouped by owner. A balance is the sum of a person's coins. Click a coin to see where it came from.</span>
+    </div>
+    <div class="owners" id="owners"></div>
   </section>
 
   <div class="grid-main">
@@ -304,9 +395,9 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
       <h2>Things to try</h2>
       <ol class="try">
         <li>Send coins from one node to another and follow the orange dot as the transaction spreads.</li>
-        <li>Turn on mining for more nodes and watch who wins each block.</li>
-        <li>Take a node offline, let it keep mining alone, then bring it back. Its short fork gets replaced by the longer chain.</li>
-        <li>Cut two connections to split the network in half. Both halves keep mining until you reconnect them.</li>
+        <li>Let two nodes mine at the same time and watch who wins the block.</li>
+        <li>Take a node offline, let it mine alone, then bring it back. Its short fork gets replaced by the longer chain.</li>
+        <li>Cut two connections to split the network in half. Both halves keep going until you reconnect them.</li>
         <li>Press “Try a double spend” and see which of the two payments ends up in a block.</li>
         <li>Open a block and change its nonce. The hash changes and the proof of work breaks.</li>
       </ol>
@@ -316,16 +407,28 @@ dialog::backdrop { background: rgb(10 15 25 / .45); }
   <section class="panel" aria-label="How it works">
     <h2>How it works</h2>
     <div class="learn">
-      <div><h3>Keys and addresses</h3><p>Every node holds a real ECDSA key pair (P-256). Its address is the SHA-256 hash of its public key, shortened. Only the private key can sign coins away from that address.</p></div>
-      <div><h3>Transactions</h3><p>Coins are unspent outputs (UTXOs) of earlier transactions. A payment uses some of them as inputs, signs each one and creates new outputs: one for the receiver and one for the change. Whatever is left over is the fee.</p></div>
-      <div><h3>Mempool</h3><p>Each node checks the signatures and that the coins are still unspent, then keeps the transaction in its mempool and passes it on to its peers. A second payment that spends the same coin is rejected.</p></div>
-      <div><h3>Proof of work</h3><p>Miners collect transactions into a block and try one nonce after another until the block's SHA-256 hash starts with enough zeros. Each extra zero makes this about 16 times harder. The winner gets 50 SIM plus the fees.</p></div>
-      <div><h3>The chain</h3><p>Each block contains the hash of the block before it. Changing anything in an old block changes its hash, which breaks every block after it. That makes history expensive to rewrite.</p></div>
-      <div><h3>Consensus</h3><p>Nodes follow the chain with the most total work. When two miners find a block at the same time, the network forks briefly. The next block settles it, and the losing block's transactions return to the mempool.</p></div>
+      <div><h3>Keys and addresses</h3><p>Every wallet holds real ECDSA key pairs (P-256). An address is the SHA-256 hash of a public key, shortened. Wallets use a new address for every coin they receive, so one person usually owns several addresses.</p></div>
+      <div><h3>Coins are UTXOs</h3><p>The chain stores no account balances. It only stores unspent outputs (UTXOs) of earlier transactions. Your balance is the sum of all UTXOs your keys can unlock.</p></div>
+      <div><h3>Transactions</h3><p>A payment spends whole coins as inputs and creates new outputs: one for the receiver and one for the change. Each input is signed with the key that owns it. Inputs minus outputs is the fee.</p></div>
+      <div><h3>Checking</h3><p>Every node checks every transaction on its own: is the signature valid, does the signer own the coin, is the coin still unspent, do the inputs cover the outputs? Only then does it keep it in its mempool and pass it on.</p></div>
+      <div><h3>Mining</h3><p>A miner packs transactions from its mempool into a block and tries nonce after nonce until the block's SHA-256 hash starts with enough zeros. The first transaction pays the miner 100 SIM plus all fees.</p></div>
+      <div><h3>Consensus</h3><p>Each block contains the hash of the previous block, so blocks form a chain. Nodes follow the chain with the most work. If two blocks compete, the next block decides, and the losing block's transactions go back to the mempool.</p></div>
     </div>
   </section>
 </div>
 
+<dialog id="startDlg">
+  <div class="start">
+    <div class="sub">
+      <h1>Coin Sandbox</h1>
+      <p class="lead">A small blockchain network that runs in your browser. Choose how you want to use it. You can switch at any time with the toggle at the top.</p>
+    </div>
+    <div class="choices">
+      <button type="button" class="choice primary" data-start="teach"><strong>Teaching mode</strong><span>Nothing happens by itself. You mine each block and sign each payment by hand, and the page explains every step. Best for a lecture.</span></button>
+      <button type="button" class="choice" data-start="sim"><strong>Start simulation</strong><span>The network runs on its own. Miners compete, random payments flow, forks appear and resolve.</span></button>
+    </div>
+  </div>
+</dialog>
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 
 <script>
@@ -378,11 +481,12 @@ const SIGN = { name: 'ECDSA', hash: 'SHA-256' };
 const toHex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 const fromHex = hex => new Uint8Array(hex.match(/../g).map(h => parseInt(h, 16)));
 const pubKeyCache = new Map();
+const addrOf = pubHex => sha256(pubHex).slice(0, 24);
 async function makeKeys() {
   const kp = await subtle.generateKey(ECDSA, true, ['sign', 'verify']);
   const pubHex = toHex(await subtle.exportKey('raw', kp.publicKey));
   pubKeyCache.set(pubHex, kp.publicKey);
-  return { priv: kp.privateKey, pubHex };
+  return { priv: kp.privateKey, pubHex, address: addrOf(pubHex) };
 }
 async function sign(priv, text) { return toHex(await subtle.sign(SIGN, priv, textEnc.encode(text))); }
 async function verify(pubHex, sigHex, text) {
@@ -392,10 +496,9 @@ async function verify(pubHex, sigHex, text) {
     return await subtle.verify(SIGN, key, fromHex(sigHex), textEnc.encode(text));
   } catch { return false; }
 }
-const addrOf = pubHex => sha256(pubHex).slice(0, 24);
 
 /* ---------------- Chain primitives ---------------- */
-const REWARD = 50, GENESIS_GRANT = 100, MAX_TX = 8, ZERO = '0'.repeat(64);
+const REWARD = 100, GENESIS_GRANT = 100, MAX_TX = 8, ZERO = '0'.repeat(64);
 const NAMES = ['Alice', 'Bob', 'Carol', 'Dave', 'Erin', 'Frank', 'Grace', 'Heidi', 'Ivan', 'Judy'];
 
 function txId(tx) {
@@ -438,29 +541,45 @@ function applyBlock(parentU, block) {
 
 /* ---------------- Simulation state ---------------- */
 const S = {
-  nodes: [], links: [], msgs: [], log: [], selected: 0, running: true,
-  difficulty: 4, hashrate: 3000, delay: 900, autoTx: true,
-  t0: performance.now(), genesis: null, epoch: 0
+  mode: 'teach', nodes: [], links: [], msgs: [], log: [], selected: 0, running: true,
+  difficulty: 3, hashrate: 1500, delay: 1600, autoTx: false,
+  t0: performance.now(), genesis: null, epoch: 0,
+  lesson: [], watch: new Map(), narr: null
 };
-const byAddr = new Map();
+const byAddr = new Map();   // address -> node that owns it
+const KEYS = new Map();     // address -> key entry { priv, pubHex, address, idx }
 const nameOf = a => byAddr.get(a)?.name ?? a.slice(0, 8) + '…';
+const addrTag = a => `${nameOf(a)} · address ${KEYS.get(a)?.idx ?? '?'}`;
 const short = h => h ? h.slice(0, 10) + '…' : '–';
 const fmt = n => n.toLocaleString('en-US');
+const teaching = () => S.mode === 'teach';
 
 function log(text, kind = '') {
   S.log.unshift({ t: performance.now() - S.t0, text, kind });
-  if (S.log.length > 150) S.log.length = 150;
+  if (S.log.length > 200) S.log.length = 200;
   dirty.log = true;
 }
+function narrate(kicker, html, checks = []) {
+  S.narr = { kicker, html, checks };
+  dirty.narr = true;
+}
 
-function makeNode(i, keys) {
+function adoptKey(n, k) {
+  k.idx = n.wallet.length + 1;
+  n.wallet.push(k); n.addrSet.add(k.address);
+  byAddr.set(k.address, n); KEYS.set(k.address, k);
+  return k;
+}
+async function freshKey(n) { return adoptKey(n, await makeKeys()); }
+function makeNode(i, key) {
   const n = {
-    id: i, name: NAMES[i] ?? 'Node ' + (i + 1), keys, address: addrOf(keys.pubHex),
+    id: i, name: NAMES[i] ?? 'Node ' + (i + 1), wallet: [], addrSet: new Set(), recv: null, reward: null,
     online: true, mining: false, blocks: new Map(), tip: null, orphans: new Map(),
-    mempool: new Map(), seenTx: new Set(), q: Promise.resolve(), candidate: null,
-    hashes: 0, lastHash: '', mined: 0, x: 0, y: 0, flashAt: 0
+    mempool: new Map(), seenTx: new Set(), exclude: new Set(), q: Promise.resolve(), candidate: null,
+    hashes: 0, lastHash: '', mined: 0, x: 0, y: 0, flashAt: 0, badgeAt: 0, badgeOk: true
   };
-  byAddr.set(n.address, n);
+  adoptKey(n, key);
+  n.recv = n.reward = key;
   return n;
 }
 function addGenesis(node) {
@@ -482,10 +601,11 @@ function peersOf(n) {
   return S.links.filter(l => !l.cut && (l.a === n.id || l.b === n.id))
     .map(l => S.nodes[l.a === n.id ? l.b : l.a]).filter(p => p.online);
 }
+function badge(n, ok) { n.badgeAt = performance.now(); n.badgeOk = ok; }
 
 /* ---------------- Messaging ---------------- */
 function send(from, to, type, payload) {
-  const jitter = 0.8 + Math.random() * 0.4;
+  const jitter = 0.85 + Math.random() * 0.3;
   const big = type === 'blocks' ? 1.4 : 1;
   S.msgs.push({ from, to, type, payload, t0: performance.now(), dur: S.delay * jitter * big, el: null });
 }
@@ -523,7 +643,7 @@ async function checkTx(tx, u, spent) {
   for (const i of tx.inputs) {
     const k = i.txid + ':' + i.vout, coin = u.get(k);
     if (!coin) return { err: 'spends a coin that does not exist or is already spent', missing: true };
-    if (spent.has(k) || local.has(k)) return { err: 'double spend' };
+    if (spent.has(k) || local.has(k)) return { err: 'double spend, this coin is already being spent by another payment' };
     if (addrOf(i.pubkey) !== coin.address) return { err: 'signer does not own the coin' };
     if (!(await verify(i.pubkey, i.sig, tx.id))) return { err: 'invalid signature' };
     local.add(k); inSum += coin.amount;
@@ -540,6 +660,7 @@ function mempoolSpent(n) {
   for (const tx of n.mempool.values()) for (const i of tx.inputs) s.add(i.txid + ':' + i.vout);
   return s;
 }
+const payerOf = tx => tx.coinbase ? null : byAddr.get(addrOf(tx.inputs[0].pubkey));
 async function onTx(n, tx, from) {
   if (n.seenTx.has(tx.id)) return;
   n.seenTx.add(tx.id);
@@ -548,12 +669,16 @@ async function onTx(n, tx, from) {
   if (!r.ok) {
     // Coins we don't know yet (or that are already confirmed) are usually a timing issue while syncing: forget it quietly.
     if (r.missing) { n.seenTx.delete(tx.id); return; }
-    if (from) log(`${n.name} rejected a transaction from ${from.name}: ${r.err}`, 'warn');
+    badge(n, false);
+    if (from) log(`${n.name} rejected a payment from ${from.name}: ${r.err}`, 'warn');
     return;
   }
   n.mempool.set(tx.id, tx);
   n.candidate = null;
-  dirty.panel = true;
+  if (from) {
+    badge(n, true);
+    if (teaching()) log(`${n.name} checked ${payerOf(tx)?.name ?? 'a'}'s payment: signature ✓ · owner ✓ · coin unspent ✓ · amounts ✓ → mempool`, 'check');
+  }
   broadcast(n, 'tx', tx, from);
 }
 async function checkBlock(block, parent) {
@@ -587,9 +712,16 @@ async function onBlock(n, block, from, relay) {
     return false;
   }
   const err = await checkBlock(block, parent.block);
-  if (err) { log(`${n.name} rejected block #${block.height} from ${from ? from.name : 'itself'}: ${err}`, 'warn'); return false; }
+  if (err) { badge(n, false); log(`${n.name} rejected block #${block.height} from ${from ? from.name : 'itself'}: ${err}`, 'warn'); return false; }
   n.blocks.set(block.hash, { block, work: parent.work + workOf(block.difficulty) });
   for (const t of block.txs) n.seenTx.add(t.id);
+  if (from) {
+    badge(n, true);
+    if (teaching() && relay) {
+      const k = block.txs.length - 1;
+      log(`${n.name} checked block #${block.height} from ${from.name}: proof of work ✓ · previous hash ✓ · ${k ? k + ' payment' + (k > 1 ? 's' : '') + ' ✓' : 'reward only'} → added to its chain`, 'check');
+    }
+  }
   if (n.blocks.get(block.hash).work > tipWork(n)) setTip(n, block.hash);
   if (relay) broadcast(n, 'block', block, from);
   const kids = n.orphans.get(block.hash);
@@ -623,16 +755,16 @@ function setTip(n, hash) {
     if (keys.every(k => u.has(k) && !spent.has(k))) { pool.set(tx.id, tx); keys.forEach(k => spent.add(k)); }
     else conflicts++;
   }
-  if (conflicts) log(`${n.name} dropped ${conflicts} transaction${conflicts > 1 ? 's' : ''} that conflict with the chain (double spend)`, 'warn');
+  if (conflicts) log(`${n.name} dropped ${conflicts} payment${conflicts > 1 ? 's that conflict' : ' that conflicts'} with the chain (double spend)`, 'warn');
   n.mempool = pool;
+  for (const id of [...n.exclude]) if (!pool.has(id)) n.exclude.delete(id);
   n.candidate = null;
-  dirty.panel = dirty.chain = true;
 }
 
 /* ---------------- Wallet ---------------- */
 function walletCoins(n) {
   const u = UTXO.get(n.tip), out = [];
-  for (const [k, c] of u) if (c.address === n.address) out.push({ key: k, ...c });
+  for (const [k, c] of u) if (n.addrSet.has(c.address)) out.push({ key: k, ...c });
   return out;
 }
 function balances(n) {
@@ -642,22 +774,23 @@ function balances(n) {
   let pending = 0;
   const u = UTXO.get(n.tip);
   for (const tx of n.mempool.values()) {
-    for (const o of tx.outputs) if (o.address === n.address) pending += o.amount;
-    for (const i of tx.inputs) { const c = u.get(i.txid + ':' + i.vout); if (c && c.address === n.address) pending -= c.amount; }
+    for (const o of tx.outputs) if (n.addrSet.has(o.address)) pending += o.amount;
+    for (const i of tx.inputs) { const c = u.get(i.txid + ':' + i.vout); if (c && n.addrSet.has(c.address)) pending -= c.amount; }
   }
   return { confirmed, pending, free, freeSum: free.reduce((s, c) => s + c.amount, 0) };
 }
 async function buildTx(n, coins, toAddr, amount, fee) {
   const inSum = coins.reduce((s, c) => s + c.amount, 0);
   const outputs = [{ address: toAddr, amount }];
-  if (inSum - amount - fee > 0) outputs.push({ address: n.address, amount: inSum - amount - fee });
+  const change = inSum - amount - fee;
+  if (change > 0) outputs.push({ address: (await freshKey(n)).address, amount: change });
   const tx = {
-    inputs: coins.map(c => { const [txid, vout] = c.key.split(':'); return { txid, vout: +vout, pubkey: n.keys.pubHex, sig: '' }; }),
+    inputs: coins.map(c => { const [txid, vout] = c.key.split(':'); return { txid, vout: +vout, pubkey: KEYS.get(c.address).pubHex, sig: '' }; }),
     outputs, coinbase: false, time: Date.now() + Math.random()
   };
   tx.id = txId(tx);
-  for (const i of tx.inputs) i.sig = await sign(n.keys.priv, tx.id);
-  return tx;
+  for (let i = 0; i < tx.inputs.length; i++) tx.inputs[i].sig = await sign(KEYS.get(coins[i].address).priv, tx.id);
+  return { tx, inSum, change };
 }
 function pickCoins(free, need) {
   const sorted = free.slice().sort((a, b) => b.amount - a.amount), pick = [];
@@ -665,33 +798,50 @@ function pickCoins(free, need) {
   for (const c of sorted) { if (sum >= need) break; pick.push(c); sum += c.amount; }
   return sum >= need ? pick : null;
 }
+function takeReceiveAddress(to) {
+  const a = to.recv.address;
+  freshKey(to).then(k => { to.recv = k; });
+  return a;
+}
 async function pay(n, to, amount, fee, quiet = false) {
   if (!n.online) return 'This node is offline. Bring it online first.';
   const { free, freeSum, confirmed } = balances(n);
   const coins = pickCoins(free, amount + fee);
   if (!coins) {
-    if (confirmed >= amount + fee) return 'Your change is still pending. Wait until your last payment is in a block.';
-    return `Not enough coins. You have ${fmt(freeSum)} SIM available.`;
+    if (confirmed >= amount + fee) return 'The change is still pending. Wait until the last payment is in a block.';
+    if (!confirmed && teaching()) return `${n.name} owns no coins yet. Mine a block with ${n.name} first to earn the reward.`;
+    return `Not enough coins. ${n.name} has ${fmt(freeSum)} SIM available.`;
   }
-  const tx = await buildTx(n, coins, to.address, amount, fee);
+  const { tx, inSum, change } = await buildTx(n, coins, takeReceiveAddress(to), amount, fee);
   log(`${n.name} signed a payment of ${fmt(amount)} SIM to ${to.name}${fee ? ` (fee ${fee})` : ''}`, 'tx');
+  if (!quiet && teaching()) {
+    S.watch.set(tx.id, { stage: 'sent', payer: n.name, to: to.name, amount, fee, change, inSum, nIn: coins.length });
+    markStep(1);
+    narrate('Step 2 · A signed payment',
+      `<b>${n.name} signed a payment of ${fmt(amount)} SIM to ${to.name}.</b> As input, ${n.name} spends ${coins.length === 1 ? 'one whole coin' : coins.length + ' whole coins'} worth ${fmt(inSum)} SIM. ` +
+      `The payment creates new coins: ${fmt(amount)} SIM to a fresh address of ${to.name}${change ? ` and ${fmt(change)} SIM change back to a new address of ${n.name}` : ''}. ` +
+      `${fee ? `The ${fmt(fee)} SIM left over is the fee for whoever mines it. ` : ''}It is not in a block yet. The orange dot carries it from node to node.`,
+      [`input ${fmt(inSum)}`, `→ ${to.name} ${fmt(amount)}`, change ? `→ change ${fmt(change)}` : null, fee ? `fee ${fmt(fee)}` : null].filter(Boolean));
+  }
   enqueue(n, () => onTx(n, tx, null));
   return quiet ? null : 'ok';
 }
 
 /* ---------------- Mining ---------------- */
+function feeOf(tx, u) {
+  const inSum = tx.inputs.reduce((s, i) => s + (u.get(i.txid + ':' + i.vout)?.amount ?? 0), 0);
+  return inSum - tx.outputs.reduce((s, o) => s + o.amount, 0);
+}
 function buildCandidate(n) {
   const tip = tipBlock(n), u = UTXO.get(n.tip);
-  const withFees = [...n.mempool.values()].map(tx => {
-    const inSum = tx.inputs.reduce((s, i) => s + (u.get(i.txid + ':' + i.vout)?.amount ?? 0), 0);
-    return { tx, fee: inSum - tx.outputs.reduce((s, o) => s + o.amount, 0) };
-  }).sort((a, b) => b.fee - a.fee).slice(0, MAX_TX);
-  const fees = withFees.reduce((s, x) => s + x.fee, 0);
-  const cb = coinbaseTx([{ address: n.address, amount: REWARD + fees }], tip.height + 1);
-  const txs = [cb, ...withFees.map(x => x.tx)];
+  const picked = [...n.mempool.values()].filter(tx => !n.exclude.has(tx.id))
+    .map(tx => ({ tx, fee: feeOf(tx, u) })).sort((a, b) => b.fee - a.fee).slice(0, MAX_TX);
+  const fees = picked.reduce((s, x) => s + x.fee, 0);
+  const cb = coinbaseTx([{ address: n.reward.address, amount: REWARD + fees }], tip.height + 1);
+  const txs = [cb, ...picked.map(x => x.tx)];
   return {
     height: tip.height + 1, prev: tip.hash, merkle: merkleRoot(txs.map(t => t.id)),
-    time: Date.now(), difficulty: S.difficulty, nonce: 0, txs, miner: n.name, tries: 0
+    time: Date.now(), difficulty: S.difficulty, nonce: 0, txs, miner: n.name, tries: 0, fees
   };
 }
 let lastMine = performance.now();
@@ -709,15 +859,78 @@ function mineTick() {
       c.nonce++; c.tries++; n.hashes++;
       h = sha256(headerOf(c));
       if (h.startsWith(target)) {
-        const { tries, ...rest } = c;
+        const { tries, fees, ...rest } = c;
         const block = Object.freeze({ ...rest, hash: h });
         n.candidate = null; n.mined++; n.flashAt = now;
+        if (teaching()) n.mining = false;
+        freshKey(n).then(k => { n.reward = k; });
         log(`${n.name} mined block #${block.height} after ${fmt(tries)} tries (nonce ${fmt(block.nonce)})`, 'block');
+        if (teaching()) narrateBlock(n, block, tries, fees);
         enqueue(n, () => onBlock(n, block, null, true));
         break;
       }
     }
     n.lastHash = h;
+  }
+}
+function narrateBlock(n, block, tries, fees) {
+  const k = block.txs.length - 1;
+  markStep(0);
+  narrate(k ? 'A block with payments' : 'A block is mined',
+    `<b>${n.name} found block #${block.height}</b> after ${fmt(tries)} tries: its hash <span class="mono">${block.hash.slice(0, 16)}…</span> starts with ${block.difficulty} zeros. ` +
+    `The first transaction in the block is the <i>coinbase</i>. It creates ${fmt(REWARD + fees)} new SIM for ${n.name} (${REWARD} reward${fees ? ` + ${fees} fees` : ''}) at a fresh address. ` +
+    (k ? `The block also carries ${k} payment${k > 1 ? 's' : ''} from ${n.name}'s mempool. ` : 'There were no payments to include. ') +
+    `The blue dot carries the block to the other nodes. Each one checks the proof of work and every transaction before adding it to its own copy of the chain.`,
+    ['proof of work ✓', 'links to #' + (block.height - 1), `${k} payment${k === 1 ? '' : 's'}`, `+${fmt(REWARD + fees)} SIM to ${n.name}`]);
+}
+
+/* ---------------- Teaching lesson ---------------- */
+const STEPS = [
+  ['Mine the first block', 'Bob is selected. Press “Mine a block”. The winner earns the 100 SIM block reward.'],
+  ['Sign a payment', 'Bob sends 30 SIM to Alice with a fee of 1. His wallet signs it with his private key.'],
+  ['Watch every node check it', 'Each node verifies the signature and that the coin is unspent, then keeps it in its mempool.'],
+  ['Confirm it in a block', 'Select Erin and press “Mine a block”. She packs the payment into her block and earns reward + fee.'],
+  ['Read the UTXO set', 'Bob\'s 100 SIM coin is gone. Alice owns a 30 SIM coin and Bob a 69 SIM change coin. Click a coin to see where it came from.'],
+  ['Try to cheat', 'Press “Try a double spend”. Only one of the two payments can end up in the chain.']
+];
+function markStep(i) { if (!S.lesson[i]) { S.lesson[i] = true; dirty.lesson = true; } }
+function renderLesson() {
+  const next = S.lesson.findIndex(d => !d);
+  $('steps').innerHTML = STEPS.map(([t, d], i) =>
+    `<li data-step="${i}" class="${S.lesson[i] ? 'done' : i === next ? 'next' : ''}"><div><b>${t}</b><span>${d}</span></div></li>`).join('');
+  dirty.lesson = false;
+}
+function renderNarr() {
+  const n = S.narr;
+  $('narrKicker').textContent = n ? n.kicker : 'What just happened';
+  $('narrBody').innerHTML = n ? n.html : '';
+  $('narrChecks').innerHTML = n ? n.checks.map(c => `<span class="pill ok">${c}</span>`).join('') : '';
+  dirty.narr = false;
+}
+function teachTick() {
+  if (!teaching() || !S.watch.size) return;
+  const online = S.nodes.filter(n => n.online);
+  const inChain = online.map(n => { const m = new Map(); for (const b of mainChain(n)) for (const t of b.txs) m.set(t.id, b); return m; });
+  for (const [id, w] of S.watch) {
+    if (w.stage === 'sent' && online.every((n, i) => n.mempool.has(id) || inChain[i].has(id))) {
+      w.stage = 'checked';
+      markStep(2);
+      if (!inChain.some(m => m.has(id))) narrate('Step 3 · Every node checked it',
+        `<b>All ${online.length} nodes have checked ${w.payer}'s payment on their own.</b> Each one asked: does the signature match the coin's owner? Does the coin exist, and is nobody else spending it? Do the inputs cover the outputs? ` +
+        `All answers were yes, so every node keeps the payment in its <i>mempool</i>, a waiting room for unconfirmed transactions. ${w.to} cannot spend the money yet. Now pick any node and press “Mine a block”.`,
+        ['signature ✓', 'owner ✓', 'unspent ✓', 'amounts ✓', 'in every mempool']);
+    }
+    if (w.stage === 'checked' && online.every((n, i) => inChain[i].has(id))) {
+      const b = inChain[0].get(id);
+      S.watch.delete(id);
+      markStep(3);
+      narrate('Step 4 · Confirmed',
+        `<b>The payment is confirmed in block #${b.height}, mined by ${b.miner}.</b> Every node now has this block. ` +
+        `${w.payer}'s old ${w.nIn === 1 ? 'coin' : 'coins'} (${fmt(w.inSum)} SIM) ${w.nIn === 1 ? 'is' : 'are'} spent and gone from the UTXO set. ` +
+        `${w.to} now owns a new ${fmt(w.amount)} SIM coin${w.change ? ` and ${w.payer} a ${fmt(w.change)} SIM change coin` : ''}. ` +
+        `${b.miner} earned the ${REWARD} SIM reward${w.fee ? ` plus the ${fmt(w.fee)} SIM fee` : ''}. Look at “Who owns what” below.`,
+        [`${w.to} +${fmt(w.amount)}`, w.change ? `${w.payer} change ${fmt(w.change)}` : null, `${b.miner} +${REWARD + (w.fee || 0)}`].filter(Boolean));
+    }
   }
 }
 
@@ -732,18 +945,17 @@ function autoTraffic(now) {
   const others = S.nodes.filter(o => o !== n);
   const to = others[Math.floor(Math.random() * others.length)];
   const max = Math.min(25, Math.floor(balances(n).freeSum / 2));
-  const amount = 1 + Math.floor(Math.random() * max);
-  pay(n, to, amount, Math.floor(Math.random() * 3), true);
+  pay(n, to, 1 + Math.floor(Math.random() * max), Math.floor(Math.random() * 3), true);
 }
 
 /* ---------------- Rendering ---------------- */
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
-const dirty = { net: true, panel: true, chain: true, log: true, select: true };
+const dirty = { net: true, log: true, select: true, lesson: true, narr: true };
 let edgeG, msgG, nodeG;
 
 function layout() {
-  const cx = 320, cy = 190, rx = 250, ry = 150, k = S.nodes.length;
+  const cx = 320, cy = 188, rx = 245, ry = 135, k = S.nodes.length;
   S.nodes.forEach((n, i) => {
     const a = -Math.PI / 2 + (i / k) * Math.PI * 2;
     n.x = cx + rx * Math.cos(a); n.y = cy + ry * Math.sin(a);
@@ -770,11 +982,15 @@ function buildSvg() {
   }
   for (const n of S.nodes) {
     const g = el('g', { class: 'node', transform: `translate(${n.x},${n.y})`, tabindex: 0, role: 'button', 'aria-label': n.name }, nodeG);
-    el('circle', { r: 34, class: 'ring' }, g);
-    n.flashEl = el('circle', { r: 38, class: 'flash' }, g);
-    el('circle', { r: 28, class: 'disc' }, g);
-    const nm = el('text', { y: -1, class: 'nm' }, g); nm.textContent = n.name;
-    n.htEl = el('text', { y: 14, class: 'ht' }, g);
+    el('circle', { r: 36, class: 'ring' }, g);
+    n.flashEl = el('circle', { r: 40, class: 'flash' }, g);
+    el('circle', { r: 30, class: 'disc' }, g);
+    const nm = el('text', { y: -3, class: 'nm' }, g); nm.textContent = n.name;
+    n.htEl = el('text', { y: 12, class: 'ht' }, g);
+    n.balEl = el('text', { y: 52, class: 'bal' }, g);
+    n.badgeG = el('g', { class: 'badge', transform: 'translate(25,-25)' }, g);
+    el('circle', { r: 10 }, n.badgeG);
+    n.badgeT = el('text', { y: 4.5 }, n.badgeG);
     n.g = g;
     const pick = () => select(n.id);
     g.addEventListener('click', pick);
@@ -782,15 +998,20 @@ function buildSvg() {
   }
   dirty.net = false;
 }
+function restart(elm, cls) { elm.classList.remove(cls); void elm.getBBox(); elm.classList.add(cls); }
 function renderNodes() {
   for (const n of S.nodes) {
     n.g.classList.toggle('sel', n.id === S.selected);
     n.g.classList.toggle('offline', !n.online);
     n.g.classList.toggle('mining', n.online && n.mining && S.running);
-    n.htEl.textContent = '#' + tipBlock(n).height;
-    if (n.flashAt && n.flashAt !== n.flashShown) {
-      n.flashShown = n.flashAt;
-      n.flashEl.classList.remove('on'); void n.flashEl.getBBox(); n.flashEl.classList.add('on');
+    n.htEl.textContent = 'block #' + tipBlock(n).height;
+    n.balEl.textContent = fmt(balances(n).confirmed) + ' SIM';
+    if (n.flashAt && n.flashAt !== n.flashShown) { n.flashShown = n.flashAt; restart(n.flashEl, 'on'); }
+    if (n.badgeAt && n.badgeAt !== n.badgeShown) {
+      n.badgeShown = n.badgeAt;
+      n.badgeG.classList.toggle('ok', n.badgeOk); n.badgeG.classList.toggle('bad', !n.badgeOk);
+      n.badgeT.textContent = n.badgeOk ? '✓' : '✗';
+      restart(n.badgeG, 'on');
     }
   }
   for (const l of S.links) l.line.classList.toggle('cut', l.cut);
@@ -806,13 +1027,13 @@ function renderMsgs(now) {
       continue;
     }
     if (m.type === 'getchain') continue;
-    if (!m.el) m.el = el('circle', { r: m.type === 'tx' ? 4.5 : 6.5, class: 'dot-' + (m.type === 'tx' ? 'tx' : m.type === 'block' ? 'block' : 'sync') }, msgG);
+    if (!m.el) m.el = el('circle', { r: m.type === 'tx' ? 5 : 7, class: 'dot-' + (m.type === 'tx' ? 'tx' : m.type === 'block' ? 'block' : 'sync') }, msgG);
     const q = Math.max(0, p);
     m.el.setAttribute('cx', m.from.x + (m.to.x - m.from.x) * q);
     m.el.setAttribute('cy', m.from.y + (m.to.y - m.from.y) * q);
   }
 }
-function consensusInfo() {
+function majorityTip() {
   const counts = new Map();
   for (const n of S.nodes) if (n.online) counts.set(n.tip, (counts.get(n.tip) ?? 0) + 1);
   let best = null, bestC = 0;
@@ -820,7 +1041,7 @@ function consensusInfo() {
   return best;
 }
 function renderConsensus() {
-  const major = consensusInfo();
+  const major = majorityTip();
   $('consensus').innerHTML = S.nodes.map(n => {
     const tb = tipBlock(n), bal = balances(n).confirmed;
     const status = !n.online ? '<span class="pill">offline</span>' : n.mining ? '<span class="pill acc">mining</span>' : '<span class="pill">idle</span>';
@@ -828,61 +1049,95 @@ function renderConsensus() {
     return `<tr data-id="${n.id}" class="${n.id === S.selected ? 'is-sel' : ''}"><td><strong>${n.name}</strong></td><td>${status}</td><td class="num">${tb.height}</td><td class="mono">${short(tb.hash)}</td><td class="num">${n.mempool.size}</td><td class="num">${fmt(bal)}</td><td>${agree}</td></tr>`;
   }).join('');
 }
+function txSummary(tx) {
+  if (tx.coinbase) return tx.outputs.length ? (tx.height ? `Reward ${fmt(tx.outputs[0].amount)} → ${nameOf(tx.outputs[0].address)}` : 'Starting coins for every node') : 'No coins yet';
+  const payer = payerOf(tx);
+  const out = tx.outputs.find(o => byAddr.get(o.address) !== payer) ?? tx.outputs[0];
+  return `${payer?.name ?? '?'} → ${nameOf(out.address)} · ${fmt(out.amount)}`;
+}
 function renderPanel() {
   const n = S.nodes[S.selected];
   $('nName').textContent = n.name;
-  $('nAddr').textContent = n.address;
+  $('nAddr').textContent = n.recv.address;
   $('nPills').innerHTML = (n.online ? '<span class="pill ok">online</span>' : '<span class="pill bad">offline</span>') +
-    (n.mining ? '<span class="pill acc">mining</span>' : '') + `<span class="pill">${n.mined} block${n.mined === 1 ? '' : 's'} mined</span>`;
-  $('btnMine').textContent = n.mining ? 'Stop mining' : 'Start mining';
+    (n.mining ? '<span class="pill acc">mining</span>' : '') + `<span class="pill">${n.mined} block${n.mined === 1 ? '' : 's'} mined</span>` +
+    `<span class="pill">${n.wallet.length} address${n.wallet.length === 1 ? '' : 'es'}</span>`;
+  const mineBtn = $('btnMine');
+  mineBtn.textContent = n.mining ? 'Stop mining' : teaching() ? 'Mine a block' : 'Start mining';
+  mineBtn.classList.toggle('primary', !n.mining);
   $('btnOnline').textContent = n.online ? 'Go offline' : 'Come back online';
   const b = balances(n);
   $('nBal').textContent = fmt(b.confirmed);
   $('nPend').textContent = (b.pending > 0 ? '+' : '') + fmt(b.pending) + ' SIM';
   const coins = walletCoins(n).sort((x, y) => y.amount - x.amount), spent = mempoolSpent(n);
   $('nUtxo').innerHTML = coins.length ? coins.map(c =>
-    `<div class="li"><span class="mono">${short(c.key.split(':')[0])}:${c.key.split(':')[1]}</span><span class="num">${fmt(c.amount)} SIM${spent.has(c.key) ? ' <span class="pill tx">spending</span>' : ''}</span></div>`).join('')
-    : '<p class="empty">No coins yet. Mine a block or ask another node to pay you.</p>';
-  const pool = [...n.mempool.values()];
+    `<div class="li"><span>address ${KEYS.get(c.address)?.idx ?? '?'} <span class="mono muted">${c.address.slice(0, 8)}…</span></span><span class="num">${fmt(c.amount)} SIM${spent.has(c.key) ? ' <span class="pill tx">spending</span>' : ''}</span></div>`).join('')
+    : `<p class="empty">No coins yet. Mine a block to earn the reward, or ask another node to pay you.</p>`;
+  const pool = [...n.mempool.values()], u = UTXO.get(n.tip);
+  $('poolTitle').textContent = teaching() ? 'Mempool of this node (ticked = goes into its next block)' : 'Mempool of this node';
   $('nPool').innerHTML = pool.length ? pool.map(tx =>
-    `<div class="li click" data-tx="${tx.id}"><span class="mono">${short(tx.id)}</span><span>${txSummary(tx, UTXO.get(n.tip))}</span></div>`).join('')
-    : '<p class="empty">Empty. New transactions wait here until a miner puts them in a block.</p>';
+    `<div class="li">${teaching() ? `<input type="checkbox" data-inc="${tx.id}" aria-label="Include in next block" ${n.exclude.has(tx.id) ? '' : 'checked'}>` : ''}<span class="grow" data-tx="${tx.id}"><span>${txSummary(tx)}</span><span class="muted">fee ${fmt(feeOf(tx, u))}</span></span></div>`).join('')
+    : '<p class="empty">Empty. Signed payments wait here until a miner puts them in a block.</p>';
   $('chainTitle').textContent = `Blockchain as seen by ${n.name}`;
-}
-function txSummary(tx, u) {
-  if (tx.coinbase) return `reward → ${nameOf(tx.outputs[0].address)}`;
-  const fromA = u?.get(tx.inputs[0].txid + ':' + tx.inputs[0].vout)?.address ?? addrOf(tx.inputs[0].pubkey);
-  const pay = tx.outputs.find(o => o.address !== fromA) ?? tx.outputs[0];
-  return `${nameOf(fromA)} → ${nameOf(pay.address)} · ${fmt(pay.amount)}`;
+  $('ownersTitle').textContent = `Who owns what: the UTXO set as seen by ${n.name}`;
 }
 function renderHash() {
   const n = S.nodes[S.selected];
   if (!n.online || !n.mining || !n.candidate) {
-    $('hashLabel').textContent = !n.online ? 'Offline' : n.mining ? 'Preparing a block…' : 'Mining is off. Start mining to search for the next block.';
-    $('hashLive').textContent = n.lastHash && n.mining ? n.lastHash : '–';
+    $('hashLabel').textContent = !n.online ? 'Offline' : n.mining ? 'Preparing a block…' : teaching() ? 'Not mining. Press “Mine a block” to search for a valid nonce.' : 'Mining is off. Start mining to search for the next block.';
+    $('hashLive').textContent = '–';
+    $('hashContents').textContent = '';
     return;
   }
   const c = n.candidate, d = c.difficulty;
-  $('hashLabel').textContent = `Block #${c.height} · nonce ${fmt(c.nonce)} · needs ${d} leading zeros`;
+  $('hashLabel').textContent = `Block #${c.height} · try ${fmt(c.tries)} · nonce ${fmt(c.nonce)} · needs ${d} leading zeros`;
   const h = n.lastHash || '';
   let z = 0; while (z < h.length && h[z] === '0') z++;
   $('hashLive').innerHTML = `<b>${h.slice(0, z)}</b>${h.slice(z)}`;
+  $('hashContents').textContent = 'Block contents: ' + c.txs.map(txSummary).join('; ');
 }
 let chainKey = '';
 function renderChain() {
   const n = S.nodes[S.selected];
-  const blocks = mainChain(n).slice(0, 40);
   const key = n.id + ':' + n.tip;
   if (key === chainKey) return;
+  const blocks = mainChain(n).slice(0, 40);
   const fresh = chainKey.startsWith(n.id + ':') ? blocks[0].hash : null;
   chainKey = key;
-  $('chain').innerHTML = blocks.map((b, i) => `${i ? '<div class="link" aria-hidden="true"></div>' : ''}<button type="button" class="blk${b.hash === fresh ? ' new' : ''}" data-hash="${b.hash}">
-      <div class="bh"><strong class="num">#${b.height}</strong><span class="muted">${b.height ? b.miner : 'genesis'}</span></div>
-      <div class="kv"><span>Hash</span><span class="mono">${b.hash.slice(0, 12)}</span></div>
-      <div class="kv"><span>Prev</span><span class="mono">${b.prev.slice(0, 12)}</span></div>
+  $('chain').innerHTML = blocks.map((b, i) => {
+    const lines = b.txs.slice(0, 4).map(t => `<div class="${t.coinbase ? 'cb' : ''}">${txSummary(t)}</div>`).join('') + (b.txs.length > 4 ? `<div class="muted">+ ${b.txs.length - 4} more</div>` : '');
+    return `${i ? '<div class="link" aria-hidden="true"></div>' : ''}<button type="button" class="blk${b.hash === fresh ? ' new' : ''}" data-hash="${b.hash}">
+      <div class="bh"><strong class="num">#${b.height}</strong><span class="muted">${b.height ? 'mined by ' + b.miner : 'genesis'}</span></div>
+      <div class="kv"><span>Hash</span><span class="mono">${b.hash.slice(0, 12)}…</span></div>
+      <div class="kv"><span>Prev</span><span class="mono">${b.prev.slice(0, 12)}…</span></div>
       <div class="kv"><span>Nonce</span><span class="num">${fmt(b.nonce)}</span></div>
-      <div class="kv"><span>Txs</span><span class="num">${b.txs.length}</span></div>
-    </button>`).join('');
+      <div class="txs">${lines}</div>
+    </button>`;
+  }).join('');
+}
+let ownersKey = '';
+function renderOwners() {
+  const v = S.nodes[S.selected];
+  const key = v.id + ':' + v.tip + ':' + [...v.mempool.keys()].join(',') + ':' + S.nodes.length;
+  if (key === ownersKey) return;
+  ownersKey = key;
+  const u = UTXO.get(v.tip), spent = mempoolSpent(v), origin = new Map();
+  for (const b of mainChain(v)) for (const t of b.txs) origin.set(t.id, { tx: t, block: b });
+  $('owners').innerHTML = S.nodes.map(p => {
+    const coins = [...u].filter(([, c]) => p.addrSet.has(c.address)).map(([k, c]) => ({ key: k, ...c })).sort((a, b) => b.amount - a.amount);
+    const total = coins.reduce((s, c) => s + c.amount, 0);
+    const rows = coins.map(c => {
+      const o = origin.get(c.key.split(':')[0]);
+      let from = '?';
+      if (o) {
+        const payer = payerOf(o.tx);
+        from = o.tx.coinbase ? (o.block.height ? `reward for block #${o.block.height}` : 'starting coins') : payer === p ? `change, block #${o.block.height}` : `from ${payer?.name ?? '?'}, block #${o.block.height}`;
+      }
+      const sp = spent.has(c.key);
+      return `<div class="coin${sp ? ' spending' : ''}" data-coin="${c.key}"><span>address ${KEYS.get(c.address)?.idx ?? '?'} <span class="mono muted">${c.address.slice(0, 10)}…</span></span><span class="amt num">${fmt(c.amount)} SIM</span><span class="where">${from}${sp ? ' <span class="pill tx">being spent</span>' : ''}</span></div>`;
+    }).join('');
+    return `<div class="owner"><div class="owner-head"><strong>${p.name}</strong><span><span class="tot num">${fmt(total)}</span> <span class="muted">SIM in ${coins.length} coin${coins.length === 1 ? '' : 's'}</span></span></div>${rows || '<p class="empty">No coins.</p>'}</div>`;
+  }).join('');
 }
 function renderLog() {
   $('log').innerHTML = S.log.map(e => {
@@ -897,6 +1152,15 @@ function renderSelect() {
   if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
   dirty.select = false;
 }
+function renderMode() {
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === S.mode)));
+  $('lessonPanel').hidden = !teaching();
+  $('difficulty').value = String(S.difficulty);
+  $('hashrate').value = S.hashrate; $('hashrateOut').textContent = fmt(S.hashrate) + ' H/s';
+  $('delay').value = S.delay; $('delayOut').textContent = (S.delay / 1000).toFixed(1) + ' s';
+  $('autoTx').checked = S.autoTx;
+  $('btnRun').textContent = S.running ? 'Pause' : 'Resume';
+}
 
 let lastSlow = 0;
 function frame(now) {
@@ -906,9 +1170,12 @@ function frame(now) {
   renderMsgs(now);
   if (now - lastSlow > 250) {
     lastSlow = now;
-    renderNodes(); renderConsensus(); renderPanel(); renderHash(); renderChain();
+    teachTick();
+    renderNodes(); renderConsensus(); renderPanel(); renderHash(); renderChain(); renderOwners();
     if (dirty.select) renderSelect();
     if (dirty.log) renderLog();
+    if (dirty.lesson) renderLesson();
+    if (dirty.narr) renderNarr();
   }
   requestAnimationFrame(frame);
 }
@@ -924,8 +1191,18 @@ function toggleLink(l) {
 }
 $('consensus').addEventListener('click', e => { const tr = e.target.closest('tr'); if (tr) select(+tr.dataset.id); });
 $('btnMine').addEventListener('click', () => {
-  const n = S.nodes[S.selected]; n.mining = !n.mining; n.candidate = null;
-  log(`${n.name} ${n.mining ? 'started' : 'stopped'} mining`, 'block'); lastSlow = 0;
+  const n = S.nodes[S.selected];
+  if (!n.online) { $('sendMsg').className = 'msg err'; $('sendMsg').textContent = 'This node is offline.'; return; }
+  n.mining = !n.mining; n.candidate = null;
+  log(`${n.name} ${n.mining ? 'started' : 'stopped'} mining`, 'block');
+  if (n.mining && teaching()) {
+    const k = [...n.mempool.keys()].filter(id => !n.exclude.has(id)).length;
+    narrate('Mining',
+      `<b>${n.name} is mining block #${tipBlock(n).height + 1}.</b> ${n.name} puts ${k ? k + ' payment' + (k > 1 ? 's' : '') + ' from the mempool' : 'no payments (the mempool is empty)'} and a reward for itself into a block. Then it hashes the block again and again, with a new nonce each time. ` +
+      `The block counts only when its SHA-256 hash starts with ${S.difficulty} zeros. That takes about ${fmt(Math.pow(16, S.difficulty))} tries on average. Watch the counter in the wallet panel.`,
+      [`target: ${'0'.repeat(S.difficulty)}…`]);
+  }
+  lastSlow = 0;
 });
 $('btnOnline').addEventListener('click', () => {
   const n = S.nodes[S.selected]; n.online = !n.online;
@@ -934,7 +1211,7 @@ $('btnOnline').addEventListener('click', () => {
   lastSlow = 0;
 });
 $('btnCopy').addEventListener('click', async () => {
-  const t = S.nodes[S.selected].address;
+  const t = S.nodes[S.selected].recv.address;
   try { await navigator.clipboard.writeText(t); $('btnCopy').textContent = 'Copied'; }
   catch { const r = document.createRange(); r.selectNodeContents($('nAddr')); getSelection().removeAllRanges(); getSelection().addRange(r); }
   setTimeout(() => $('btnCopy').textContent = 'Copy', 1200);
@@ -947,8 +1224,9 @@ $('sendForm').addEventListener('submit', async e => {
   if (!to) { m.className = 'msg err'; m.textContent = 'Pick a receiver.'; return; }
   if (!(amount >= 1) || fee < 0) { m.className = 'msg err'; m.textContent = 'Enter a whole amount of at least 1 and a fee of 0 or more.'; return; }
   const r = await pay(n, to, amount, fee);
+  const peers = peersOf(n).length;
   m.className = 'msg ' + (r === 'ok' ? 'ok' : 'err');
-  m.textContent = r === 'ok' ? `Signed and sent to ${peersOf(n).length} peer${peersOf(n).length === 1 ? '' : 's'}.` : r;
+  m.textContent = r === 'ok' ? `Signed and sent to ${peers} peer${peers === 1 ? '' : 's'}.` : r;
   lastSlow = 0;
 });
 $('btnDouble').addEventListener('click', async () => {
@@ -957,40 +1235,66 @@ $('btnDouble').addEventListener('click', async () => {
   m.className = 'msg err';
   if (!n.online) { m.textContent = 'This node is offline.'; return; }
   if (peers.length < 2) { m.textContent = 'You need at least two connected peers for this.'; return; }
-  const { free } = balances(n);
-  if (!free.length) { m.textContent = 'All your coins are tied up in pending payments. Wait for the next block.'; return; }
+  const { free, confirmed } = balances(n);
+  if (!free.length) { m.textContent = confirmed ? 'All coins are tied up in pending payments. Wait for the next block.' : `${n.name} owns no coins yet.`; return; }
   const coin = free.sort((a, b) => b.amount - a.amount)[0];
   const [p1, p2] = peers.sort(() => Math.random() - 0.5);
   const amt = Math.max(1, coin.amount - 1);
-  const tx1 = await buildTx(n, [coin], p1.address, amt, 1);
-  const tx2 = await buildTx(n, [coin], p2.address, amt, 1);
+  const t1 = await buildTx(n, [coin], takeReceiveAddress(p1), amt, 1);
+  const t2 = await buildTx(n, [coin], takeReceiveAddress(p2), amt, 1);
   log(`${n.name} tried a double spend: the same ${fmt(coin.amount)} SIM coin sent to ${p1.name} and to ${p2.name}`, 'warn');
-  send(n, p1, 'tx', tx1); send(n, p2, 'tx', tx2);
+  n.seenTx.add(t1.tx.id); n.seenTx.add(t2.tx.id);
+  send(n, p1, 'tx', t1.tx); send(n, p2, 'tx', t2.tx);
+  if (teaching()) {
+    markStep(5);
+    narrate('Step 6 · A double spend',
+      `<b>${n.name} signed two payments that spend the same ${fmt(coin.amount)} SIM coin</b>: one to ${p1.name}, one to ${p2.name}. Both signatures are valid. ` +
+      `Each node accepts whichever payment reaches it first and rejects the other with a red ✗, because that coin is already being spent. ` +
+      `Mine a block: only one of the two payments can go in. Once it is confirmed, every node drops the other one.`,
+      ['same coin, two payments', 'first seen wins', 'only one gets confirmed']);
+  }
   m.className = 'msg ok';
   m.textContent = `Two conflicting payments sent to ${p1.name} and ${p2.name}. Watch the log.`;
 });
 $('chain').addEventListener('click', e => { const b = e.target.closest('.blk'); if (b) openBlock(b.dataset.hash); });
 $('nPool').addEventListener('click', e => { const li = e.target.closest('[data-tx]'); if (li) openTx(S.nodes[S.selected].mempool.get(li.dataset.tx), null); });
-$('btnRun').addEventListener('click', () => { S.running = !S.running; $('btnRun').textContent = S.running ? 'Pause' : 'Resume'; lastSlow = 0; });
+$('nPool').addEventListener('change', e => {
+  const id = e.target.dataset.inc; if (!id) return;
+  const n = S.nodes[S.selected];
+  if (e.target.checked) n.exclude.delete(id); else n.exclude.add(id);
+  n.candidate = null;
+});
+$('owners').addEventListener('click', e => {
+  const c = e.target.closest('[data-coin]'); if (!c) return;
+  const tid = c.dataset.coin.split(':')[0];
+  for (const b of mainChain(S.nodes[S.selected])) { const t = b.txs.find(x => x.id === tid); if (t) { markStep(4); openTx(t, b); return; } }
+});
+$('steps').addEventListener('click', e => {
+  const li = e.target.closest('[data-step]'); if (!li) return;
+  const i = +li.dataset.step; S.lesson[i] = !S.lesson[i]; dirty.lesson = true; lastSlow = 0;
+});
+document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { if (b.dataset.mode !== S.mode) init(b.dataset.mode); }));
+$('btnRun').addEventListener('click', () => { S.running = !S.running; renderMode(); lastSlow = 0; });
 $('difficulty').addEventListener('change', e => { S.difficulty = +e.target.value; S.nodes.forEach(n => n.candidate = null); log(`Difficulty set to ${S.difficulty} leading zeros for new blocks`, 'block'); });
 $('hashrate').addEventListener('input', e => { S.hashrate = +e.target.value; $('hashrateOut').textContent = fmt(S.hashrate) + ' H/s'; });
 $('delay').addEventListener('input', e => { S.delay = +e.target.value; $('delayOut').textContent = (S.delay / 1000).toFixed(1) + ' s'; });
 $('autoTx').addEventListener('change', e => { S.autoTx = e.target.checked; });
 $('btnClear').addEventListener('click', () => { S.log = []; dirty.log = true; });
-$('btnReset').addEventListener('click', () => init());
+$('btnReset').addEventListener('click', () => init(S.mode));
 $('btnAdd').addEventListener('click', async () => {
   if (S.nodes.length >= NAMES.length) { log('The sandbox holds at most 10 nodes', 'warn'); return; }
   const epoch = S.epoch;
-  const n = makeNode(S.nodes.length, await makeKeys());
+  const key = await makeKeys();
   if (epoch !== S.epoch) return;
+  const n = makeNode(S.nodes.length, key);
   addGenesis(n);
   const others = S.nodes.slice();
   S.nodes.push(n);
-  const shuffled = others.sort(() => Math.random() - 0.5).slice(0, 2);
-  for (const o of shuffled) addLink(n.id, o.id);
+  const linked = others.sort(() => Math.random() - 0.5).slice(0, 2);
+  for (const o of linked) addLink(n.id, o.id);
   layout(); dirty.net = true; dirty.select = true;
   log(`${n.name} joined the network and is downloading the chain`, 'net');
-  for (const o of shuffled) syncPair(n, o);
+  for (const o of linked) syncPair(n, o);
 });
 
 /* ---------------- Block / transaction inspector ---------------- */
@@ -1002,7 +1306,7 @@ function findBlock(hash) {
 function openBlock(hash) {
   const b = findBlock(hash); if (!b) return;
   body.innerHTML = `
-    <div class="dlg-head"><h3>Block #${b.height}${b.height ? '' : ' (genesis)'}</h3><button type="button" data-close>Close</button></div>
+    <div class="dlg-head"><h3>Block #${b.height}${b.height ? ' · mined by ' + b.miner : ' (genesis)'}</h3><button type="button" data-close>Close</button></div>
     <dl class="kvs">
       <dt>Hash</dt><dd class="mono" id="bHash"></dd>
       <dt>Proof of work</dt><dd id="bPow"></dd>
@@ -1011,11 +1315,10 @@ function openBlock(hash) {
       <dt>Time</dt><dd>${new Date(b.time).toLocaleTimeString('en-GB')}</dd>
       <dt>Difficulty</dt><dd>${b.difficulty} leading zeros</dd>
       <dt><label for="bNonce">Nonce</label></dt><dd><input id="bNonce" type="number" value="${b.nonce}"> <span class="note">Edit it to see the hash change</span></dd>
-      <dt>Miner</dt><dd>${b.height ? b.miner : '–'}</dd>
     </dl>
     <p class="note">The hash is SHA-256 of: <span class="mono" id="bHeader"></span></p>
     <h2>Transactions (${b.txs.length})</h2>
-    <div class="list" style="max-height:none">${b.txs.map(tx => `<div class="txcard" data-tx="${tx.id}"><div class="kv" style="display:flex;justify-content:space-between;gap:8px"><span class="mono">${short(tx.id)}</span><span>${tx.coinbase ? '<span class="pill acc">coinbase</span> ' : ''}${txSummary(tx, UTXO.get(b.prev))}</span></div></div>`).join('')}</div>`;
+    <div class="list" style="max-height:none">${b.txs.map(tx => `<div class="txcard" data-tx="${tx.id}"><span class="mono">${short(tx.id)}</span><span>${tx.coinbase ? '<span class="pill acc">coinbase</span> ' : ''}${txSummary(tx)}</span></div>`).join('')}</div>`;
   const update = () => {
     const v = { ...b, nonce: Math.floor(+$('bNonce').value || 0) };
     const h = hashBlock(v), ok = meets(h, b.difficulty) && h === b.hash;
@@ -1034,21 +1337,22 @@ function openTx(tx, block) {
   if (!tx) return;
   const u = block ? UTXO.get(block.prev) : UTXO.get(S.nodes[S.selected].tip);
   let inSum = 0;
-  const ins = tx.coinbase ? '<span class="muted">New coins (block reward + fees)</span>' : tx.inputs.map(i => {
+  const ins = tx.coinbase ? '<span class="muted">No inputs. The block creates these coins (reward + fees).</span>' : tx.inputs.map(i => {
     const c = u?.get(i.txid + ':' + i.vout); inSum += c?.amount ?? 0;
-    return `<div><strong>${c ? fmt(c.amount) + ' SIM' : '?'}</strong> from ${c ? nameOf(c.address) : '?'}<div class="mono muted">coin ${short(i.txid)}:${i.vout}</div><div class="mono muted">signature ${i.sig.slice(0, 24)}…</div></div>`;
+    return `<div><strong>${c ? fmt(c.amount) + ' SIM' : '?'}</strong> from ${c ? addrTag(c.address) : '?'}<div class="mono muted">spends coin ${short(i.txid)}:${i.vout}</div><div class="mono muted">signature ${i.sig.slice(0, 28)}…</div></div>`;
   }).join('');
   const outSum = tx.outputs.reduce((s, o) => s + o.amount, 0);
-  const outs = tx.outputs.map(o => `<div><strong>${fmt(o.amount)} SIM</strong> to ${nameOf(o.address)}<div class="mono muted">${o.address}</div></div>`).join('');
+  const payer = payerOf(tx);
+  const outs = tx.outputs.length ? tx.outputs.map(o => `<div><strong>${fmt(o.amount)} SIM</strong> to ${addrTag(o.address)}${!tx.coinbase && byAddr.get(o.address) === payer ? ' <span class="pill">change</span>' : ''}<div class="mono muted">${o.address}</div></div>`).join('') : '<span class="muted">None</span>';
   body.innerHTML = `
-    <div class="dlg-head"><h3>Transaction</h3><div class="row">${block ? '<button type="button" data-back>Back to block</button>' : ''}<button type="button" data-close>Close</button></div></div>
+    <div class="dlg-head"><h3>${tx.coinbase ? 'Coinbase transaction' : 'Transaction'}</h3><div class="row">${block ? '<button type="button" data-back>Back to block</button>' : ''}<button type="button" data-close>Close</button></div></div>
     <dl class="kvs">
       <dt>ID</dt><dd class="mono">${tx.id}</dd>
-      <dt>Status</dt><dd>${block ? `<span class="pill ok">in block #${block.height}</span>` : '<span class="pill tx">waiting in mempool</span>'}</dd>
-      ${tx.coinbase ? '' : `<dt>Fee</dt><dd>${fmt(inSum - outSum)} SIM</dd>`}
+      <dt>Status</dt><dd>${block ? `<span class="pill ok">confirmed in block #${block.height}</span>` : '<span class="pill tx">waiting in mempool</span>'}</dd>
+      ${tx.coinbase ? '' : `<dt>Inputs − outputs</dt><dd>${fmt(inSum)} − ${fmt(outSum)} = <strong>${fmt(inSum - outSum)} SIM fee</strong> for the miner</dd>`}
     </dl>
-    <div class="io"><div><h2>Inputs</h2>${ins}</div><div class="arrow">→</div><div><h2>Outputs</h2>${outs}</div></div>
-    ${tx.coinbase ? '' : '<p class="note">Each input is signed with the owner\'s private key over the transaction ID. Every node checks the signature against the public key before accepting it.</p>'}`;
+    <div class="io"><div><h2>Inputs (coins spent)</h2>${ins}</div><div class="arrow">→</div><div><h2>Outputs (new coins)</h2>${outs}</div></div>
+    ${tx.coinbase ? '' : '<p class="note">Each input is signed with the private key of the address that owns the coin. Every node checks the signature against the public key before accepting the transaction.</p>'}`;
   body.querySelector('[data-back]')?.addEventListener('click', () => openBlock(block.hash));
   if (!dlg.open) dlg.showModal();
 }
@@ -1056,33 +1360,64 @@ body.addEventListener('click', e => { if (e.target.closest('[data-close]')) dlg.
 dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 
 /* ---------------- Start ---------------- */
-async function init() {
+const MODES = {
+  teach: { count: 5, grant: 0, miners: [], difficulty: 3, hashrate: 1500, delay: 1600, autoTx: false },
+  sim: { count: 6, grant: GENESIS_GRANT, miners: [1, 3, 4], difficulty: 4, hashrate: 3000, delay: 900, autoTx: true }
+};
+async function init(mode) {
   S.epoch++;
-  const epoch = S.epoch;
-  S.nodes = []; S.links = []; S.msgs = []; S.selected = 0; UTXO.clear(); byAddr.clear();
+  const epoch = S.epoch, cfg = MODES[mode];
+  S.mode = mode;
+  S.nodes = []; S.links = []; S.msgs = []; S.selected = mode === 'teach' ? 1 : 0;
+  S.difficulty = cfg.difficulty; S.hashrate = cfg.hashrate; S.delay = cfg.delay; S.autoTx = cfg.autoTx; S.running = true;
+  S.lesson = STEPS.map(() => false); S.watch.clear(); S.narr = null;
+  UTXO.clear(); byAddr.clear(); KEYS.clear();
   if (msgG) msgG.textContent = '';
-  chainKey = '';
+  chainKey = ''; ownersKey = '';
+  renderMode();
   if (!subtle) { $('log').innerHTML = '<p class="msg err">This browser has no WebCrypto, which the sandbox needs for signatures.</p>'; return; }
-  const keys = await Promise.all(Array.from({ length: 6 }, makeKeys));
+  const keys = await Promise.all(Array.from({ length: cfg.count }, makeKeys));
   if (epoch !== S.epoch) return;
   const nodes = keys.map((k, i) => makeNode(i, k));
-  const gTx = coinbaseTx(nodes.map(n => ({ address: n.address, amount: GENESIS_GRANT })), 0);
+  const gTx = coinbaseTx(cfg.grant ? nodes.map(n => ({ address: n.wallet[0].address, amount: cfg.grant })) : [], 0);
   const g = { height: 0, prev: ZERO, merkle: merkleRoot([gTx.id]), time: Date.now(), difficulty: 2, nonce: 0, txs: [gTx], miner: 'genesis' };
   while (!meets(hashBlock(g), g.difficulty)) g.nonce++;
   S.genesis = Object.freeze({ ...g, hash: hashBlock(g) });
   UTXO.set(S.genesis.hash, applyBlock(new Map(), S.genesis));
-  S.nodes = nodes;
   nodes.forEach(addGenesis);
-  // ring plus two cross links, so messages need several hops
+  // fresh receive and reward addresses, so every new coin lands on its own address
+  // (in teaching mode nobody has coins yet, so address 1 is the first receive address and address 2 collects the first mining reward)
+  await Promise.all(nodes.map(async n => { if (cfg.grant) n.recv = await freshKey(n); n.reward = await freshKey(n); }));
+  if (epoch !== S.epoch) return;
+  S.nodes = nodes;
+  // ring plus cross links, so messages need several hops
   nodes.forEach((n, i) => addLink(i, (i + 1) % nodes.length));
-  addLink(0, 3); addLink(1, 4);
-  nodes[1].mining = nodes[3].mining = nodes[4].mining = true;
+  if (mode === 'teach') addLink(1, 3); else { addLink(0, 3); addLink(1, 4); }
+  cfg.miners.forEach(i => nodes[i].mining = true);
   layout();
   S.log = [];
-  log('Genesis block created. Every node starts with 100 SIM.', 'block');
-  log('Bob, Dave and Erin are mining.', 'block');
-  dirty.net = dirty.select = dirty.log = true;
+  if (mode === 'teach') {
+    log('Teaching mode: 5 nodes, nobody owns coins yet, nothing happens by itself.', 'block');
+    narrate('Teaching mode',
+      `<b>Five computers run the same blockchain.</b> Right now it holds only the genesis block, and nobody owns a single coin. Nothing happens unless you make it happen. ` +
+      `Bob is selected. Press <b>Mine a block</b> in his wallet panel to create the first coins.`,
+      ['5 nodes', '0 coins', 'only block #0']);
+  } else {
+    log('Genesis block created. Every node starts with 100 SIM.', 'block');
+    log('Bob, Dave and Erin are mining.', 'block');
+  }
+  dirty.net = dirty.select = dirty.log = dirty.lesson = dirty.narr = true;
   lastSlow = 0;
 }
-init().then(() => { requestAnimationFrame(frame); setInterval(mineTick, 50); });
+
+const startDlg = $('startDlg');
+startDlg.querySelectorAll('[data-start]').forEach(b => b.addEventListener('click', () => {
+  startDlg.close();
+  if (b.dataset.start !== S.mode) init(b.dataset.start);
+}));
+init('teach').then(() => {
+  requestAnimationFrame(frame);
+  setInterval(mineTick, 50);
+  try { startDlg.showModal(); } catch { /* without dialog support the page still works in teaching mode */ }
+});
 </script>
