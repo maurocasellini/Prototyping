@@ -430,3 +430,48 @@ a.chip{text-decoration:none}
 .tag.ev-unzureichend{background:var(--rosa-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--rosa)}
 .tag.t-src{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
 body.cookie-open .site-main,body.cookie-open #main{padding-bottom:180px}
+
+/* ---------- Startseite: runder, ruhiger, mehr Luft ---------- */
+.lp-hero{display:grid;grid-template-columns:1.15fr 1fr;gap:48px;align-items:center;padding-block:28px 12px}
+@media (max-width:900px){.lp-hero{grid-template-columns:1fr;gap:28px}}
+.lp-hero-text{display:flex;flex-direction:column;gap:18px}
+.lp-hero .word{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(52px,8vw,96px);line-height:1;color:var(--head);margin:0}
+.lp-intro{font-size:16px;line-height:1.7;color:var(--ink);max-width:560px}
+.lp-hero-art{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center}
+.lp-blob{position:absolute;border-radius:50%;filter:blur(2px)}
+.lp-blob-a{width:300px;height:300px;background:radial-gradient(circle at 35% 35%,var(--rosa) 0%,var(--rosa-soft) 60%,transparent 72%);top:0;right:8%}
+.lp-blob-b{width:240px;height:240px;background:radial-gradient(circle at 60% 40%,var(--salbei) 0%,var(--salbei-soft) 60%,transparent 72%);bottom:0;left:6%;opacity:.9}
+.lp-quote{position:relative;max-width:380px;background:var(--hero-bg);color:var(--hero-fg);border-radius:24px;padding:26px 26px 24px;box-shadow:0 18px 40px rgba(90,30,40,.18)}
+.lp-quote .eyebrow{color:var(--line)}
+.lp-quote .q{font-family:var(--font-display);font-style:italic;font-size:23px;line-height:1.4;margin:10px 0 0}
+.lp-section{margin-top:72px}
+.lp-head{display:flex;flex-direction:column;gap:6px;margin-bottom:26px;text-align:center;align-items:center}
+.lp-head h2{font-size:clamp(26px,3.4vw,36px);max-width:680px}
+.lp-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+@media (max-width:900px){.lp-steps{grid-template-columns:1fr}}
+.lp-steps li{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px 24px;display:flex;flex-direction:column;gap:8px}
+.lp-num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--rosa-soft);color:var(--accent);font-family:var(--font-display);font-size:19px;margin-bottom:4px}
+.lp-steps li:nth-child(2) .lp-num{background:var(--salbei-soft);color:var(--sage)}
+.lp-feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.lp-feat{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.lp-feat{grid-template-columns:1fr}}
+.lp-card{border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:8px;border:1px solid transparent}
+.lp-card h3{color:var(--head)}
+.lp-salbei{background:var(--salbei-soft);border-color:#dde7d9}
+.lp-rosa{background:var(--rosa-soft);border-color:#f2dcd8}
+.lp-dot{width:12px;height:12px;border-radius:50%;background:var(--salbei);margin-bottom:6px}
+.lp-rosa .lp-dot{background:var(--rosa);box-shadow:inset 0 0 0 2px #e9b9b2}
+.lp-about{display:grid;grid-template-columns:320px 1fr;gap:48px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:36px}
+@media (max-width:820px){.lp-about{grid-template-columns:1fr;padding:24px;gap:24px;justify-items:center}}
+.lp-photo{width:100%;max-width:320px;aspect-ratio:1;object-fit:cover;border-radius:50%;box-shadow:0 0 0 10px var(--salbei-soft),0 0 0 20px var(--rosa-soft)}
+.lp-about h2{font-size:clamp(26px,3vw,34px)}
+.lp-role{color:var(--sage);font-weight:500;margin:-6px 0 0}
+.lp-cite{margin:4px 0;padding:6px 0 6px 18px;border-left:3px solid var(--rosa);font-family:var(--font-display);font-style:italic;font-size:19px;line-height:1.5;color:var(--head)}
+.lp-chip{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--salbei-soft);color:var(--sage);font-size:12.5px}
+.lp-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;text-align:center}
+@media (max-width:820px){.lp-trust{grid-template-columns:1fr}}
+.lp-trust h3{color:var(--head);margin-bottom:4px}
+.lp-cta{margin-top:72px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding:44px 24px;border-radius:28px;background:linear-gradient(135deg,var(--rosa-soft),var(--salbei-soft))}
+.lp-cta h2{font-size:clamp(26px,3.4vw,36px)}
+.lp-photo{height:auto}
+.lp-cta,.lp-section,.lp-hero{align-self:stretch;width:100%;box-sizing:border-box}
