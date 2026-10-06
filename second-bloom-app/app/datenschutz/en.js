@@ -61,8 +61,8 @@ export default function PrivacyEN() {
 
           <h2 id="verantwortlich">2. Controller</h2>
           <p>The controller for data processing within the meaning of Art. 4(7) GDPR and Art. 5(j) FADP is:</p>
-          <p><P>Name or company name</P><br /><P>Street and number</P><br /><P>Postcode, town, country</P><br />Email: <P>datenschutz@…</P></p>
-          <p>For any questions about data protection and to exercise your rights, you can contact us at the email address above. <P>If a data protection officer has been appointed: add name and contact details.</P> <P>If the controller is established outside the EEA and targets individuals in the EEA: add the EU representative under Art. 27 GDPR.</P></p>
+          <p>Sara Casellini-Machado Sousa<br />Duxgass 2<br />9494 Schaan, Liechtenstein<br />Email: <P>datenschutz@…</P></p>
+          <p>For any questions about data protection and to exercise your rights, you can contact us at the email address above. <P>If a data protection officer has been appointed: add name and contact details.</P> <P>Before launch, check whether a representative in Switzerland under Art. 14 FADP is required for users in Switzerland (for regular, large-scale processing).</P></p>
 
           <h2 id="recht">3. Applicable law</h2>
           <p>We comply with the <b>GDPR</b>, which applies throughout the European Economic Area, including Liechtenstein, and with the <b>Liechtenstein Data Protection Act</b>. For individuals in Switzerland, the <b>Swiss Federal Act on Data Protection (FADP)</b> and the Data Protection Ordinance (DPO) also apply. We use terms such as “Personendaten” (FADP) and “personenbezogene Daten” (GDPR), both meaning “personal data”, interchangeably.</p>

@@ -60,8 +60,8 @@ export default function PrivacyDE() {
 
           <h2 id="verantwortlich">2. Verantwortliche Stelle</h2>
           <p>Verantwortlich für die Datenbearbeitung im Sinne von Art. 4 Nr. 7 DSGVO und Art. 5 lit. j DSG ist:</p>
-          <p><P>Name bzw. Firma</P><br /><P>Strasse und Nummer</P><br /><P>PLZ, Ort, Land</P><br />E-Mail: <P>datenschutz@…</P></p>
-          <p>Für alle Fragen zum Datenschutz und zur Ausübung deiner Rechte erreichst du uns unter der oben genannten E-Mail-Adresse. <P>Falls ein Datenschutzbeauftragter benannt ist: Name und Kontakt ergänzen.</P> <P>Falls die verantwortliche Stelle ihren Sitz ausserhalb des EWR hat und Personen im EWR anspricht: Vertreter in der EU nach Art. 27 DSGVO ergänzen.</P></p>
+          <p>Sara Casellini-Machado Sousa<br />Duxgass 2<br />9494 Schaan, Liechtenstein<br />E-Mail: <P>datenschutz@…</P></p>
+          <p>Für alle Fragen zum Datenschutz und zur Ausübung deiner Rechte erreichst du uns unter der oben genannten E-Mail-Adresse. <P>Falls ein Datenschutzbeauftragter benannt ist: Name und Kontakt ergänzen.</P> <P>Vor dem Start prüfen, ob für Nutzerinnen in der Schweiz ein Vertreter nach Art. 14 DSG nötig ist (bei regelmässiger, umfangreicher Bearbeitung).</P></p>
 
           <h2 id="recht">3. Anwendbares Recht</h2>
           <p>Wir richten uns nach der <b>DSGVO</b>, die im gesamten Europäischen Wirtschaftsraum gilt, also auch in Liechtenstein, sowie nach dem <b>Liechtensteiner Datenschutzgesetz</b>. Für Personen in der Schweiz gilt zusätzlich das <b>Schweizer Datenschutzgesetz (DSG)</b> mit der Datenschutzverordnung (DSV). Begriffe wie „Personendaten“ (DSG) und „personenbezogene Daten“ (DSGVO) verwenden wir gleichbedeutend.</p>

@@ -61,8 +61,8 @@ export default function PrivacyPT() {
 
           <h2 id="verantwortlich">2. Responsável pelo tratamento</h2>
           <p>O responsável pelo tratamento de dados, na aceção do art. 4.º, n.º 7, do RGPD e do art. 5.º, alínea j), da LPD, é:</p>
-          <p><P>Nome ou firma</P><br /><P>Rua e número</P><br /><P>Código postal, localidade, país</P><br />E-mail: <P>datenschutz@…</P></p>
-          <p>Para todas as questões relativas à proteção de dados e ao exercício dos teus direitos, podes contactar-nos através do endereço de e-mail acima indicado. <P>Caso tenha sido designado um encarregado da proteção de dados: acrescentar nome e contacto.</P> <P>Caso o responsável pelo tratamento tenha sede fora do EEE e se dirija a pessoas no EEE: acrescentar o representante na UE nos termos do art. 27.º do RGPD.</P></p>
+          <p>Sara Casellini-Machado Sousa<br />Duxgass 2<br />9494 Schaan, Liechtenstein<br />E-mail: <P>datenschutz@…</P></p>
+          <p>Para todas as questões relativas à proteção de dados e ao exercício dos teus direitos, podes contactar-nos através do endereço de e-mail acima indicado. <P>Caso tenha sido designado um encarregado da proteção de dados: acrescentar nome e contacto.</P> <P>Antes do lançamento, verificar se é necessário um representante na Suíça nos termos do art. 14.º da LPD para utilizadoras na Suíça (em caso de tratamento regular e em grande escala).</P></p>
 
           <h2 id="recht">3. Direito aplicável</h2>
           <p>Regemo-nos pelo <b>RGPD</b>, que se aplica em todo o Espaço Económico Europeu, portanto também no Liechtenstein, bem como pela <b>Lei de Proteção de Dados do Liechtenstein</b>. Para pessoas na Suíça aplica-se adicionalmente a <b>Lei Federal suíça de Proteção de Dados (LPD)</b>, juntamente com a Portaria sobre a Proteção de Dados (OPDo). Utilizamos com o mesmo significado os termos «Personendaten» (LPD) e «personenbezogene Daten» (RGPD), ambos traduzidos nesta versão por «dados pessoais».</p>

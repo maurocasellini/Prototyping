@@ -61,8 +61,8 @@ export default function PrivacyES() {
 
           <h2 id="verantwortlich">2. Responsable del tratamiento</h2>
           <p>El responsable del tratamiento de datos en el sentido del art. 4, punto 7, del RGPD y del art. 5, letra j), de la LPD es:</p>
-          <p><P>Nombre o razón social</P><br /><P>Calle y número</P><br /><P>Código postal, localidad, país</P><br />Correo electrónico: <P>datenschutz@…</P></p>
-          <p>Para cualquier pregunta sobre protección de datos y para ejercer tus derechos, puedes contactarnos en la dirección de correo electrónico indicada arriba. <P>Si se ha designado un delegado de protección de datos: añadir nombre y contacto.</P> <P>Si el responsable del tratamiento tiene su sede fuera del EEE y se dirige a personas en el EEE: añadir el representante en la UE conforme al art. 27 del RGPD.</P></p>
+          <p>Sara Casellini-Machado Sousa<br />Duxgass 2<br />9494 Schaan, Liechtenstein<br />Correo electrónico: <P>datenschutz@…</P></p>
+          <p>Para cualquier pregunta sobre protección de datos y para ejercer tus derechos, puedes contactarnos en la dirección de correo electrónico indicada arriba. <P>Si se ha designado un delegado de protección de datos: añadir nombre y contacto.</P> <P>Antes del lanzamiento, comprobar si es necesario un representante en Suiza según el art. 14 de la LPD para las usuarias en Suiza (en caso de tratamiento regular y a gran escala).</P></p>
 
           <h2 id="recht">3. Legislación aplicable</h2>
           <p>Nos regimos por el <b>RGPD</b>, que se aplica en todo el Espacio Económico Europeo, y por tanto también en Liechtenstein, así como por la <b>Ley de Protección de Datos de Liechtenstein</b>. Para las personas en Suiza se aplica además la <b>Ley Federal suiza de Protección de Datos (LPD)</b> junto con la Ordenanza de Protección de Datos (OPDa). Utilizamos como equivalentes los términos con los que la LPD («Personendaten») y el RGPD («personenbezogene Daten») designan los datos personales.</p>
