@@ -46,6 +46,8 @@ window.I18N_EN = {
   'Interaktive Simulationen, um Technologie zu verstehen und zu unterrichten.': 'Interactive simulations to understand and teach technology.',
   'Auf Einladung': 'By invitation', 'Invite only': 'Invite only',
   'Trainings-Cockpit für Sportler und Coaches: Recovery, Workouts, Ernährung und Körperwerte aus Garmin, Strava und WHOOP – vereint zu einer Tagesform.': 'Training cockpit for athletes and coaches: recovery, workouts, nutrition and body metrics from Garmin, Strava and WHOOP – combined into one daily readiness score.',
+  'Schwungvideo rein, Analyse raus: Pose-Erkennung direkt auf dem Gerät, automatisch erkannte Schwungphasen, Biomechanik-Werte, Drills und ein optionaler KI-Coach.':
+    'Swing video in, analysis out: pose detection on your device, automatically detected swing phases, biomechanics, drills and an optional AI coach.',
   'Hinweise zu den Tools': 'About the tools',
   'Alle Tools laufen vollständig in deinem Browser. Dateien werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet. Eine Content Security Policy verbietet den Seiten technisch, Verbindungen zu anderen Servern aufzubauen.':
     'All tools run entirely in your browser. Files are only processed in your device’s memory and never sent to a server. A Content Security Policy technically prevents the pages from connecting to other servers.',
