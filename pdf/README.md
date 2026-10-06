@@ -50,15 +50,18 @@ is available as **“Export as scan”** when saving, so signing and “scanning
 
 ## Development
 
+Part of [CMV Tools](../README.md), served at `pdf.cmventures.xyz`.
+
 ```
-python3 pdf-werkstatt/web/build.py     # build → pdf-werkstatt/web/dist/
-python3 pdf-werkstatt/web/serve.py     # local test server → http://127.0.0.1:8800/
+python3 pdf/web/build.py     # build only the PDF Toolkit → pdf/web/dist/
+python3 build.py pdf         # same, copied to dist/pdf/ (from the repository root)
+python3 serve.py             # local test server → http://127.0.0.1:8817/
 ```
 
 - `build.py` downloads the pinned engine files (Pyodide from npm, wheels from PyPI/Pyodide) and verifies them via SHA-256.
   Only the Python standard library is required.
-- `serve.py` mimics the Vercel configuration and reports every `/api` request that reaches the server – there should be none.
-- Deployment: Vercel builds the site from `vercel.json` (repository root, or `pdf-werkstatt/` if that is set as the root directory).
+- The root `serve.py` mimics the Vercel configuration and logs every request that does not hit a file – `/api` requests must never show up there.
+- Deployment: the root `vercel.json` (one Vercel project for all CMV Tools).
 
 ```
 pdftools.py       all PDF operations
@@ -67,10 +70,8 @@ static/           user interface (home, tools, editor, signature, DE/EN translat
 web/              web runtime: service worker, Pyodide worker, browser API, build & test server
 ```
 
-The repository also contains an earlier local desktop variant (`app.py`, `install.command`, `mac/`); it is not maintained.
-
 ## License
 
 The PDF engine MuPDF/PyMuPDF is licensed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html), so this
-project is published under the AGPL-3.0 as well (see `LICENSE`). Fonts: SIL Open Font License 1.1
+project is published under the AGPL-3.0 as well (see `../LICENSE`). Fonts: SIL Open Font License 1.1
 (see `static/fonts` and `web/pdf-fonts`).

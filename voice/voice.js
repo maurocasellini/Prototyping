@@ -294,9 +294,6 @@ $('#restart').addEventListener('click', () => {
 });
 
 $('#language').value = window.I18N && window.I18N.lang === 'en' ? 'english' : 'german';
-// Phones: the balanced model; computers: the most accurate one
-const phone = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || (navigator.deviceMemory && navigator.deviceMemory < 6);
-$('#model').value = phone ? 'base' : 'small';
 route();
 window.CMV.registerSW();
 window.__voice = { get segments() { return segments; }, useFile, decodeWithFFmpeg, get running() { return running; } };

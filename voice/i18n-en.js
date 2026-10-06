@@ -13,7 +13,7 @@ window.I18N_EN = {
   'Aufnahme läuft': 'Recording', '■ Stopp & transkribieren': '■ Stop & transcribe', 'Verwerfen': 'Discard',
   'Datei': 'File', 'Sprache': 'Language', 'Deutsch': 'German', 'Englisch': 'English',
   'Französisch': 'French', 'Italienisch': 'Italian', 'Spanisch': 'Spanish', 'Portugiesisch': 'Portuguese', 'Niederländisch': 'Dutch',
-  'Modell': 'Model', 'Ausgewogen (Whisper Base, 77 MB)': 'Balanced (Whisper Base, 77 MB)', 'Sehr genau (Whisper Small, 250 MB – Computer)': 'Most accurate (Whisper Small, 250 MB – computer)', 'Schnell (Whisper Tiny, 41 MB)': 'Fast (Whisper Tiny, 41 MB)',
+  'Modell': 'Model', 'Genau (Whisper Base, 77 MB)': 'Accurate (Whisper Base, 77 MB)', 'Schnell (Whisper Tiny, 41 MB)': 'Fast (Whisper Tiny, 41 MB)',
   'Transkribieren': 'Transcribe',
   'Das Modell wird beim ersten Mal geladen und danach im Browser gespeichert. Faustregel: eine Minute Audio braucht je nach Gerät 10–40 Sekunden.':
     'The model is downloaded the first time and then kept in the browser. Rule of thumb: one minute of audio takes 10–40 seconds, depending on the device.',

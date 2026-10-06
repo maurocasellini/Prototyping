@@ -10,7 +10,37 @@ env.useBrowserCache = false;          // the service worker already caches the m
 env.backends.onnx.wasm.wasmPaths = base + 'ort/';
 env.backends.onnx.wasm.numThreads = self.crossOriginIsolated ? Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 2) - 1)) : 1;
 
-const MODELS = { small: 'Xenova/whisper-small', base: 'Xenova/whisper-base', tiny: 'Xenova/whisper-tiny' };
+// Large model files are served in parts (see build.py → vendor/split.json): stitch them back
+// together as one streamed response
+let split = null;
+const plainFetch = env.fetch || fetch;
+env.fetch = async (url, init) => {
+  split ||= plainFetch(base + 'split.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  const href = new URL(url, self.location.href).href;
+  const info = href.startsWith(base) && (await split)[decodeURIComponent(href.slice(base.length))];
+  if (!info) return plainFetch(url, init);
+  const parts = Array.from({ length: info.parts }, (_, i) => `${href}.part${i}`);
+  // pull-based: nothing is downloaded until the body is actually read (metadata checks only need headers)
+  let i = 0, reader = null;
+  const body = new ReadableStream({
+    async pull(ctrl) {
+      for (;;) {
+        if (!reader) {
+          if (i >= parts.length) { ctrl.close(); return; }
+          const r = await plainFetch(parts[i++]);
+          if (!r.ok) throw new Error(`${parts[i - 1]}: ${r.status}`);
+          reader = r.body.getReader();
+        }
+        const { done, value } = await reader.read();
+        if (!done) { ctrl.enqueue(value); return; }
+        reader = null;
+      }
+    },
+  });
+  return new Response(body, { status: 200, headers: { 'Content-Length': String(info.size), 'Content-Type': 'application/octet-stream' } });
+};
+
+const MODELS = { base: 'Xenova/whisper-base', tiny: 'Xenova/whisper-tiny' };
 let asr = null, loaded = null;
 
 async function load(model) {

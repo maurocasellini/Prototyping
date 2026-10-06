@@ -2,8 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "echo no dependencies",
-  "buildCommand": "python3 --version && echo \"Directory: $(pwd)\" && python3 pdf-werkstatt/web/build.py",
-  "outputDirectory": "pdf-werkstatt/web/dist",
+  "buildCommand": "python3 build.py",
+  "outputDirectory": "dist",
   "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
@@ -28,7 +28,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+          "value": "camera=(self), microphone=(self), geolocation=(), payment=(), usb=()"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -37,7 +37,16 @@
       ]
     },
     {
-      "source": "/sw.js",
+      "source": "/(.*)cv-worker.js",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)sw.js",
       "headers": [
         {
           "key": "Cache-Control",
@@ -46,25 +55,132 @@
       ]
     },
     {
-      "source": "/vendor/(.*)",
+      "source": "/(.*)vendor/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/voice/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
         }
       ]
     }
   ],
   "redirects": [
     {
-      "source": "/pdf",
-      "destination": "/",
-      "permanent": true
+      "source": "/",
+      "missing": [
+        {
+          "type": "host",
+          "value": "(tools|pdf|scan|voice)\\.cmventures\\.xyz"
+        }
+      ],
+      "destination": "/hub/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "tools.cmventures.xyz"
+        }
+      ],
+      "destination": "/hub/index.html"
     },
     {
-      "source": "/pdf/:path*",
-      "destination": "/",
-      "permanent": true
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "tools.cmventures.xyz"
+        }
+      ],
+      "destination": "/hub/:path*"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "pdf.cmventures.xyz"
+        }
+      ],
+      "destination": "/pdf/index.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "pdf.cmventures.xyz"
+        }
+      ],
+      "destination": "/pdf/:path*"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "scan.cmventures.xyz"
+        }
+      ],
+      "destination": "/scan/index.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "scan.cmventures.xyz"
+        }
+      ],
+      "destination": "/scan/:path*"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "destination": "/voice/index.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "destination": "/voice/:path*"
     }
   ]
 }

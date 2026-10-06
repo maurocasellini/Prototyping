@@ -22,6 +22,8 @@ window.I18N_EN = {
   'QR-Codes': 'QR codes',
   'QR-Codes für Links, WLAN und Visitenkarten – im eigenen Design, als PNG oder SVG.': 'QR codes for links, Wi-Fi and business cards – in your own design, as PNG or SVG.',
   'Squoosh-Codecs · ONNX': 'Squoosh codecs · ONNX',
+  'Sprachnachrichten, Meetings und Videos lokal transkribieren – mit Zeitmarken, als Text oder Untertitel.': 'Transcribe voice messages, meetings and videos locally – with timestamps, as text or subtitles.',
+  'Intern': 'Internal', 'Internes Projekt – nicht öffentlich zugänglich.': 'Internal project – not publicly accessible.', 'Auf Anfrage': 'On request',
   'Hinweise zu den Tools': 'About the tools',
   'Alle Tools laufen vollständig in deinem Browser. Dateien werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet. Eine Content Security Policy verbietet den Seiten technisch, Verbindungen zu anderen Servern aufzubauen.':
     'All tools run entirely in your browser. Files are only processed in your device’s memory and never sent to a server. A Content Security Policy technically prevents the pages from connecting to other servers.',

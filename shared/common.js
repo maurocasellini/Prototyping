@@ -55,6 +55,7 @@
   const ROOT = 'cmventures.xyz';
   const onProd = location.hostname.endsWith('.' + ROOT);
   function toolUrl(name) {
+    // the PDF Toolkit's service worker needs the root of its own domain
     if (name === 'pdf') return `https://pdf.${ROOT}/`;
     if (onProd) return `https://${name === 'hub' ? 'tools' : name}.${ROOT}/`;
     return `/${name}/`;

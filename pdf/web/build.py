@@ -19,7 +19,7 @@ import time
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)  # pdf-werkstatt/
+ROOT = os.path.dirname(HERE)  # pdf/
 CACHE = os.path.join(HERE, ".vendor-cache")
 BASE = "/"
 if "--base" in sys.argv:
@@ -55,7 +55,7 @@ def sha256(data):
 
 
 def fetch(url, timeout=300):
-    req = urllib.request.Request(url, headers={"User-Agent": "pdf-werkstatt-build"})
+    req = urllib.request.Request(url, headers={"User-Agent": "cmv-tools-build"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
@@ -85,7 +85,7 @@ def cached(name, digest, urls):
 def wheels_from_full_release(missing):
     """Fallback: fetch the required wheels from the full Pyodide release (GitHub)."""
     log("downloading", PYODIDE_FULL, "(fallback)")
-    req = urllib.request.Request(PYODIDE_FULL, headers={"User-Agent": "pdf-werkstatt-build"})
+    req = urllib.request.Request(PYODIDE_FULL, headers={"User-Agent": "cmv-tools-build"})
     with urllib.request.urlopen(req, timeout=900) as r, tarfile.open(fileobj=r, mode="r|bz2") as tar:
         for m in tar:
             name = os.path.basename(m.name)
@@ -148,7 +148,7 @@ def build_index(version):
     h = replace_once(h, '<li>Dateien verlassen nie diesen Rechner</li>', '<li>Dateien verlassen nie dein Gerät</li>')
     h = replace_once(h, '<li>29 Werkzeuge in einer Oberfläche</li>', '<li>25 Werkzeuge, ohne Konto, ohne Limit</li>')
     h = replace_once(h, '<span>Läuft lokal auf 127.0.0.1 · keine Daten verlassen diesen Mac</span>',
-                     '<span>Verarbeitung nur in deinem Browser · <a href="https://github.com/maurocasellini/Prototyping/tree/master/pdf-werkstatt" '
+                     '<span>Verarbeitung nur in deinem Browser · <a href="https://github.com/maurocasellini/cmv-tools/tree/master/pdf" '
                      'target="_blank" rel="noopener">Quellcode (AGPL-3.0)</a></span>')
     return h
 
