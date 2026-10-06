@@ -2,7 +2,7 @@
 """Local test server for tools/dist – mimics vercel.json (headers + host routing).
 Subdomains are simulated via ports:  python3 tools/serve.py
   http://127.0.0.1:8810/  → /hub/, /scan/ … (like preview deployments)
-  http://127.0.0.1:8811/  → scan  (like scan.cmventures.xyz)
+  http://127.0.0.1:8811/ … 8816/  → scan, voice, image, video, translate, qr (like <app>.cmventures.xyz)
 Every request is logged; a POST or any non-file request would show up here."""
 import http.server
 import json
@@ -14,13 +14,16 @@ import threading
 HERE = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(HERE, "dist")
 CFG = json.load(open(os.path.join(HERE, "vercel.json")))
-PORTS = {8810: None, 8811: "scan"}
+PORTS = {8810: None, 8811: "scan", 8812: "voice", 8813: "image", 8814: "video", 8815: "translate", 8816: "qr"}
 
 
-def headers_for(path):
+def headers_for(path, app):
+    host = f"{app}.cmventures.xyz" if app else "localhost"
     out = {}
     for rule in CFG["headers"]:
         rx = "^" + re.sub(r"\(\.\*\)", "(.*)", rule["source"]) + "$"
+        if any(h["type"] == "host" and not re.fullmatch(h["value"], host) for h in rule.get("has", [])):
+            continue
         if re.match(rx, path):
             for h in rule["headers"]:
                 out[h["key"]] = h["value"]
@@ -44,7 +47,7 @@ def make_handler(app):
             super().do_GET()
 
         def end_headers(self):
-            for k, v in headers_for(self.path.split("?")[0]).items():
+            for k, v in headers_for(self.path.split("?")[0], app).items():
                 self.send_header(k, v)
             super().end_headers()
 

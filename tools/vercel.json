@@ -63,6 +63,30 @@
           "value": "public, max-age=604800"
         }
       ]
+    },
+    {
+      "source": "/voice/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -105,6 +129,26 @@
         }
       ],
       "destination": "/scan/:path*"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "destination": "/voice/index.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "voice.cmventures.xyz"
+        }
+      ],
+      "destination": "/voice/:path*"
     }
   ],
   "redirects": [
@@ -113,7 +157,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "(tools|scan)\\.cmventures\\.xyz"
+          "value": "(tools|scan|voice|image|video|translate|qr)\\.cmventures\\.xyz"
         }
       ],
       "destination": "/hub/",
