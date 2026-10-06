@@ -17,5 +17,4 @@ a.app:hover .go { opacity: 1; }
 .soon .app img { filter: saturate(.75); opacity: .8; }
 .soon .app strong { color: var(--muted); }
 @media (max-width: 640px) { .app { padding: 22px 18px 18px; } .apps { grid-template-columns: 1fr; } }
-.internal .app img { filter: grayscale(.4); opacity: .75; }
-.internal .app strong { color: var(--muted); }
+.internal .app .badge { color: var(--accent); border-color: var(--accent); }
