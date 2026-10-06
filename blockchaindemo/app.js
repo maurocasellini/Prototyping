@@ -1,4 +1,4 @@
-/* Coin Sandbox – a blockchain simulation that runs entirely in the browser:
+/* CM Ventures Blockchain Demo – a blockchain simulation that runs entirely in the browser:
    real SHA-256 proof of work, real ECDSA signatures (WebCrypto), UTXOs, P2P gossip, forks. */
 'use strict';
 
@@ -388,7 +388,7 @@ async function pay(n, to, amount, fee, quiet = false) {
     narrate('Step 2 · A signed payment',
       `<b>${n.name} signed a payment of ${fmt(amount)} SIM to ${to.name}.</b> As input, ${n.name} spends ${coins.length === 1 ? 'one whole coin' : coins.length + ' whole coins'} worth ${fmt(inSum)} SIM. ` +
       `The payment creates new coins: ${fmt(amount)} SIM to a fresh address of ${to.name}${change ? ` and ${fmt(change)} SIM change back to a new address of ${n.name}` : ''}. ` +
-      `${fee ? `The ${fmt(fee)} SIM left over is the fee for whoever mines it. ` : ''}It is not in a block yet. The orange dot carries it from node to node.`,
+      `${fee ? `The ${fmt(fee)} SIM left over is the fee for whoever mines it. ` : ''}It is not in a block yet. The blue dot carries it from node to node.`,
       [`input ${fmt(inSum)}`, `→ ${to.name} ${fmt(amount)}`, change ? `→ change ${fmt(change)}` : null, fee ? `fee ${fmt(fee)}` : null].filter(Boolean));
   }
   enqueue(n, () => onTx(n, tx, null));
@@ -448,7 +448,7 @@ function narrateBlock(n, block, tries, fees) {
     `<b>${n.name} found block #${block.height}</b> after ${fmt(tries)} tries: its hash <span class="mono">${block.hash.slice(0, 16)}…</span> starts with ${block.difficulty} zeros. ` +
     `The first transaction in the block is the <i>coinbase</i>. It creates ${fmt(REWARD + fees)} new SIM for ${n.name} (${REWARD} reward${fees ? ` + ${fees} fees` : ''}) at a fresh address. ` +
     (k ? `The block also carries ${k} payment${k > 1 ? 's' : ''} from ${n.name}'s mempool. ` : 'There were no payments to include. ') +
-    `The blue dot carries the block to the other nodes. Each one checks the proof of work and every transaction before adding it to its own copy of the chain.`,
+    `The copper dot carries the block to the other nodes. Each one checks the proof of work and every transaction before adding it to its own copy of the chain.`,
     ['proof of work ✓', 'links to #' + (block.height - 1), `${k} payment${k === 1 ? '' : 's'}`, `+${fmt(REWARD + fees)} SIM to ${n.name}`]);
 }
 

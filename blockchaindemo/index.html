@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Coin Sandbox · Blockchain Demo</title>
+<title>CM Ventures Blockchain Demo</title>
 <meta name="description" content="A blockchain you can touch: mine blocks, sign payments and watch every node check them. Runs entirely in the browser.">
 <meta name="theme-color" content="#242b41">
 <script src="shared/theme.js"></script>
@@ -14,11 +14,21 @@
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
+<header class="topbar">
+  <a class="brand" data-tool-link="hub" title="All CM Ventures tools">
+    <img class="cmv-logo on-light" src="shared/brand/cmv-logo.svg" alt="CM Ventures" width="149" height="34"><img class="cmv-logo on-dark" src="shared/brand/cmv-logo-light.svg" alt="CM Ventures" width="149" height="34"><span class="logo-word"><em>Blockchain Demo</em></span>
+  </a>
+  <span class="local-badge">Learning tool</span>
+  <div class="spacer"></div>
+  <a class="all-tools" data-tool-link="hub">All tools</a>
+  <span data-theme-slot></span>
+</header>
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>Coin Sandbox</h1>
-      <p><a class="all-tools" data-tool-link="hub">← All tools</a> · A blockchain running in your browser. The coins (SIM) are simulated and have no value.</p>
+      <div class="eyebrow">Learning tool · Blockchain</div>
+      <h1>How a blockchain <em>really</em> works.</h1>
+      <p>A live network running in your browser. The coins (SIM) are simulated and have no value.</p>
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="Mode">
@@ -146,7 +156,7 @@
     <section class="panel" aria-label="Things to try">
       <h2>Things to try</h2>
       <ol class="try">
-        <li>Send coins from one node to another and follow the orange dot as the transaction spreads.</li>
+        <li>Send coins from one node to another and follow the blue dot as the transaction spreads.</li>
         <li>Let two nodes mine at the same time and watch who wins the block.</li>
         <li>Take a node offline, let it mine alone, then bring it back. Its short fork gets replaced by the longer chain.</li>
         <li>Cut two connections to split the network in half. Both halves keep going until you reconnect them.</li>
@@ -169,10 +179,20 @@
   </section>
 </div>
 
+<footer class="foot">
+  <span class="foot-id"><a class="foot-brand" href="https://cmventures.xyz/" target="_blank" rel="noopener noreferrer"><img src="shared/brand/cmv-logo-light.svg" alt="CM Ventures" width="92" height="21"></a><span>Blockchain Demo</span></span>
+  <nav class="foot-links">
+    <a href="https://cmventures.xyz/data-protection.html" target="_blank" rel="noopener noreferrer">Privacy</a>
+    <a href="https://cmventures.xyz/" target="_blank" rel="noopener noreferrer">Legal notice</a>
+    <a data-tool-link="hub">All tools</a>
+  </nav>
+</footer>
+
 <dialog id="startDlg">
   <div class="start">
     <div class="sub">
-      <h1>Coin Sandbox</h1>
+      <img class="cmv-logo on-light" src="shared/brand/cmv-logo.svg" alt="CM Ventures" width="175" height="40" style="height:40px"><img class="cmv-logo on-dark" src="shared/brand/cmv-logo-light.svg" alt="CM Ventures" width="175" height="40" style="height:40px">
+      <h1>CM Ventures Blockchain Demo</h1>
       <p class="lead">A small blockchain network that runs in your browser. Choose how you want to use it. You can switch at any time with the toggle at the top.</p>
     </div>
     <div class="choices">

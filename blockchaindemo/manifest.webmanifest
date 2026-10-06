@@ -1,12 +1,12 @@
 {
-  "name": "Coin Sandbox · Blockchain Demo",
+  "name": "CM Ventures Blockchain Demo",
   "short_name": "Blockchain",
   "description": "A blockchain you can touch: mine blocks, sign payments and watch every node check them.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f3f5f8",
+  "background_color": "#f1f1ec",
   "theme_color": "#242b41",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
