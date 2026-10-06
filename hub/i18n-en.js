@@ -15,7 +15,7 @@ window.I18N_EN = {
   'Sprachnachrichten und Meetings lokal transkribieren – Deutsch, Englisch und mehr.': 'Transcribe voice messages and meetings locally – German, English and more.',
   'Bild-Toolkit': 'Image Toolkit',
   'HEIC → JPG, verkleinern, komprimieren, Standort-Daten entfernen, Hintergrund freistellen.': 'HEIC → JPG, resize, compress, remove location data, remove backgrounds.',
-  'Video-Toolkit': 'Video Toolkit',
+  'Video-Toolkit': 'Video Toolkit', 'FFmpeg · x264': 'FFmpeg · x264',
   'Videos kürzen, für WhatsApp oder E-Mail verkleinern, in GIF umwandeln, Ton extrahieren.': 'Trim videos, shrink them for WhatsApp or email, convert to GIF, extract audio.',
   'Übersetzer': 'Translator',
   'Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and documents – offline, without sending anything to a service.',
