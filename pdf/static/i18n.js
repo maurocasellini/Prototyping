@@ -156,7 +156,7 @@
     'Dieses Werkzeug ist in der Web-Version nicht verfügbar.': 'This tool is not available in the web version.',
     'Zu wenig Arbeitsspeicher im Browser für diese Datei.': 'Not enough browser memory for this file.',
     // Datenschutz / Impressum
-    'Alle Tools': 'All tools', 'Datenschutz': 'Privacy', 'Impressum': 'Legal notice', 'Hinweise zum Tool': 'About this tool', 'Datenschutzerklärung': 'Privacy policy', 'Hosting': 'Hosting', 'Verantwortlich': 'Controller',
+    'Alle Tools': 'All tools', 'CM Ventures – alle Tools': 'CM Ventures – all tools', 'Datenschutz': 'Privacy', 'Impressum': 'Legal notice', 'Hinweise zum Tool': 'About this tool', 'Datenschutzerklärung': 'Privacy policy', 'Hosting': 'Hosting', 'Verantwortlich': 'Controller',
     'Speicherung auf deinem Gerät': 'Storage on your device',
     'PDF Toolkit verarbeitet deine Dateien ausschliesslich in deinem Browser. Dateien, Inhalte und Eingaben werden nicht an einen Server übertragen – die Seite darf technisch keine Verbindungen zu fremden Servern aufbauen.': 'PDF Toolkit processes your files exclusively in your browser. Files, content and input are never transferred to a server – the page is technically not allowed to connect to any third-party server.',
     'Die Website wird über Vercel Inc. (USA) ausgeliefert. Beim Aufruf verarbeitet Vercel technisch notwendige Verbindungsdaten (z. B. IP-Adresse, Zeitpunkt, Browsertyp), um die Seite auszuliefern und vor Missbrauch zu schützen.': 'The website is delivered via Vercel Inc. (USA). When you visit it, Vercel processes technically necessary connection data (e.g. IP address, time, browser type) to deliver the page and protect it against abuse.',

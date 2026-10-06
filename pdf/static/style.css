@@ -376,3 +376,13 @@ dialog::backdrop { background: rgba(36,43,65,.55); }
 .how-card b { color: var(--text); font-weight: 500; }
 .how-note { margin: 18px 0 0; padding: 14px 18px; background: var(--panel); border-left: 3px solid var(--accent); color: var(--muted); font-size: 15px; max-width: 900px; }
 .how-note b { color: var(--text); font-weight: 500; }
+
+/* CM Ventures logo in front of every tool name */
+.cmv-home { display: flex; align-items: center; flex: none; padding-right: 16px; border-right: 1px solid var(--line); }
+.cmv-home .cmv-logo { height: 30px; }
+@media (max-width: 640px) {
+  .cmv-home { padding-right: 10px; }
+  .cmv-home .cmv-logo { height: 20px; }
+  .cmv-home + .brand .logo-img { display: none; }
+  .cmv-home + .brand .logo-word { font-size: 17px; }
+}

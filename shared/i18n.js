@@ -4,7 +4,7 @@
    User content ([data-no-i18n]) is never touched. */
 (() => {
   const EN = Object.assign({
-    'Kein Upload': 'No upload', '100 % lokal': '100% local', 'Alle Tools': 'All tools',
+    'Kein Upload': 'No upload', 'CM Ventures – alle Tools': 'CM Ventures – all tools', '100 % lokal': '100% local', 'Alle Tools': 'All tools',
     'Alle Dateien bleiben auf deinem Gerät. Nichts wird hochgeladen.': 'All files stay on your device. Nothing is uploaded.',
     'Datenschutz': 'Privacy', 'Impressum': 'Legal notice', 'Hinweise zum Tool': 'About this tool',
     'Sprache / Language': 'Language', 'Schliessen': 'Close', 'Abbrechen': 'Cancel', 'Fertig': 'Done', 'Zurück': 'Back',
