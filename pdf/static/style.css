@@ -339,3 +339,12 @@ dialog::backdrop { background: rgba(36,43,65,.55); }
   .topbar { padding: 0 16px; gap: 10px; } .local-badge { display: none; } main { padding: 0 16px 60px; }
   #search { max-width: 150px; }
 }
+
+/* CM Ventures logo */
+.cmv-logo { height: 38px; width: auto; display: block; }
+.brand picture { display: block; flex: none; }
+.foot-id { display: inline-flex; align-items: center; gap: 14px; color: var(--on-navy); }
+.foot-brand { display: inline-flex; }
+.foot-brand img { height: 21px; width: auto; display: block; }
+.foot-id > span { border-left: 1px solid #4a5372; padding-left: 14px; }
+@media (max-width: 640px) { .cmv-logo { height: 32px; } }
