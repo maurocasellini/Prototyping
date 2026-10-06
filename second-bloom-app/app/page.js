@@ -66,7 +66,7 @@ export default async function Home({ searchParams }) {
       </section>
 
       <section className="lp-section lp-about" id="sara">
-        <img src="/sara.webp" alt="Sara Casellini-Machado Sousa" className="lp-photo" width={360} height={360} />
+        <img src="/sara.webp?v=3" alt="Sara Casellini-Machado Sousa" className="lp-photo" width={360} height={360} />
         <div className="stack" style={{ gap: 14 }}>
           <span className="eyebrow">Wer hinter Second Bloom steht</span>
           <h2>Sara Casellini-<wbr />Machado Sousa</h2>
