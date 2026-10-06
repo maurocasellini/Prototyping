@@ -10,9 +10,10 @@ WebAssembly.
 | PDF Toolkit | `pdf.cmventures.xyz` | [`pdf/`](pdf) | MuPDF / PyMuPDF on Pyodide |
 | Doc Scanner | `scan.cmventures.xyz` | [`scan/`](scan) | OpenCV.js, Tesseract.js (OCR), pdf-lib |
 | Voice to Text | `voice.cmventures.xyz` | [`voice/`](voice) | Whisper via Transformers.js / ONNX Runtime, FFmpeg.wasm |
+| Image Toolkit | `image.cmventures.xyz` | [`image/`](image) | Squoosh codecs (MozJPEG, WebP, AVIF, OxiPNG), libheif, exifr, IS-Net via ONNX Runtime |
 | CM Ventures Blockchain Demo | `blockchaindemo.cmventures.xyz` | [`blockchaindemo/`](blockchaindemo) | none – own SHA-256, WebCrypto ECDSA |
 
-In progress: image toolkit ([`image/`](image), not published yet), video toolkit, offline translator, QR codes.
+In progress: video toolkit, offline translator, QR codes.
 
 ## Privacy by design
 
@@ -26,14 +27,14 @@ In progress: image toolkit ([`image/`](image), not published yet), video toolkit
 ## Structure
 
 ```
-hub/ pdf/ scan/ voice/    one folder per tool (image/ is work in progress)
+hub/ pdf/ scan/ voice/ image/   one folder per tool
 blockchaindemo/           blockchain simulation for teaching (no engines, no vendor files)
 shared/                   design (base.css, fonts), DE/EN translation (i18n.js), helpers, service worker
 build.py                  builds dist/<tool>/ – downloads pinned npm packages, verifies SHA-256, self-hosts them;
                           runs pdf/web/build.py for the PDF Toolkit
 serve.py                  local test server that mimics vercel.json (one port per subdomain)
 make_icons.py             renders logo.svg → PNG icons (needs Playwright)
-vercel.json               headers + host-based routing: <subdomain>.cmventures.xyz → dist/<tool>/
+make_vercel.py            generates vercel.json (headers + host-based routing: <subdomain>.cmventures.xyz → dist/<tool>/)
 ```
 
 ```

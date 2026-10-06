@@ -129,8 +129,8 @@ VENDOR = {
 
 # Bare module imports in npm files → relative paths inside vendor/
 IMPORT_MAP = {"wasm-feature-detect": "wasm-feature-detect/index.js"}
-# Published apps (image is still in progress and not built yet)
-APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo"]
+# Published apps
+APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo", "image"]
 
 # Files above this size are served in parts (CDN limits); vendor/split.json lists them
 SPLIT_AT = 45 * 1024 * 1024

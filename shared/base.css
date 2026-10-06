@@ -17,7 +17,7 @@ html, body { margin: 0; }
 html { -webkit-text-size-adjust: 100%; }
 body { font: 15px/1.6 var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
   min-height: 100vh; display: flex; flex-direction: column; }
-.hidden { display: none !important; }
+.hidden, [hidden] { display: none !important; }
 button, select, input, textarea { font: inherit; color: inherit; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
 em { font-style: italic; color: var(--accent); }

@@ -1,0 +1,36 @@
+/* English texts of the Image Toolkit (source texts are German). */
+window.I18N_EN = {
+  'Image Toolkit': 'Image Toolkit', 'Bild-Toolkit': 'Image toolkit', 'Umwandeln · Verkleinern · Freistellen': 'Convert · Resize · Cut out',
+  'Bilder kleiner, sauberer,': 'Images smaller, cleaner,', 'ohne Spuren': 'without traces',
+  'iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen oder den Hintergrund freistellen – alles direkt auf deinem Gerät.':
+    'Convert iPhone photos (HEIC) to JPG, shrink images for email and web, remove location and camera data or cut out the background – all right on your device.',
+  'Bilder wählen': 'Choose images', 'HEIC, JPG, PNG, WebP, AVIF, GIF': 'HEIC, JPG, PNG, WebP, AVIF, GIF',
+  'Squoosh-Codecs: MozJPEG, WebP, AVIF, OxiPNG': 'Squoosh codecs: MozJPEG, WebP, AVIF, OxiPNG',
+  'Standort & Kameradaten werden immer entfernt': 'Location & camera data are always removed',
+  'Bilder hierher ziehen': 'Drop images here', 'oder': 'or', 'auswählen': 'browse', '– beliebig viele auf einmal': '– as many as you like',
+  'Deine Bilder': 'Your images', '1 Bild': '1 image', 'Bilder': 'images', 'Bild': 'Image', '+ Bilder': '+ Images',
+  'Format': 'Format', 'Qualität': 'Quality', 'Grösse (längste Seite)': 'Size (longest side)', 'Original': 'Original',
+  '3840 px (4K)': '3840 px (4K)', '1920 px (Full HD)': '1920 px (Full HD)', '1280 px (E-Mail, Web)': '1280 px (email, web)', '640 px (klein)': '640 px (small)',
+  'Hintergrund entfernen': 'Remove background',
+  'KI-Freistellung (IS-Net) auf deinem Gerät. Lädt beim ersten Mal ca. 45 MB.': 'AI cut-out (IS-Net) on your device. Downloads about 45 MB the first time.',
+  'Neuer Hintergrund': 'New background', 'Transparent': 'Transparent', 'Weiss': 'White', 'Farbe': 'Color',
+  'Metadaten wie GPS-Standort, Kamera und Aufnahmezeit werden beim Speichern immer entfernt.': 'Metadata such as GPS location, camera and capture time are always removed when saving.',
+  'Bilder umwandeln': 'Convert images', 'Alle herunterladen (ZIP)': 'Download all (ZIP)', 'Herunterladen': 'Download',
+  'Teilen / Sichern': 'Share / Save', 'Liste leeren': 'Clear list', 'Vergleich': 'Compare', 'Laden': 'Save', 'Entfernen': 'Remove',
+  'Standort': 'Location', 'Keine Metadaten': 'No metadata', 'Vorher': 'Before', 'Nachher': 'After', 'Schliessen': 'Close',
+  'KI-Modell wird geladen …': 'Loading AI model …', 'Bilder werden geladen …': 'Loading images …', 'ZIP wird erstellt …': 'Creating ZIP …',
+  'Dieses Bild kann nicht geöffnet werden: ': 'This image cannot be opened: ', 'Teilen nicht möglich.': 'Sharing is not possible.',
+  'Image Toolkit · CM Ventures': 'Image Toolkit · CM Ventures',
+  'Das Bild-Toolkit läuft vollständig in deinem Browser. Bilder werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet – die Seite darf technisch keine Verbindung zu anderen Servern aufbauen (Content Security Policy).':
+    'The image toolkit runs entirely in your browser. Images are only processed in your device’s memory and never sent to a server – the page is technically not allowed to connect to other servers (Content Security Policy).',
+  'Open Source': 'Open source',
+  'Codecs aus Squoosh (Google, Apache 2.0) über jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Metadaten lesen: exifr (MIT). Freistellen: IS-Net-Modell von IMG.LY (AGPL), ausgeführt mit ONNX Runtime Web (MIT).':
+    'Codecs from Squoosh (Google, Apache 2.0) via jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Reading metadata: exifr (MIT). Background removal: IS-Net model by IMG.LY (AGPL), run with ONNX Runtime Web (MIT).',
+  'Metadaten': 'Metadata',
+  'Beim Umwandeln wird nur das Bild selbst neu gespeichert. EXIF-, GPS- und andere Metadaten werden dabei nicht übernommen – die Bilder lassen sich bedenkenlos weitergeben.':
+    'Converting saves only the image itself. EXIF, GPS and other metadata are not carried over – the images are safe to share.',
+};
+window.I18N_RULES = [
+  [/^Bild (\d+) \/ (\d+)/, 'Image $1 / $2'], [/ Bilder$/, ' images'],
+  [/^Dieses Bild kann nicht geöffnet werden: /, 'This image cannot be opened: '],
+];

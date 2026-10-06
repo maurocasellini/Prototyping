@@ -21,7 +21,7 @@ window.I18N_EN = {
   'Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and documents – offline, without sending anything to a service.',
   'QR-Codes': 'QR codes',
   'QR-Codes für Links, WLAN und Visitenkarten – im eigenen Design, als PNG oder SVG.': 'QR codes for links, Wi-Fi and business cards – in your own design, as PNG or SVG.',
-  'Squoosh-Codecs · ONNX': 'Squoosh codecs · ONNX',
+  'Squoosh-Codecs · ONNX': 'Squoosh codecs · ONNX', 'Squoosh-Codecs · IS-Net': 'Squoosh codecs · IS-Net',
   'Sprachnachrichten, Meetings und Videos lokal transkribieren – mit Zeitmarken, als Text oder Untertitel.': 'Transcribe voice messages, meetings and videos locally – with timestamps, as text or subtitles.',
   'Eine Blockchain zum Anfassen: Blöcke minen, Zahlungen signieren und zusehen, wie jeder Knoten sie prüft – mit Lehrmodus für den Unterricht.':
     'A blockchain you can touch: mine blocks, sign payments and watch every node check them – with a teaching mode for the classroom.',

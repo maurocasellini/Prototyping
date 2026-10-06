@@ -27,7 +27,11 @@ async function encode({ data, width, height, format, quality }) {
   if (format === 'jpeg') return (await lazy('jpeg', 'jsquash/jpeg/encode.js')).default(img, { quality, progressive: true, optimize_coding: true });
   if (format === 'webp') return (await lazy('webp', 'jsquash/webp/encode.js')).default(img, { quality, method: 4 });
   if (format === 'avif') return (await lazy('avif', 'jsquash/avif/encode.js')).default(img, { quality, speed: 7 });
-  if (format === 'png') return (await lazy('png', 'jsquash/oxipng/optimise.js')).default(img, { level: 2, optimiseAlpha: true });
+  if (format === 'png') {
+    // single-threaded OxiPNG: its multi-threaded build (wasm-bindgen-rayon) can deadlock in nested workers
+    const m = await (mods.pngReady ||= lazy('png', 'jsquash/oxipng/codec/pkg/squoosh_oxipng.js').then(async (x) => { await x.default(); return x; }));
+    return m.optimise_raw(img.data, width, height, 2, false, true).buffer;
+  }
   throw new Error('Unbekanntes Format');
 }
 
@@ -69,8 +73,33 @@ async function removeBg({ data, width, height }) {
   const out = await s.run({ input: new s.ort.Tensor('float32', input, [1, 3, 1024, 1024]) });
   const m = out.output.data;
   const mask = new Uint8ClampedArray(N);
-  for (let i = 0; i < N; i++) mask[i] = m[i] * 255;
+  // sharpen the matte: drop faint background noise, keep the subject fully opaque, soft edges in between
+  const lo = 0.22, hi = 0.82;
+  const local = boxBlur(m, 1024, 1024, 12);     // small isolated specks have a low neighbourhood average
+  for (let i = 0; i < N; i++) mask[i] = local[i] < 0.3 ? 0 : Math.max(0, Math.min(1, (m[i] - lo) / (hi - lo))) * 255;
   return { mask, width: 1024, height: 1024 };
+}
+
+// separable box blur (radius r) of a w×h float image
+function boxBlur(src, w, h, r) {
+  const tmp = new Float32Array(w * h), out = new Float32Array(w * h), n = 2 * r + 1;
+  for (let y = 0; y < h; y++) {
+    let acc = 0;
+    for (let x = -r; x <= r; x++) acc += src[y * w + Math.min(w - 1, Math.max(0, x))];
+    for (let x = 0; x < w; x++) {
+      tmp[y * w + x] = acc / n;
+      acc += src[y * w + Math.min(w - 1, x + r + 1)] - src[y * w + Math.max(0, x - r)];
+    }
+  }
+  for (let x = 0; x < w; x++) {
+    let acc = 0;
+    for (let y = -r; y <= r; y++) acc += tmp[Math.min(h - 1, Math.max(0, y)) * w + x];
+    for (let y = 0; y < h; y++) {
+      out[y * w + x] = acc / n;
+      acc += tmp[Math.min(h - 1, y + r + 1) * w + x] - tmp[Math.max(0, y - r) * w + x];
+    }
+  }
+  return out;
 }
 
 self.onmessage = async (e) => {
