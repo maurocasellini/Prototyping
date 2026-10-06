@@ -185,3 +185,7 @@ main { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; fle
   .cmv-home + .brand .logo-img { display: none; }
   .cmv-home + .brand .logo-word { font-size: 17px; }
 }
+
+/* Hub: "Tools" next to the logo links to the hub itself */
+.brand.hub-word { margin-left: -4px; }
+@media (max-width: 640px) { .brand.hub-word { margin-left: 0; } }
