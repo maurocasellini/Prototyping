@@ -16,7 +16,6 @@ WebAssembly.
 | QR Codes | `qr.cmventures.xyz` | [`qr/`](qr) | qrcode-generator, own SVG renderer |
 | CM Ventures Blockchain Demo | `blockchaindemo.cmventures.xyz` | [`blockchaindemo/`](blockchaindemo) | none – own SHA-256, WebCrypto ECDSA |
 
-
 ## Privacy by design
 
 - Content Security Policy `connect-src 'self'`: the pages cannot talk to any other server.
@@ -37,6 +36,7 @@ build.py                  builds dist/<tool>/ – downloads pinned npm packages,
 serve.py                  local test server that mimics vercel.json (one port per subdomain)
 make_icons.py             renders logo.svg → PNG icons (needs Playwright)
 make_vercel.py            generates vercel.json (headers + host-based routing: <subdomain>.cmventures.xyz → dist/<tool>/)
+make_licenses.py          generates THIRD_PARTY_LICENSES.md from hub/licenses.json
 ```
 
 ```
@@ -49,12 +49,15 @@ python3 serve.py          # → http://127.0.0.1:8810/ (all tools as /<tool>/) a
 One Vercel project (`cmv-tools`, root directory = repository root) serves every tool. `vercel.json` maps each
 subdomain to its folder in `dist/`.
 
-Adding a tool: create its folder, add it to `VENDOR` and `APPS` in `build.py` and to `APPS` in the generator of
-`vercel.json` (rewrites, redirect host list), then add the domain in Vercel and a CNAME record in DNS.
+Adding a tool: create its folder, add it to `VENDOR` and `APPS` in `build.py` and to `TOOLS` in `make_vercel.py`
+(then run it), add its components to `hub/licenses.json` (then run `make_licenses.py`), and finally add the domain
+in Vercel and a CNAME record in DNS.
 
 Large model files (> 45 MB) are stored in parts (`vendor/split.json`) and stitched together in the browser.
 
 ## Licenses
 
-Code: AGPL-3.0 (see `LICENSE`) – required by MuPDF/PyMuPDF. OpenCV, Tesseract, Tesseract.js, Transformers.js:
-Apache 2.0. Whisper, ONNX Runtime, pdf-lib: MIT. FFmpeg: LGPL/GPL. Fonts: SIL Open Font License 1.1.
+This repository is licensed under the **AGPL-3.0** (see `LICENSE`), as required by MuPDF/PyMuPDF and the IS-Net model.
+All third-party components with version, license and source are listed in
+[`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) and on the hub’s licenses page (tools.cmventures.xyz/#licenses).
+Every tool links to its source code and to that page in its footer.

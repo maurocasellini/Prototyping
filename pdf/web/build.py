@@ -148,8 +148,7 @@ def build_index(version):
     h = replace_once(h, '<li>Dateien verlassen nie diesen Rechner</li>', '<li>Dateien verlassen nie dein Gerät</li>')
     h = replace_once(h, '<li>29 Werkzeuge in einer Oberfläche</li>', '<li>25 Werkzeuge, ohne Konto, ohne Limit</li>')
     h = replace_once(h, '<span>Läuft lokal auf 127.0.0.1 · keine Daten verlassen diesen Mac</span>',
-                     '<span>Verarbeitung nur in deinem Browser · <a href="https://github.com/maurocasellini/cmv-tools/tree/master/pdf" '
-                     'target="_blank" rel="noopener">Quellcode (AGPL-3.0)</a></span>')
+                     '<span>Verarbeitung nur in deinem Browser · AGPL-3.0</span>')
     return h
 
 

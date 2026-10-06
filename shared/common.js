@@ -61,7 +61,7 @@
     return `/${name}/`;
   }
   function wireLinks(root = document) {
-    root.querySelectorAll('[data-tool-link]').forEach((a) => { a.href = toolUrl(a.dataset.toolLink); });
+    root.querySelectorAll('[data-tool-link]').forEach((a) => { a.href = toolUrl(a.dataset.toolLink) + (a.dataset.hash || ''); });
   }
 
   function fmtSize(n) {

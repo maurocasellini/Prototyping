@@ -20,3 +20,14 @@ a.app:hover .go { opacity: 1; }
 @media (max-width: 640px) { .app { padding: 22px 18px 18px; } .apps { grid-template-columns: 1fr; } }
 .internal .app .badge { color: var(--accent); border-color: var(--accent); }
 .cat-note { margin: -6px 0 14px; color: var(--muted); font-size: 14.5px; }
+
+/* Licenses page */
+.licenses { max-width: 1000px; }
+.lic-links { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 10px; }
+.lic-wrap { overflow-x: auto; border: 1px solid var(--line); margin-top: 12px; }
+.lic { width: 100%; border-collapse: collapse; font-size: 14px; }
+.lic th { text-align: left; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 10px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.lic td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--muted); }
+.lic td:first-child a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.lic td:first-child a:hover { color: var(--accent); }
+.lic tr:last-child td { border-bottom: none; }

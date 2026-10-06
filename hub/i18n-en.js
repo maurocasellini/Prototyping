@@ -1,5 +1,12 @@
 /* English texts of the hub (source texts are German). */
 window.I18N_EN = {
+  'Open Source & Lizenzen': 'Open source & licenses', 'Quellcode': 'Source code', 'Open-Source-Lizenzen': 'Open-source licenses',
+  'Alle CMV Tools sind Open Source. Der vollständige Quellcode steht öffentlich auf GitHub unter der Lizenz AGPL-3.0 – jede und jeder kann nachprüfen, dass nichts hochgeladen wird.':
+    'All CMV Tools are open source. The complete source code is public on GitHub under the AGPL-3.0 license – anyone can verify that nothing is uploaded.',
+  'Quellcode auf GitHub': 'Source code on GitHub', 'Lizenz (AGPL-3.0)': 'License (AGPL-3.0)', 'Verwendete Open-Source-Bausteine': 'Open-source components used',
+  'Diese Programme, Modelle und Schriften stecken in den Tools. Die Links führen jeweils zum Quellcode und zum vollständigen Lizenztext.':
+    'These programs, models and fonts are inside the tools. Each link leads to the source code and the full license text.',
+  'Baustein': 'Component', 'Version': 'Version', 'Lizenz': 'License', 'Verwendet in': 'Used in', 'Alle Tools': 'All tools',
     'So funktioniert’s': 'How it works',
     'Wie geht das, ohne dass jemand mitliest?': 'How does this work without anyone reading along?',
     'Vergleich: Ein Online-Dienst ist wie eine Hotline, der du deine Unterlagen vorliest. Diese Tools sind wie ein Taschenrechner, den du dir einmal holst – danach rechnest du selbst, und niemand hört zu. Die „Intelligenz“ dahinter sind frei verfügbare Open-Source-Programme bekannter Organisationen wie Mozilla (Firefox), OpenAI oder Google – öffentlich einsehbar und von tausenden Fachleuten geprüft.': 'Comparison: an online service is like a hotline you read your documents to. These tools are like a calculator you pick up once – after that you do the maths yourself, and nobody is listening. The “intelligence” behind them is freely available open-source software from well-known organizations such as Mozilla (Firefox), OpenAI or Google – publicly viewable and reviewed by thousands of experts.',
