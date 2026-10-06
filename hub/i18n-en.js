@@ -1,5 +1,6 @@
 /* English texts of the hub (source texts are German). */
 window.I18N_EN = {
+  'Golf Swing Analysis': 'Golf Swing Analysis', 'PDF · Scan · Sprache · Bild · Video · Übersetzen · QR · Golf': 'PDF · Scan · Voice · Image · Video · Translate · QR · Golf',
   'Open Source & Lizenzen': 'Open source & licenses', 'Quellcode': 'Source code', 'Open-Source-Lizenzen': 'Open-source licenses',
   'Alle CMV Tools sind Open Source. Der vollständige Quellcode steht öffentlich auf GitHub unter der Lizenz AGPL-3.0 – jede und jeder kann nachprüfen, dass nichts hochgeladen wird.':
     'All CMV Tools are open source. The complete source code is public on GitHub under the AGPL-3.0 license – anyone can verify that nothing is uploaded.',

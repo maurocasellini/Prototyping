@@ -31,3 +31,4 @@ a.app:hover .go { opacity: 1; }
 .lic td:first-child a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
 .lic td:first-child a:hover { color: var(--accent); }
 .lic tr:last-child td { border-bottom: none; }
+a.app .badge { opacity: 1; }
