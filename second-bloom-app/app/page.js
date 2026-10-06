@@ -57,7 +57,7 @@ export default async function Home({ searchParams }) {
         <div className="lp-head"><span className="eyebrow">Das Ziel</span><h2>Gut informiert durch die <em>Wechseljahre</em></h2>
           <p className="lp-lead">Hitzewallungen, Schlafprobleme, Stimmungsschwankungen, Brain Fog: Viele Frauen erleben die Wechseljahre, ohne zu wissen, was gerade in ihrem Körper passiert und was ihnen wirklich hilft. Second Bloom soll das ändern.</p></div>
         <div className="lp-feat">
-          {GOALS.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
+          {GOALS.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
         <p className="lp-core">Verstehen, was sich verändert. Wissen, was dir helfen kann. Gut vorbereitet mit deiner Ärztin sprechen.</p>
       </section>
@@ -93,7 +93,7 @@ export default async function Home({ searchParams }) {
         </div>
         <p className="lp-subhead">Die Themen, um die es geht</p>
         <div className="lp-feat">
-          {PLANNED.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
+          {PLANNED.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
       </section>
 

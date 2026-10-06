@@ -54,7 +54,7 @@ export default function LandingLive({ sp, open = true }) {
       <section className="lp-section">
         <div className="lp-head"><span className="eyebrow">Was dich erwartet</span><h2>Alles, was in dieser Phase <em>zählt</em></h2></div>
         <div className="lp-feat">
-          {FEATURES.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
+          {FEATURES.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
       </section>
 
