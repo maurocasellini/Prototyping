@@ -98,7 +98,7 @@ export default async function Home({ searchParams }) {
           <span className="eyebrow">Hallo, ich bin Sara</span>
           <h2>Sara Casellini-<wbr />Machado Sousa</h2>
           <p className="lp-role">Fachärztin für Gynäkologie und Geburtshilfe</p>
-          <p>Ich bin Sara, Fachärztin für Gynäkologie und Geburtshilfe. Geboren bin ich in Lissabon, aufgewachsen in Basel, wo ich auch Medizin studiert habe. Meine Ausbildung zur Fachärztin habe ich in Grabs und Chur gemacht. Heute lebe ich mit meinem Mann und unseren zwei Kindern in Liechtenstein und arbeite seit 2023 in der Praxis Gynorina in Buchs.</p>
+          <p>Geboren bin ich in Lissabon, aufgewachsen in Basel, wo ich auch Medizin studiert habe. Meine Ausbildung zur Fachärztin habe ich in Grabs und Chur gemacht. Heute lebe ich mit meinem Mann und unseren zwei Kindern in Liechtenstein und arbeite seit 2023 in der Praxis Gynorina in Buchs.</p>
           <p>In meiner Sprechstunde erlebe ich jeden Tag, wie viele Fragen die Wechseljahre mit sich bringen und wie wenig Zeit oft bleibt, sie in Ruhe zu beantworten. Mit Second Bloom möchte ich dich auch zwischen den Terminen begleiten: mit Wissen, das du verstehst, mit kleinen Schritten, die in deinen Alltag passen, und mit dem Gefühl, mit diesen Veränderungen nicht allein zu sein.</p>
           <blockquote className="lp-cite">„Mir ist wichtig, dich auf deinem ganz persönlichen Weg zu begleiten: ehrlich, fundiert und mit viel Vertrauen.“</blockquote>
           <p className="small muted">Ich berate auf Deutsch, Portugiesisch, Englisch, Spanisch und Französisch. Deshalb wird auch Second Bloom diese fünf Sprachen sprechen.</p>
