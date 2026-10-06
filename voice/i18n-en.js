@@ -1,5 +1,14 @@
 /* English texts of Voice to Text (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Spracherkennung, die nicht mithört.': 'Speech recognition that doesn’t listen in.',
+    'Ideal für vertrauliche Gespräche, Meetings oder Sprachnachrichten, die nicht in einer Cloud landen sollen.': 'Ideal for confidential conversations, meetings or voice messages that should not end up in a cloud.',
+    'Das Modell: Whisper': 'The model: Whisper',
+    'Whisper ist ein Spracherkennungs-Modell von OpenAI, der Firma hinter ChatGPT. OpenAI hat es frei veröffentlicht – jeder darf eine Kopie davon verwenden.': 'Whisper is a speech recognition model by OpenAI, the company behind ChatGPT. OpenAI released it freely – anyone may use a copy of it.',
+    'Die Kopie läuft bei dir': 'The copy runs on your device',
+    'Beim ersten Mal lädt dein Browser diese Kopie herunter (ca. 77 MB) und speichert sie. Danach hört dein Gerät selbst zu und schreibt mit. OpenAI bekommt davon nichts mit – es gibt keine Verbindung zu OpenAI.': 'The first time, your browser downloads this copy (about 77 MB) and keeps it. After that your own device listens and writes. OpenAI never learns about it – there is no connection to OpenAI.',
+    'Darum dauert es etwas': 'That’s why it takes a moment',
+    'Statt eines Rechenzentrums arbeitet dein Handy oder Laptop. Eine Minute Audio braucht je nach Gerät 10–40 Sekunden. Dafür bleibt jedes Wort bei dir.': 'Instead of a data center, your phone or laptop does the work. One minute of audio takes 10–40 seconds depending on the device. In return, every word stays with you.',
   'Voice to Text': 'Voice to Text', 'Transkription': 'Transcription', 'Sprachmemo · Meeting · Interview': 'Voice memo · Meeting · Interview',
   'Gesprochenes wird': 'Speech becomes', 'Text': 'text',
   'Sprachnachricht, Meeting-Aufnahme oder Video hineinziehen – oder direkt aufnehmen. Whisper schreibt mit, inklusive Zeitmarken. Alles läuft auf deinem Gerät.':

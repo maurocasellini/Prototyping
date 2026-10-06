@@ -1,5 +1,14 @@
 /* English texts of QR Codes (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Ein QR-Code ohne Haken.': 'A QR code with no strings attached.',
+    'Tipp: Vor dem Drucken einmal mit dem Handy scannen – besonders mit Logo oder hellen Farben.': 'Tip: scan it once with your phone before printing – especially with a logo or light colors.',
+    'Nur dein Inhalt': 'Only your content',
+    'Der Code enthält genau das, was du eingibst – deinen Link, dein WLAN, deine Kontaktdaten. Kein Umweg über fremde Kurzlinks.': 'The code contains exactly what you enter – your link, your Wi-Fi, your contact details. No detour via someone else’s short links.',
+    'Funktioniert für immer': 'Works forever',
+    'Viele QR-Dienste zählen Scans über eigene Weiterleitungen – endet das Abo, ist der gedruckte Code tot. Dieser Code braucht keinen Dienst und funktioniert, solange es QR-Codes gibt.': 'Many QR services count scans via their own redirects – when the subscription ends, the printed code is dead. This code needs no service and works as long as QR codes exist.',
+    'Ein kleines Open-Source-Programm': 'A small open-source program',
+    'Den Code berechnet ein frei verfügbares Programm (qrcode-generator von Kazuhiko Arase) direkt in deinem Browser. WLAN-Passwörter und Kontaktdaten verlassen dein Gerät nie.': 'The code is calculated by a freely available program (qrcode-generator by Kazuhiko Arase) right in your browser. Wi-Fi passwords and contact details never leave your device.',
   'QR Codes': 'QR Codes', 'QR-Codes': 'QR codes', 'QR-Codes im': 'QR codes with', 'eigenen Look': 'your own look',
   'Für Links, WLAN-Zugang, Visitenkarten und mehr – mit deinen Farben und deinem Logo. Ohne Konto, ohne Tracking-Weiterleitung: Der Code enthält genau deinen Inhalt.':
     'For links, Wi-Fi access, business cards and more – in your colors, with your logo. No account, no tracking redirect: the code contains exactly your content.',

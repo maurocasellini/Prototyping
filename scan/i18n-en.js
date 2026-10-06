@@ -1,5 +1,14 @@
 /* English texts of the Doc Scanner (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Scannen, ohne dass das Foto dein Handy verlässt.': 'Scanning without the photo ever leaving your phone.',
+    'Deine Fotos werden nicht hochgeladen und nirgends gespeichert. Schliesst du die Seite, sind sie weg – das fertige PDF hast nur du.': 'Your photos are not uploaded and not stored anywhere. When you close the page they are gone – only you have the finished PDF.',
+    'Blattkanten finden': 'Finding the page edges',
+    'Dafür nutzt der Scanner OpenCV – eine Bild-Software, die auch in Robotern, Autos und Industrie-Kameras steckt. Sie erkennt die vier Ecken des Blatts und zieht das Bild gerade.': 'For this the scanner uses OpenCV – image software that is also found in robots, cars and industrial cameras. It detects the four corners of the page and straightens the image.',
+    'Text erkennen': 'Recognizing text',
+    'Die Texterkennung heisst Tesseract. Sie wurde ursprünglich von HP entwickelt und später von Google weitergeführt. Sie liest die Buchstaben im Bild und legt sie unsichtbar ins PDF – so kannst du darin suchen und kopieren.': 'The text recognition is called Tesseract. It was originally developed by HP and later continued by Google. It reads the letters in the image and places them invisibly into the PDF – so you can search and copy.',
+    'Was geladen wird': 'What gets downloaded',
+    'Beim ersten Foto lädt der Browser die Bild-Software (ca. 13 MB), für die Texterkennung zusätzlich ca. 8 MB. Danach ist alles gespeichert und funktioniert sogar ohne Internet.': 'With the first photo your browser downloads the image software (about 13 MB), plus about 8 MB for text recognition. After that everything is stored and even works without internet.',
   'Scanner': 'Scanner', 'Doc Scanner': 'Doc Scanner', 'Dokument-Scanner': 'Document scanner', 'Fotografieren · Geraderichten · PDF': 'Snap · Straighten · PDF',
   'Papier rein,': 'Paper in,', 'sauberes PDF': 'clean PDF', 'raus.': 'out.',
   'Blatt fotografieren – die Kanten werden automatisch erkannt, das Bild entzerrt und wie ein Scan aufbereitet. Auf Wunsch mit Texterkennung, damit das PDF durchsuchbar ist.':

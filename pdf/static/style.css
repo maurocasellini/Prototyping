@@ -361,3 +361,18 @@ dialog::backdrop { background: rgba(36,43,65,.55); }
   :root:not([data-theme="light"]) .cmv-logo.on-light { display: none; }
   :root:not([data-theme="light"]) .cmv-logo.on-dark { display: block; }
 }
+/* "So funktioniert's" – plain-language explanation on every tool */
+.how { margin: 56px 0 8px; }
+.how-head { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+.how-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.how h2 { font-size: clamp(26px, 3.4vw, 36px); margin: 6px 0 22px; line-height: 1.15; max-width: 760px; }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+@media (max-width: 860px) { .how-grid { grid-template-columns: 1fr; } }
+.how-card { padding: 22px 22px 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.how-card .n { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .14em; }
+.how-card h3 { font-size: 21px; margin: 6px 0 8px; line-height: 1.25; }
+.how-card p { margin: 0 0 8px; color: var(--muted); font-size: 15px; }
+.how-card p:last-child { margin-bottom: 0; }
+.how-card b { color: var(--text); font-weight: 500; }
+.how-note { margin: 18px 0 0; padding: 14px 18px; background: var(--panel); border-left: 3px solid var(--accent); color: var(--muted); font-size: 15px; max-width: 900px; }
+.how-note b { color: var(--text); font-weight: 500; }

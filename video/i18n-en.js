@@ -1,5 +1,14 @@
 /* English texts of the Video Toolkit (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Videos bearbeiten, ohne Upload-Wartezeit.': 'Editing videos without waiting for an upload.',
+    'Praktisch für private Familienvideos oder vertrauliche Aufnahmen, die nicht auf fremden Servern landen sollen.': 'Handy for private family videos or confidential recordings that should not end up on someone else’s servers.',
+    'Die Technik: FFmpeg': 'The technology: FFmpeg',
+    'FFmpeg ist das Programm, das im Hintergrund von VLC, YouTube und unzähligen Video-Apps arbeitet. Hier läuft es direkt in deinem Browser.': 'FFmpeg is the program working behind the scenes of VLC, YouTube and countless video apps. Here it runs right in your browser.',
+    'Dein Video bleibt bei dir': 'Your video stays with you',
+    'Das Video wird nicht kopiert und nicht hochgeladen. FFmpeg liest es direkt von deinem Gerät und schreibt das Ergebnis wieder dorthin.': 'The video is not copied and not uploaded. FFmpeg reads it directly from your device and writes the result back there.',
+    'Was geladen wird': 'What gets downloaded',
+    'Einmalig ca. 32 MB für FFmpeg. Weil dein Gerät rechnet, dauern lange Videos etwas – dafür musst du nichts hochladen und nichts herunterladen.': 'About 32 MB once for FFmpeg. Because your device does the work, long videos take a while – but you don’t have to upload or download anything.',
   'Video Toolkit': 'Video Toolkit', 'Video-Toolkit': 'Video toolkit', 'Kürzen · Verkleinern · GIF · Ton': 'Trim · Shrink · GIF · Audio',
   'Videos teilen,': 'Share videos', 'ohne sie hochzuladen': 'without uploading them',
   'Clip kürzen, für WhatsApp oder E-Mail verkleinern, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.':

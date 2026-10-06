@@ -3,6 +3,15 @@
    User content (file names, PDF text, signatures) is never touched. */
 (() => {
   const EN = {
+    'So funktioniert’s': 'How it works',
+    'PDFs bearbeiten, ohne sie aus der Hand zu geben.': 'Editing PDFs without handing them over.',
+    'Viele bekannte PDF-Webseiten laden deine Dateien auf ihre Server. Hier ist das technisch ausgeschlossen: Die Seite darf mit keinem anderen Server sprechen.': 'Many well-known PDF websites upload your files to their servers. Here that is technically impossible: the page may not talk to any other server.',
+    'Die PDF-Engine: MuPDF': 'The PDF engine: MuPDF',
+    'Herzstück ist MuPDF – eine bewährte PDF-Software, die auch in vielen PDF-Readern und E-Book-Apps steckt. Sie läuft hier direkt in deinem Browser.': 'At its heart is MuPDF – proven PDF software that is also inside many PDF readers and e-book apps. Here it runs right in your browser.',
+    'Deine Datei bleibt bei dir': 'Your file stays with you',
+    'Verträge, Ausweise, Rechnungen: Die Datei wird nur im Arbeitsspeicher deines Geräts geöffnet, bearbeitet und wieder gespeichert. Es gibt keinen Server, der sie zu sehen bekommt.': 'Contracts, IDs, invoices: the file is only opened, edited and saved again in your device’s memory. There is no server that gets to see it.',
+    'Was geladen wird': 'What gets downloaded',
+    'Beim ersten Besuch ca. 38 MB für die PDF-Engine, danach ist sie gespeichert und funktioniert sogar offline – zum Beispiel im Flugzeug.': 'On the first visit about 38 MB for the PDF engine; after that it is stored and even works offline – on a plane, for example.',
     // Header, home, footer
     '100 % lokal': '100% local', 'Kein Upload': 'No upload', 'Beenden': 'Quit', 'App beenden': 'Quit app',
     'Werkzeug suchen …': 'Search tools …',

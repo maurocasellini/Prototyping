@@ -1,5 +1,14 @@
 /* English texts of the hub (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Wie geht das, ohne dass jemand mitliest?': 'How does this work without anyone reading along?',
+    'Vergleich: Ein Online-Dienst ist wie eine Hotline, der du deine Unterlagen vorliest. Diese Tools sind wie ein Taschenrechner, den du dir einmal holst – danach rechnest du selbst, und niemand hört zu. Die „Intelligenz“ dahinter sind frei verfügbare Open-Source-Programme bekannter Organisationen wie Mozilla (Firefox), OpenAI oder Google – öffentlich einsehbar und von tausenden Fachleuten geprüft.': 'Comparison: an online service is like a hotline you read your documents to. These tools are like a calculator you pick up once – after that you do the maths yourself, and nobody is listening. The “intelligence” behind them is freely available open-source software from well-known organizations such as Mozilla (Firefox), OpenAI or Google – publicly viewable and reviewed by thousands of experts.',
+    'Das Programm kommt zu dir': 'The program comes to you',
+    'Beim Öffnen lädt dein Browser das Werkzeug herunter – ähnlich wie eine App aus dem App Store, nur ohne Installation.': 'When you open a tool, your browser downloads it – much like an app from the App Store, just without installing anything.',
+    'Dein Gerät rechnet selbst': 'Your device does the work',
+    'Die eigentliche Arbeit – PDF bearbeiten, Text erkennen, übersetzen – erledigt der Prozessor deines Handys oder Computers. Deine Datei bleibt dabei im Arbeitsspeicher deines Geräts.': 'The actual work – editing a PDF, recognizing text, translating – is done by the processor of your phone or computer. Your file stays in your device’s memory.',
+    'Senden ist technisch gesperrt': 'Sending is technically blocked',
+    'Die Seiten sind so eingestellt, dass sie mit keinem anderen Server sprechen dürfen – nicht mit Google, nicht mit OpenAI, nicht einmal mit uns. Der Browser selbst setzt diese Regel durch.': 'The pages are set up so they may not talk to any other server – not Google, not OpenAI, not even us. The browser itself enforces this rule.',
   'CM Ventures Tools': 'CM Ventures Tools', 'Open-Source-Werkzeuge im Browser': 'Open-source tools in your browser',
   'PDF · Scan · Sprache · Bild · Video': 'PDF · Scan · Voice · Image · Video', 'PDF · Scan · Sprache · Bild · Video · Übersetzen · QR': 'PDF · Scan · Voice · Image · Video · Translate · QR', 'Werkzeuge': 'Tools',
   'Tools für jeden Tag.': 'Everyday tools.', 'Ohne Upload.': 'No upload.',

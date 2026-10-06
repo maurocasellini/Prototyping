@@ -1,5 +1,14 @@
 /* English texts of the Image Toolkit (source texts are German). */
 window.I18N_EN = {
+    'So funktioniert’s': 'How it works',
+    'Bilder bearbeiten, ohne sie herzugeben.': 'Editing images without giving them away.',
+    'Keines deiner Bilder wird hochgeladen – auch nicht für das Freistellen, für das viele Online-Dienste deine Fotos auf ihre Server laden.': 'None of your images is uploaded – not even for background removal, for which many online services upload your photos to their servers.',
+    'Kleiner speichern': 'Saving them smaller',
+    'Die Bildformate (JPG, WebP, AVIF, PNG) werden mit den Werkzeugen aus Squoosh gespeichert – einem Projekt von Google, das Bilder besonders klein macht, ohne dass man es sieht. iPhone-Fotos (HEIC) liest das Programm libheif.': 'The image formats (JPG, WebP, AVIF, PNG) are saved with the tools from Squoosh – a Google project that makes images particularly small without visible loss. iPhone photos (HEIC) are read by a program called libheif.',
+    'Spuren entfernen': 'Removing traces',
+    'Fotos enthalten oft versteckte Angaben: wo sie aufgenommen wurden (GPS), mit welchem Handy und wann. Das Tool zeigt dir diese Angaben an und speichert das Bild ohne sie neu.': 'Photos often contain hidden information: where they were taken (GPS), with which phone and when. The tool shows you this information and saves the image again without it.',
+    'Hintergrund freistellen': 'Removing the background',
+    'Dafür nutzt das Tool ein KI-Modell (IS-Net, bereitgestellt von IMG.LY), das erkennt, was Motiv und was Hintergrund ist. Es wird erst geladen, wenn du die Funktion nutzt (ca. 45 MB), und läuft dann auf deinem Gerät.': 'For this the tool uses an AI model (IS-Net, provided by IMG.LY) that recognizes what is subject and what is background. It is only downloaded when you use the feature (about 45 MB) and then runs on your device.',
   'Image Toolkit': 'Image Toolkit', 'Bild-Toolkit': 'Image toolkit', 'Umwandeln · Verkleinern · Freistellen': 'Convert · Resize · Cut out',
   'Bilder kleiner, sauberer,': 'Images smaller, cleaner,', 'ohne Spuren': 'without traces',
   'iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen oder den Hintergrund freistellen – alles direkt auf deinem Gerät.':
