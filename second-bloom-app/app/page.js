@@ -17,7 +17,7 @@ const GOALS = [
 const PLANNED = [
   ["salbei", "Hormone & Zyklus", "Was in Perimenopause und Menopause im Körper passiert, verständlich erklärt. Dazu Perioden, Beschwerden und Zykluslänge über die Monate, damit du Veränderungen früh erkennst."],
   ["rosa", "Gut vorbereitet zum Arzt", "Ein Bericht mit deinen Beschwerden, Werten und Fragen für das Gespräch über Hormone und Hormonersatztherapie."],
-  ["salbei", "Essen, das passt", "Proteinreich und hormonfreundlich: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
+  ["salbei", "Essen, das passt", "Proteinreich und auf deine Lebensphase abgestimmt: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
   ["rosa", "Kraft für Muskeln und Knochen", "Ein Wochenplan mit Krafteinheiten, der sich an deine Energie und deinen Tag anpasst."],
   ["salbei", "Kopf und Gefühle", "Atemübungen, Coaching-Programme und Antworten auf Fragen zu Dünnhäutigkeit, Brain Fog und Leistung im Job."],
   ["rosa", "Optional: deine Gesundheitsdaten", "Wer mag, verbindet Uhr oder Ring, etwa von Garmin, Oura oder Polar. Schlaf, HRV und Ruhepuls ergänzen das Bild, immer gemessen an deiner eigenen Normalität."],
@@ -37,7 +37,11 @@ export default async function Home({ searchParams }) {
           <span className="eyebrow">Bald verfügbar · Perimenopause · Menopause · danach</span>
           <h1 className="word">Second Bloom</h1>
           <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
-          <p className="lp-intro">Second Bloom wird eine digitale Begleiterin für Frauen in der Perimenopause und Menopause: mit fundiertem Wissen und kleinen, alltagstauglichen Schritten für Körper und Kopf. Hinter der Idee steht die Gynäkologin Sara Casellini-Machado Sousa.</p>
+          <p className="lp-intro">Wenn Schlaf, Zyklus, Stimmung oder Energie sich verändern, hilft dir Second Bloom zu verstehen, was gerade passiert – und was du selbst tun kannst.</p>
+          <a className="lp-by" href="#sara">
+            <img src="/sara.webp?v=3" alt="" width={48} height={48} />
+            <span>Entwickelt mit <b translate="no">Sara Casellini-Machado Sousa</b><small>Fachärztin für Gynäkologie und Geburtshilfe</small></span>
+          </a>
           <div className="row wrap">
             <a className="btn accent" href="#warteliste">Auf die Warteliste</a>
             <a className="btn line" href="#ziel">Mehr erfahren</a>
@@ -55,6 +59,7 @@ export default async function Home({ searchParams }) {
         <div className="lp-feat">
           {GOALS.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
+        <p className="lp-core">Verstehen, was sich verändert. Wissen, was dir helfen kann. Gut vorbereitet mit deiner Ärztin sprechen.</p>
       </section>
 
       <section className="lp-section">

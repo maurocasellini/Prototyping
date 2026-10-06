@@ -8,7 +8,7 @@ export default function AuthLayout({ children }) {
         <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
         <ul>
           <li>Hormone und Zyklus verstehen, mit Wissen für das Gespräch in der Praxis</li>
-          <li>Proteinreiches, hormonfreundliches Essen mit Wochenplan und Einkaufsliste</li>
+          <li>Proteinreiches Essen, abgestimmt auf deine Lebensphase, mit Wochenplan und Einkaufsliste</li>
           <li>Krafttraining, das sich an deinen Tag anpasst</li>
           <li>Mental Coaching bei Stimmungsschwankungen, Brain Fog und Druck im Job</li>
           <li>Optional: deine Gesundheitsdaten von Uhr oder Ring, gemessen an deiner eigenen Normalität</li>

@@ -10,7 +10,7 @@ const STEPS = [
 const FEATURES = [
   ["salbei", "Hormone & Zyklus", "Was in Perimenopause und Menopause im Körper passiert, verständlich erklärt. Dazu Perioden, Beschwerden und Zykluslänge über die Monate, damit du Veränderungen früh erkennst."],
   ["rosa", "Gut vorbereitet zum Arzt", "Ein Bericht mit deinen Beschwerden, Werten und Fragen für das Gespräch über Hormone und Hormonersatztherapie."],
-  ["salbei", "Essen, das passt", "Proteinreich und hormonfreundlich: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
+  ["salbei", "Essen, das passt", "Proteinreich und auf deine Lebensphase abgestimmt: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
   ["rosa", "Kraft für Muskeln und Knochen", "Ein Wochenplan mit Krafteinheiten, der sich an deine Energie und deinen Tag anpasst."],
   ["salbei", "Kopf und Gefühle", "Atemübungen, Coaching-Programme und Antworten auf Fragen zu Dünnhäutigkeit, Brain Fog und Leistung im Job."],
   ["rosa", "Optional: deine Gesundheitsdaten", "Wer mag, verbindet Uhr oder Ring, etwa von Garmin, Oura oder Polar. Schlaf, HRV und Ruhepuls ergänzen das Bild, immer gemessen an deiner eigenen Normalität."],
@@ -28,7 +28,11 @@ export default function LandingLive({ sp, open = true }) {
           <span className="eyebrow">Perimenopause · Menopause · danach</span>
           <h1 className="word">Second Bloom</h1>
           <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
-          <p className="lp-intro">Second Bloom ist deine persönliche Begleiterin durch die Wechseljahre. Die App hilft dir, Hormone und Zyklus zu verstehen, und gibt dir jeden Tag konkrete Schritte für Ernährung, Krafttraining und dein seelisches Gleichgewicht. Abgestimmt auf deine Phase und auf das, wie es dir heute geht.</p>
+          <p className="lp-intro">Wenn Schlaf, Zyklus, Stimmung oder Energie sich verändern, hilft dir Second Bloom zu verstehen, was gerade passiert – und was du selbst tun kannst.</p>
+          <a className="lp-by" href="#sara">
+            <img src="/sara.webp?v=3" alt="" width={48} height={48} />
+            <span>Entwickelt mit <b translate="no">Sara Casellini-Machado Sousa</b><small>Fachärztin für Gynäkologie und Geburtshilfe</small></span>
+          </a>
           <div className="row wrap">
             {open ? <Link className="btn accent" href="/register">Jetzt starten</Link> : <Link className="btn accent" href="/demo">Demo ansehen</Link>}
             {open ? <Link className="btn line" href="/demo">Demo ansehen</Link> : <Link className="btn line" href="/login">Anmelden</Link>}
@@ -54,7 +58,7 @@ export default function LandingLive({ sp, open = true }) {
         </div>
       </section>
 
-      <section className="lp-section lp-about">
+      <section className="lp-section lp-about" id="sara">
         <img src="/sara.webp?v=3" alt="Sara Casellini-Machado Sousa" className="lp-photo" width={360} height={360} />
         <div className="stack" style={{ gap: 14 }}>
           <span className="eyebrow">Hallo, ich bin Sara</span>
