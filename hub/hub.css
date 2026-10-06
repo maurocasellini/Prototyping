@@ -18,3 +18,4 @@ a.app:hover .go { opacity: 1; }
 .soon .app strong { color: var(--muted); }
 @media (max-width: 640px) { .app { padding: 22px 18px 18px; } .apps { grid-template-columns: 1fr; } }
 .internal .app .badge { color: var(--accent); border-color: var(--accent); }
+.cat-note { margin: -6px 0 14px; color: var(--muted); font-size: 14.5px; }

@@ -1,7 +1,7 @@
 /* English texts of the hub (source texts are German). */
 window.I18N_EN = {
   'CM Ventures Tools': 'CM Ventures Tools', 'Open-Source-Werkzeuge im Browser': 'Open-source tools in your browser',
-  'PDF · Scan · Sprache · Bild · Video · Blockchain': 'PDF · Scan · Voice · Image · Video · Blockchain',
+  'PDF · Scan · Sprache · Bild · Video': 'PDF · Scan · Voice · Image · Video',
   'Tools für jeden Tag.': 'Everyday tools.', 'Ohne Upload.': 'No upload.',
   'Jedes Tool läuft vollständig auf deinem Gerät – die Rechenarbeit übernehmen bewährte Open-Source-Engines als WebAssembly direkt im Browser. Deine Dateien verlassen nie dein Gerät.':
     'Every tool runs entirely on your device – proven open-source engines do the work as WebAssembly right in your browser. Your files never leave your device.',
@@ -25,6 +25,8 @@ window.I18N_EN = {
   'Sprachnachrichten, Meetings und Videos lokal transkribieren – mit Zeitmarken, als Text oder Untertitel.': 'Transcribe voice messages, meetings and videos locally – with timestamps, as text or subtitles.',
   'Eine Blockchain zum Anfassen: Blöcke minen, Zahlungen signieren und zusehen, wie jeder Knoten sie prüft – mit Lehrmodus für den Unterricht.':
     'A blockchain you can touch: mine blocks, sign payments and watch every node check them – with a teaching mode for the classroom.',
+  'Lern-Tools': 'Learning tools',
+  'Interaktive Simulationen, um Technologie zu verstehen und zu unterrichten.': 'Interactive simulations to understand and teach technology.',
   'Auf Einladung': 'By invitation', 'Invite only': 'Invite only',
   'Trainings-Cockpit für Sportler und Coaches: Recovery, Workouts, Ernährung und Körperwerte aus Garmin, Strava und WHOOP – vereint zu einer Tagesform.': 'Training cockpit for athletes and coaches: recovery, workouts, nutrition and body metrics from Garmin, Strava and WHOOP – combined into one daily readiness score.',
   'Hinweise zu den Tools': 'About the tools',
