@@ -22,6 +22,7 @@ const TOC = [
   ["dauer", "Prazo de conservação"],
   ["cookies", "Cookies e armazenamento local"],
   ["demo", "Demonstração sem conta"],
+  ["warteliste", "Lista de espera"],
   ["sicherheit", "Segurança dos dados"],
   ["rechte", "Os teus direitos"],
   ["beschwerde", "Reclamação junto de uma autoridade de controlo"],
@@ -154,7 +155,10 @@ export default function PrivacyPT() {
           <h2 id="demo">16. Demonstração sem conta</h2>
           <p>Na <Link href="/demo">demonstração</Link> pública não guardamos nada no nosso servidor. Os teus registos ficam no armazenamento local do teu navegador até os eliminares aí. Os valores do dispositivo na demonstração são dados de exemplo fictícios. Se utilizares uma função de IA na demonstração, aplica-se a secção 9 com as devidas adaptações. Recomendamos que não introduzas dados de saúde reais na demonstração.</p>
 
-          <h2 id="sicherheit">17. Segurança dos dados</h2>
+          <h2 id="warteliste">17. Lista de espera</h2>
+          <p>Se te inscreveres na lista de espera na página inicial, guardamos o teu endereço de e-mail, o teu nome próprio (facultativo), o idioma escolhido e a data e a versão do teu consentimento. Usamos estes dados exclusivamente para te informar uma vez sobre o lançamento do Second Bloom. A base jurídica é o teu consentimento (art. 6.º, n.º 1, alínea a), do RGPD; art. 31.º, n.º 1, da LPD). Não há newsletter, nem transmissão a terceiros, nem análise. Podes <Link href="/warteliste/abmelden">sair da lista aqui</Link> a qualquer momento ou escrever-nos; nesse caso, apagamos a inscrição de imediato. Apagamos toda a lista de espera, o mais tardar, seis meses após o lançamento.</p>
+
+          <h2 id="sicherheit">18. Segurança dos dados</h2>
           <p>Adotamos medidas técnicas e organizativas nos termos do art. 32.º do RGPD e do art. 8.º da LPD, entre as quais:</p>
           <ul>
             <li>Transmissão cifrada (HTTPS/TLS) em todas as ligações.</li>
@@ -167,7 +171,7 @@ export default function PrivacyPT() {
           </ul>
           <p>Se, apesar disso, ocorrer uma violação da proteção dos teus dados, notificamo-la à autoridade de controlo competente e informamos-te, quando a lei o preveja (art.ºs 33.º e 34.º do RGPD, art. 24.º da LPD).</p>
 
-          <h2 id="rechte">18. Os teus direitos</h2>
+          <h2 id="rechte">19. Os teus direitos</h2>
           <ul>
             <li><b>Acesso</b> aos teus dados guardados (art. 15.º do RGPD, art. 25.º da LPD). A forma mais rápida é através da exportação em Conta.</li>
             <li><b>Retificação</b> de dados inexatos (art. 16.º do RGPD, art. 32.º da LPD). A maioria dos dados pode ser alterada diretamente por ti na app.</li>
@@ -179,7 +183,7 @@ export default function PrivacyPT() {
           </ul>
           <p>Para todos os pedidos, basta um e-mail para <P>datenschutz@…</P>. Regra geral, respondemos no prazo de um mês e, por segurança, podemos pedir-te uma prova de que és a pessoa em causa.</p>
 
-          <h2 id="beschwerde">19. Reclamação junto de uma autoridade de controlo</h2>
+          <h2 id="beschwerde">20. Reclamação junto de uma autoridade de controlo</h2>
           <p>Tens o direito de apresentar reclamação junto de uma autoridade de controlo da proteção de dados (art. 77.º do RGPD), em especial no teu país de residência. São competentes, por exemplo:</p>
           <ul>
             <li>Liechtenstein: Autoridade de Proteção de Dados do Liechtenstein (Datenschutzstelle Liechtenstein), Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -187,19 +191,19 @@ export default function PrivacyPT() {
             <li>Alemanha e Áustria: a autoridade de controlo do teu estado federado ou a autoridade austríaca de proteção de dados (Datenschutzbehörde)</li>
           </ul>
 
-          <h2 id="pflicht">20. Obrigação de fornecer dados</h2>
+          <h2 id="pflicht">21. Obrigação de fornecer dados</h2>
           <p>Para criar uma conta, precisamos do teu nome próprio, e-mail, palavra-passe, data de nascimento (para a verificação da idade) e da tua fase, bem como da tua aceitação da política de privacidade e do teu consentimento relativo aos dados de saúde. Todos os restantes dados e a ligação de um relógio são facultativos; podes desativar as funções de IA. Sem eles, algumas funções não estão disponíveis ou estão disponíveis apenas de forma limitada.</p>
 
-          <h2 id="alter">21. Idade mínima</h2>
+          <h2 id="alter">22. Idade mínima</h2>
           <p>A Second Bloom destina-se a adultos. A utilização só é permitida a partir dos 18 anos. No registo, indicas a tua data de nascimento; não é criada conta para pessoas com menos de 18 anos.</p>
 
-          <h2 id="werbung">22. Sem publicidade, sem venda, sem rastreamento</h2>
+          <h2 id="werbung">23. Sem publicidade, sem venda, sem rastreamento</h2>
           <p>Não mostramos publicidade, não vendemos dados, não criamos perfis publicitários e não utilizamos ferramentas de análise de terceiros. Os teus dados não são utilizados para treinar modelos de IA.</p>
 
-          <h2 id="medizin">23. Não é um dispositivo médico</h2>
+          <h2 id="medizin">24. Não é um dispositivo médico</h2>
           <p>A Second Bloom é uma companheira de estilo de vida. A app não faz diagnósticos, não substitui o aconselhamento médico e não dá recomendações terapêuticas, em particular sobre terapêutica hormonal da menopausa, medicamentos ou suplementos alimentares. Em caso de queixas, dirige-te à tua médica ou ao teu médico e, numa crise aguda, aos números de emergência indicados na app.</p>
 
-          <h2 id="aenderungen">24. Alterações a esta política</h2>
+          <h2 id="aenderungen">25. Alterações a esta política</h2>
           <p>Adaptamos esta política quando a app ou a situação jurídica se alterarem. Encontras aqui sempre a versão em vigor. Em caso de alterações substanciais que exijam um novo consentimento, perguntamos-te na app antes de a alteração se aplicar a ti.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>

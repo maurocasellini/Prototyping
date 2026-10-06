@@ -22,6 +22,7 @@ const TOC = [
   ["dauer", "Retention period"],
   ["cookies", "Cookies and local storage"],
   ["demo", "Demo without an account"],
+  ["warteliste", "Waiting list"],
   ["sicherheit", "Data security"],
   ["rechte", "Your rights"],
   ["beschwerde", "Complaint to a supervisory authority"],
@@ -154,7 +155,10 @@ export default function PrivacyEN() {
           <h2 id="demo">16. Demo without an account</h2>
           <p>In the public <Link href="/demo">demo</Link>, we do not store anything on our server. Your entries remain in your browser’s local storage until you delete them there. The device values in the demo are fictitious sample data. If you use an AI feature in the demo, section 9 applies accordingly. We recommend that you do not enter real health information in the demo.</p>
 
-          <h2 id="sicherheit">17. Data security</h2>
+          <h2 id="warteliste">17. Waiting list</h2>
+          <p>If you sign up for the waiting list on the home page, we store your email address, your first name (optional), the language you selected and the time and version of your consent. We use this information solely to inform you once about the launch of Second Bloom. The legal basis is your consent (Art. 6(1)(a) GDPR; Art. 31(1) FADP). There is no newsletter, no disclosure to third parties and no analysis. You can <Link href="/warteliste/abmelden">remove yourself here</Link> at any time or write to us; we will then delete the entry immediately. We delete the entire waiting list no later than six months after the launch.</p>
+
+          <h2 id="sicherheit">18. Data security</h2>
           <p>We take technical and organisational measures in accordance with Art. 32 GDPR and Art. 8 FADP, including:</p>
           <ul>
             <li>Encrypted transmission (HTTPS/TLS) for all connections.</li>
@@ -167,7 +171,7 @@ export default function PrivacyEN() {
           </ul>
           <p>If a breach of the protection of your data nevertheless occurs, we will report it to the competent supervisory authority and inform you where required by law (Art. 33 and 34 GDPR, Art. 24 FADP).</p>
 
-          <h2 id="rechte">18. Your rights</h2>
+          <h2 id="rechte">19. Your rights</h2>
           <ul>
             <li><b>Access</b> to your stored data (Art. 15 GDPR, Art. 25 FADP). The quickest way is via the export under Account.</li>
             <li><b>Rectification</b> of inaccurate data (Art. 16 GDPR, Art. 32 FADP). You can change most details directly in the app.</li>
@@ -179,7 +183,7 @@ export default function PrivacyEN() {
           </ul>
           <p>For all requests, an email to <P>datenschutz@…</P> is sufficient. We usually reply within one month and, for security reasons, may ask for proof that you are the data subject.</p>
 
-          <h2 id="beschwerde">19. Complaint to a supervisory authority</h2>
+          <h2 id="beschwerde">20. Complaint to a supervisory authority</h2>
           <p>You have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR), in particular in your country of residence. Competent authorities include, for example:</p>
           <ul>
             <li>Liechtenstein: Data Protection Authority of Liechtenstein, Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -187,19 +191,19 @@ export default function PrivacyEN() {
             <li>Germany and Austria: the supervisory authority of your federal state or the Austrian Data Protection Authority</li>
           </ul>
 
-          <h2 id="pflicht">20. Obligation to provide data</h2>
+          <h2 id="pflicht">21. Obligation to provide data</h2>
           <p>For an account, we need your first name, email address, password, date of birth (for the age check) and your phase, as well as your acceptance of the privacy policy and your consent to the processing of health data. All other details and connecting a watch are optional; you can switch off the AI features. Without them, some features are not available or only to a limited extent.</p>
 
-          <h2 id="alter">21. Minimum age</h2>
+          <h2 id="alter">22. Minimum age</h2>
           <p>Second Bloom is intended for adults. Use is only permitted from the age of 18. You provide your date of birth when you register; no account is created for persons under 18.</p>
 
-          <h2 id="werbung">22. No advertising, no selling, no tracking</h2>
+          <h2 id="werbung">23. No advertising, no selling, no tracking</h2>
           <p>We do not show advertising, do not sell data, do not create advertising profiles and do not use third-party analytics tools. Your data is not used to train AI models.</p>
 
-          <h2 id="medizin">23. Not a medical device</h2>
+          <h2 id="medizin">24. Not a medical device</h2>
           <p>Second Bloom is a lifestyle companion. The app does not make diagnoses, does not replace medical advice and does not give treatment recommendations, in particular not on hormone replacement therapy, medication or supplements. If you have symptoms, please contact your doctor; in an acute crisis, use the emergency numbers listed in the app.</p>
 
-          <h2 id="aenderungen">24. Changes to this policy</h2>
+          <h2 id="aenderungen">25. Changes to this policy</h2>
           <p>We update this policy when the app or the legal situation changes. You can always find the current version here. In the event of material changes that require new consent, we will ask you in the app before the change applies to you.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>

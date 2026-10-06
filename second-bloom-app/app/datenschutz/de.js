@@ -22,6 +22,7 @@ const TOC = [
   ["dauer", "Speicherdauer"],
   ["cookies", "Cookies und lokale Speicherung"],
   ["demo", "Demo ohne Konto"],
+  ["warteliste", "Warteliste"],
   ["sicherheit", "Datensicherheit"],
   ["rechte", "Deine Rechte"],
   ["beschwerde", "Beschwerde bei einer Aufsichtsbehörde"],
@@ -153,7 +154,10 @@ export default function PrivacyDE() {
           <h2 id="demo">16. Demo ohne Konto</h2>
           <p>In der öffentlichen <Link href="/demo">Demo</Link> speichern wir nichts auf unserem Server. Deine Eingaben bleiben im lokalen Speicher deines Browsers, bis du sie dort löschst. Die Gerätewerte in der Demo sind erfundene Beispieldaten. Nutzt du in der Demo eine KI-Funktion, gilt Abschnitt 9 sinngemäss. Wir empfehlen, in der Demo keine echten Gesundheitsangaben einzugeben.</p>
 
-          <h2 id="sicherheit">17. Datensicherheit</h2>
+          <h2 id="warteliste">17. Warteliste</h2>
+          <p>Wenn du dich auf der Startseite für die Warteliste einträgst, speichern wir deine E-Mail-Adresse, deinen Vornamen (freiwillig), die gewählte Sprache sowie Zeitpunkt und Fassung deiner Einwilligung. Wir nutzen diese Angaben ausschliesslich, um dich einmal über den Start von Second Bloom zu informieren. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO; Art. 31 Abs. 1 DSG). Es gibt keinen Newsletter, keine Weitergabe an Dritte und keine Auswertung. Du kannst dich jederzeit <Link href="/warteliste/abmelden">hier austragen</Link> oder uns schreiben; dann löschen wir den Eintrag sofort. Spätestens sechs Monate nach dem Start löschen wir die ganze Warteliste.</p>
+
+          <h2 id="sicherheit">18. Datensicherheit</h2>
           <p>Wir treffen technische und organisatorische Massnahmen nach Art. 32 DSGVO und Art. 8 DSG, unter anderem:</p>
           <ul>
             <li>Verschlüsselte Übertragung (HTTPS/TLS) für alle Verbindungen.</li>
@@ -166,7 +170,7 @@ export default function PrivacyDE() {
           </ul>
           <p>Kommt es trotzdem zu einer Verletzung des Schutzes deiner Daten, melden wir sie der zuständigen Aufsichtsbehörde und informieren dich, wenn dies gesetzlich vorgesehen ist (Art. 33 und 34 DSGVO, Art. 24 DSG).</p>
 
-          <h2 id="rechte">18. Deine Rechte</h2>
+          <h2 id="rechte">19. Deine Rechte</h2>
           <ul>
             <li><b>Auskunft</b> über deine gespeicherten Daten (Art. 15 DSGVO, Art. 25 DSG). Am schnellsten über den Export unter Konto.</li>
             <li><b>Berichtigung</b> unrichtiger Daten (Art. 16 DSGVO, Art. 32 DSG). Die meisten Angaben änderst du direkt in der App.</li>
@@ -178,7 +182,7 @@ export default function PrivacyDE() {
           </ul>
           <p>Für alle Anliegen genügt eine E-Mail an <P>datenschutz@…</P>. Wir antworten in der Regel innerhalb eines Monats und können zur Sicherheit einen Nachweis verlangen, dass du die betroffene Person bist.</p>
 
-          <h2 id="beschwerde">19. Beschwerde bei einer Aufsichtsbehörde</h2>
+          <h2 id="beschwerde">20. Beschwerde bei einer Aufsichtsbehörde</h2>
           <p>Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO), insbesondere in deinem Wohnsitzland. Zuständig sind zum Beispiel:</p>
           <ul>
             <li>Liechtenstein: Datenschutzstelle Liechtenstein, Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -186,19 +190,19 @@ export default function PrivacyDE() {
             <li>Deutschland und Österreich: die Aufsichtsbehörde deines Bundeslandes bzw. die österreichische Datenschutzbehörde</li>
           </ul>
 
-          <h2 id="pflicht">20. Pflicht zur Angabe von Daten</h2>
+          <h2 id="pflicht">21. Pflicht zur Angabe von Daten</h2>
           <p>Für ein Konto brauchen wir Vorname, E-Mail, Passwort, Geburtsdatum (für die Altersprüfung) und deine Phase sowie deine Zustimmung zur Datenschutzerklärung und deine Einwilligung zu den Gesundheitsdaten. Alle weiteren Angaben und das Verbinden einer Uhr sind freiwillig; die KI-Funktionen kannst du ausschalten. Ohne sie stehen einzelne Funktionen nicht oder nur eingeschränkt zur Verfügung.</p>
 
-          <h2 id="alter">21. Mindestalter</h2>
+          <h2 id="alter">22. Mindestalter</h2>
           <p>Second Bloom richtet sich an Erwachsene. Die Nutzung ist erst ab 18 Jahren erlaubt. Bei der Registrierung gibst du dein Geburtsdatum an; ein Konto für Personen unter 18 Jahren wird nicht angelegt.</p>
 
-          <h2 id="werbung">22. Keine Werbung, kein Verkauf, kein Tracking</h2>
+          <h2 id="werbung">23. Keine Werbung, kein Verkauf, kein Tracking</h2>
           <p>Wir zeigen keine Werbung, verkaufen keine Daten, erstellen keine Werbeprofile und nutzen keine Analyse-Werkzeuge von Dritten. Deine Daten werden nicht zum Trainieren von KI-Modellen verwendet.</p>
 
-          <h2 id="medizin">23. Kein Medizinprodukt</h2>
+          <h2 id="medizin">24. Kein Medizinprodukt</h2>
           <p>Second Bloom ist ein Lifestyle-Begleiter. Die App stellt keine Diagnosen, ersetzt keine ärztliche Beratung und gibt keine Therapieempfehlungen, insbesondere nicht zu Hormonersatztherapie, Medikamenten oder Nahrungsergänzung. Bei Beschwerden wende dich bitte an deine Ärztin oder deinen Arzt, in einer akuten Krise an die in der App genannten Notfallnummern.</p>
 
-          <h2 id="aenderungen">24. Änderungen dieser Erklärung</h2>
+          <h2 id="aenderungen">25. Änderungen dieser Erklärung</h2>
           <p>Wir passen diese Erklärung an, wenn sich die App oder die Rechtslage ändert. Die jeweils aktuelle Fassung findest du hier. Bei wesentlichen Änderungen, die eine neue Einwilligung erfordern, fragen wir dich in der App, bevor die Änderung für dich gilt.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>

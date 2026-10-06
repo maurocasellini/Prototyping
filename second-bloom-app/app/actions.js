@@ -7,9 +7,32 @@ import { connectIntervals, syncUser } from "@/lib/sync";
 import { encrypt } from "@/lib/crypto";
 import { PRIVACY_VERSION } from "@/lib/privacy";
 import { readProfile } from "@/lib/profile";
-import { setLangCookie } from "@/lib/lang";
+import { setLangCookie, getLang } from "@/lib/lang";
 
 const s = (form, k) => String(form.get(k) || "").trim();
+
+// ---------- Warteliste (Stufe 1) ----------
+const WAIT_OK = "Danke. Du stehst auf der Warteliste. Wir melden uns, sobald Second Bloom startet.";
+export async function joinWaitlist(_prev, form) {
+  if (s(form, "website")) return { ok: WAIT_OK }; // Falle für Bots: Feld ist für Menschen unsichtbar
+  const email = s(form, "email").toLowerCase().slice(0, 200), name = s(form, "name").slice(0, 60);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Die E-Mail-Adresse sieht nicht gültig aus." };
+  if (form.get("consent") !== "on") return { error: "Bitte bestätige, dass wir dich über den Start informieren dürfen." };
+  // Gleiche Antwort, ob neu oder schon eingetragen (verrät nicht, wer auf der Liste steht)
+  await repo.addToWaitlist({ email, name: name || null, lang: await getLang(), at: new Date().toISOString(), consent_version: PRIVACY_VERSION });
+  return { ok: WAIT_OK };
+}
+export async function leaveWaitlist(_prev, form) {
+  const email = s(form, "email").toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Die E-Mail-Adresse sieht nicht gültig aus." };
+  await repo.removeFromWaitlist(email);
+  return { ok: "Erledigt. Falls diese Adresse auf der Warteliste stand, ist sie jetzt gelöscht." };
+}
+export async function adminWaitlistDelete(form) {
+  await requireAdmin();
+  await repo.removeFromWaitlist(String(form.get("email") || "").toLowerCase());
+  revalidatePath("/admin");
+}
 
 // ---------- Anmeldung ----------
 export async function login(_prev, form) {
@@ -26,7 +49,7 @@ export async function login(_prev, form) {
 
 export async function register(_prev, form) {
   const settings = await repo.getSettings();
-  if (!settings.registrationOpen) return { error: "Die Registrierung ist im Moment geschlossen." };
+  if (!settings.registrationOpen || !repo.isLive(settings)) return { error: "Die Registrierung ist im Moment geschlossen." };
   const name = s(form, "name"), email = s(form, "email").toLowerCase(), pw = String(form.get("password") || "");
   if (!name) return { error: "Bitte deinen Vornamen angeben." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Die E-Mail-Adresse sieht nicht gültig aus." };
@@ -156,6 +179,7 @@ export async function adminSettings(_prev, form) {
   const key = s(form, "apiKey"), cap = Number(s(form, "cap"));
   await repo.updateSettings((x) => {
     x.registrationOpen = form.get("registrationOpen") === "on";
+    x.launched = form.get("launched") === "on";
     x.apps ||= {};
     const a = (x.apps.anthropic ||= {});
     if (key === "-") delete a.apiKey; else if (key) a.apiKey = encrypt(key);

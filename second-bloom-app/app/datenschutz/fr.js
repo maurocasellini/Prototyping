@@ -22,6 +22,7 @@ const TOC = [
   ["dauer", "Durée de conservation"],
   ["cookies", "Cookies et stockage local"],
   ["demo", "Démo sans compte"],
+  ["warteliste", "Liste d’attente"],
   ["sicherheit", "Sécurité des données"],
   ["rechte", "Tes droits"],
   ["beschwerde", "Plainte auprès d'une autorité de contrôle"],
@@ -154,7 +155,10 @@ export default function PrivacyFR() {
           <h2 id="demo">16. Démo sans compte</h2>
           <p>Dans la <Link href="/demo">démo</Link> publique, nous n'enregistrons rien sur notre serveur. Tes saisies restent dans le stockage local de ton navigateur jusqu'à ce que tu les y supprimes. Les valeurs des appareils dans la démo sont des données d'exemple fictives. Si tu utilises une fonction d'IA dans la démo, la section 9 s'applique par analogie. Nous te recommandons de ne pas saisir de véritables informations de santé dans la démo.</p>
 
-          <h2 id="sicherheit">17. Sécurité des données</h2>
+          <h2 id="warteliste">17. Liste d’attente</h2>
+          <p>Si tu t’inscris sur la liste d’attente depuis la page d’accueil, nous enregistrons ton adresse e-mail, ton prénom (facultatif), la langue choisie ainsi que la date et la version de ton consentement. Nous utilisons ces données uniquement pour t’informer une fois du lancement de Second Bloom. La base juridique est ton consentement (art. 6, par. 1, let. a RGPD ; art. 31, al. 1 LPD). Il n’y a pas de newsletter, aucune transmission à des tiers et aucune analyse. Tu peux <Link href="/warteliste/abmelden">te désinscrire ici</Link> à tout moment ou nous écrire ; nous supprimons alors l’inscription immédiatement. Nous supprimons l’ensemble de la liste d’attente au plus tard six mois après le lancement.</p>
+
+          <h2 id="sicherheit">18. Sécurité des données</h2>
           <p>Nous prenons des mesures techniques et organisationnelles conformément à l'art. 32 RGPD et à l'art. 8 LPD, notamment :</p>
           <ul>
             <li>Transmission chiffrée (HTTPS/TLS) pour toutes les connexions.</li>
@@ -167,7 +171,7 @@ export default function PrivacyFR() {
           </ul>
           <p>Si une violation de la sécurité de tes données survient malgré tout, nous l'annonçons à l'autorité de contrôle compétente et t'en informons lorsque la loi le prévoit (art. 33 et 34 RGPD, art. 24 LPD).</p>
 
-          <h2 id="rechte">18. Tes droits</h2>
+          <h2 id="rechte">19. Tes droits</h2>
           <ul>
             <li><b>Accès</b> aux données enregistrées te concernant (art. 15 RGPD, art. 25 LPD). Le plus rapide est l'exportation sous Compte.</li>
             <li><b>Rectification</b> des données inexactes (art. 16 RGPD, art. 32 LPD). Tu peux modifier la plupart des informations directement dans l'application.</li>
@@ -179,7 +183,7 @@ export default function PrivacyFR() {
           </ul>
           <p>Pour toute demande, un e-mail à <P>datenschutz@…</P> suffit. Nous répondons en règle générale dans un délai d'un mois et pouvons, par mesure de sécurité, demander une preuve que tu es bien la personne concernée.</p>
 
-          <h2 id="beschwerde">19. Plainte auprès d'une autorité de contrôle</h2>
+          <h2 id="beschwerde">20. Plainte auprès d'une autorité de contrôle</h2>
           <p>Tu as le droit d'introduire une réclamation auprès d'une autorité de contrôle de la protection des données (art. 77 RGPD), notamment dans ton pays de résidence. Sont par exemple compétentes :</p>
           <ul>
             <li>Liechtenstein : Autorité de protection des données du Liechtenstein (Datenschutzstelle Liechtenstein), Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -187,19 +191,19 @@ export default function PrivacyFR() {
             <li>Allemagne et Autriche : l'autorité de contrôle de ton Land ou l'autorité autrichienne de protection des données (Datenschutzbehörde)</li>
           </ul>
 
-          <h2 id="pflicht">20. Obligation de fournir des données</h2>
+          <h2 id="pflicht">21. Obligation de fournir des données</h2>
           <p>Pour un compte, nous avons besoin de ton prénom, de ton adresse e-mail, d'un mot de passe, de ta date de naissance (pour la vérification de l'âge) et de ta phase, ainsi que de ton acceptation de la politique de confidentialité et de ton consentement au traitement des données de santé. Toutes les autres informations et la connexion d'une montre sont facultatives ; tu peux désactiver les fonctions d'IA. Sans elles, certaines fonctions ne sont pas disponibles ou ne le sont que de manière limitée.</p>
 
-          <h2 id="alter">21. Âge minimum</h2>
+          <h2 id="alter">22. Âge minimum</h2>
           <p>Second Bloom s'adresse aux adultes. L'utilisation n'est autorisée qu'à partir de 18 ans. Lors de l'inscription, tu indiques ta date de naissance ; aucun compte n'est créé pour les personnes de moins de 18 ans.</p>
 
-          <h2 id="werbung">22. Pas de publicité, pas de vente, pas de suivi</h2>
+          <h2 id="werbung">23. Pas de publicité, pas de vente, pas de suivi</h2>
           <p>Nous n'affichons pas de publicité, ne vendons pas de données, ne créons pas de profils publicitaires et n'utilisons aucun outil d'analyse de tiers. Tes données ne sont pas utilisées pour entraîner des modèles d'IA.</p>
 
-          <h2 id="medizin">23. Pas un dispositif médical</h2>
+          <h2 id="medizin">24. Pas un dispositif médical</h2>
           <p>Second Bloom est un compagnon de style de vie. L'application ne pose pas de diagnostic, ne remplace pas un avis médical et ne donne pas de recommandations thérapeutiques, notamment pas en matière de traitement hormonal de la ménopause, de médicaments ou de compléments alimentaires. En cas de troubles, adresse-toi à ta médecin ou à ton médecin et, en cas de crise aiguë, aux numéros d'urgence indiqués dans l'application.</p>
 
-          <h2 id="aenderungen">24. Modifications de la présente politique</h2>
+          <h2 id="aenderungen">25. Modifications de la présente politique</h2>
           <p>Nous adaptons la présente politique lorsque l'application ou la situation juridique change. Tu trouveras toujours ici la version en vigueur. En cas de modifications importantes nécessitant un nouveau consentement, nous te le demandons dans l'application avant que la modification ne s'applique à toi.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>

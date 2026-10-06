@@ -4,14 +4,14 @@ import { requireAdmin } from "@/lib/auth";
 import * as repo from "@/lib/repo";
 import { aiConfig, getUsage, MODELS, DAILY_CALLS_PER_USER, DAILY_CALLS_DEMO } from "@/lib/ai";
 import { checkEvidence } from "@/lib/evidence-check";
-import { adminSettings, adminSetRole, adminDeleteUser } from "../actions";
+import { adminSettings, adminSetRole, adminDeleteUser, adminWaitlistDelete } from "../actions";
 
 export const dynamic = "force-dynamic";
 const usd = (v) => `$${(v || 0).toFixed(2)}`;
 
 export default async function Admin() {
   const me = await requireAdmin();
-  const [users, settings, cfg, usage, ev] = await Promise.all([repo.listUsers(), repo.getSettings(), aiConfig(), getUsage(), checkEvidence()]);
+  const [users, settings, cfg, usage, ev, wait] = await Promise.all([repo.listUsers(), repo.getSettings(), aiConfig(), getUsage(), checkEvidence(), repo.getWaitlist()]);
   const months = Object.entries(usage).slice(0, 6);
   const evBad = ev.rows.filter((r) => r.pmid && r.status !== "ok");
   const evOk = ev.rows.filter((r) => r.status === "ok").length, evPm = ev.rows.filter((r) => r.pmid).length;
@@ -29,6 +29,7 @@ export default async function Admin() {
             <span>Tageslimit</span><b>{DAILY_CALLS_PER_USER} Aufrufe je Konto, Demo {DAILY_CALLS_DEMO} insgesamt</b>
           </div>
           <Form action={adminSettings} submit="Speichern">
+            <label className="check"><input type="checkbox" name="launched" defaultChecked={settings.launched === true} /> <span><b>App öffentlich</b> (Stufe 2): Startseite mit Registrierung und Demo. Aus = nur Landingpage mit Warteliste.</span></label>
             <label className="check"><input type="checkbox" name="registrationOpen" defaultChecked={settings.registrationOpen !== false} /> <span>Neue Konten dürfen sich registrieren</span></label>
             <label className="check"><input type="checkbox" name="demoAi" defaultChecked={cfg.demoAi} /> <span>KI auch in der öffentlichen Demo erlauben</span></label>
             <label>Monatslimit KI in USD (0 = ohne Limit)<input type="number" name="cap" min="0" step="1" defaultValue={cfg.monthlyCapUsd} /></label>
@@ -45,6 +46,15 @@ export default async function Admin() {
           <p className="small muted">Preise je 1 Mio. Tokens: {Object.values(MODELS).map((m) => `${m.name} $${m.price[0]} / $${m.price[1]}`).join(" · ")}</p>
         </section>
       </div>
+      <section className="card">
+        <span className="eyebrow">Stufe {settings.launched ? "2 · App öffentlich" : "1 · Landingpage"}</span>
+        <div className="row between wrap"><h2>Warteliste · {wait.length} {wait.length === 1 ? "Eintrag" : "Einträge"}</h2>{wait.length > 0 && <a className="btn sm line" href="/api/admin/waitlist">CSV herunterladen</a>}</div>
+        {wait.length ? <div className="scroll-x"><table className="t"><thead><tr><th>E-Mail</th><th>Vorname</th><th>Sprache</th><th>Seit</th><th></th></tr></thead><tbody>
+          {[...wait].reverse().slice(0, 200).map((w) => <tr key={w.email}><td>{w.email}</td><td>{w.name || "–"}</td><td>{(w.lang || "de").toUpperCase()}</td><td className="small">{new Date(w.at).toLocaleDateString("de-CH")}</td>
+            <td><form action={adminWaitlistDelete}><input type="hidden" name="email" value={w.email} /><button className="link" type="submit">entfernen</button></form></td></tr>)}
+        </tbody></table></div> : <p className="small muted">Noch niemand eingetragen.</p>}
+        <p className="small muted">Einwilligung: nur für die Information zum Start (siehe Datenschutzerklärung). Nach dem Start die Liste innert 6 Monaten löschen.</p>
+      </section>
       <section className="card">
         <span className="eyebrow">Quellen</span>
         <h2>PubMed-Prüfung</h2>

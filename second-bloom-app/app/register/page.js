@@ -7,11 +7,15 @@ import AutoPhase from "@/components/AutoPhase";
 import BmiHint from "@/components/BmiHint";
 import { register } from "../actions";
 import { getLang } from "@/lib/lang";
+import { redirect } from "next/navigation";
+import { getSettings, isLive } from "@/lib/repo";
 import { PHASE_OPTS, GOAL_OPTS, DIET_OPTS, INTOL_OPTS, COUNTRY_OPTS, LANG_OPTS } from "@/lib/profile";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Konto erstellen · Second Bloom" };
 
 export default async function Register() {
+  if (!isLive(await getSettings())) redirect("/#warteliste");
   const lang = await getLang();
   return (
     <SiteShell>

@@ -4,9 +4,11 @@ import AuthLayout from "@/components/AuthLayout";
 import Form from "@/components/Form";
 import { login } from "../actions";
 
+export const dynamic = "force-dynamic";
+
 export default function Login() {
   return (
-    <SiteShell>
+    <SiteShell nav="preview">
       <AuthLayout>
         <div className="stack"><span className="eyebrow">Willkommen zurück</span><h1>Anmelden</h1></div>
         <Form action={login} submit="Anmelden" kind="accent block">

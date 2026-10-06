@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
+import Form from "@/components/Form";
+import LandingLive from "@/components/LandingLive";
 import { currentUser } from "@/lib/auth";
+import * as repo from "@/lib/repo";
+import { joinWaitlist } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-const STEPS = [
-  ["Kurz einchecken", "Jeden Tag eine Minute: Stimmung, Energie, Schlaf, Fokus und was dich gerade beschäftigt."],
-  ["Dein Plan für heute", "Daraus entsteht ein Tagesplan: was du isst, wie du dich bewegst und was deinem Kopf guttut."],
-  ["Verstehen und vorbereitet sein", "Wissen zu Hormonen und Zyklus, dein Verlauf über die Wochen und ein Bericht für das Gespräch in der Praxis."],
+const GOALS = [
+  ["salbei", "Verstehen", "Klar erklärt, was die Hormone in dieser Lebensphase verändern und welche Beschwerden dazugehören können."],
+  ["rosa", "Selbst handeln", "Konkrete Schritte für Ernährung, Krafttraining, Schlaf und Psyche, die sich an deinen Alltag anpassen."],
+  ["salbei", "Gut vorbereitet", "Deine Beobachtungen übersichtlich zusammengefasst, damit das Gespräch mit deiner Ärztin oder deinem Arzt leichter wird."],
 ];
-const FEATURES = [
+const PLANNED = [
   ["salbei", "Hormone & Zyklus", "Was in Perimenopause und Menopause im Körper passiert, verständlich erklärt. Dazu Perioden, Beschwerden und Zykluslänge über die Monate, damit du Veränderungen früh erkennst."],
   ["rosa", "Gut vorbereitet zum Arzt", "Ein Bericht mit deinen Beschwerden, Werten und Fragen für das Gespräch über Hormone und Hormonersatztherapie."],
   ["salbei", "Essen, das passt", "Proteinreich und hormonfreundlich: Wochenplan, Einkaufsliste und Rezepte aus dem, was im Kühlschrank ist."],
@@ -23,19 +27,20 @@ const LANGS = ["Deutsch", "Português", "English", "Español", "Français"];
 export default async function Home({ searchParams }) {
   const sp = await searchParams;
   if (await currentUser().catch(() => null)) redirect("/app");
+  if (repo.isLive(await repo.getSettings())) return <LandingLive sp={sp} />;
   return (
     <SiteShell>
       {sp?.geloescht && <p className="msg ok">Dein Konto und alle Daten sind gelöscht.</p>}
 
       <section className="lp-hero">
         <div className="lp-hero-text">
-          <span className="eyebrow">Perimenopause · Menopause · danach</span>
+          <span className="eyebrow">Bald verfügbar · Perimenopause · Menopause · danach</span>
           <h1 className="word">Second Bloom</h1>
           <p className="lede">Deine zweite Lebenshälfte.<br />Klar, ruhig, begleitet.</p>
-          <p className="lp-intro">Second Bloom ist deine persönliche Begleiterin durch die Wechseljahre. Die App hilft dir, Hormone und Zyklus zu verstehen, und gibt dir jeden Tag konkrete Schritte für Ernährung, Krafttraining und dein seelisches Gleichgewicht. Abgestimmt auf deine Phase und auf das, wie es dir heute geht.</p>
+          <p className="lp-intro">Second Bloom wird eine digitale Begleiterin für Frauen in der Perimenopause und Menopause: mit fundiertem Wissen und kleinen, alltagstauglichen Schritten für Körper und Kopf. Hinter der Idee steht die Gynäkologin Sara Casellini-Machado Sousa.</p>
           <div className="row wrap">
-            <Link className="btn accent" href="/register">Jetzt starten</Link>
-            <Link className="btn line" href="/demo">Demo ansehen</Link>
+            <a className="btn accent" href="#warteliste">Auf die Warteliste</a>
+            <a className="btn line" href="#ziel">Mehr erfahren</a>
           </div>
         </div>
         <div className="lp-hero-art" aria-hidden="true">
@@ -44,21 +49,23 @@ export default async function Home({ searchParams }) {
         </div>
       </section>
 
-      <section className="lp-section">
-        <div className="lp-head"><span className="eyebrow">So funktioniert es</span><h2>Jeden Tag ein kleiner, <em>passender</em> Schritt</h2></div>
-        <ol className="lp-steps">
-          {STEPS.map(([t, x], i) => <li key={t}><span className="lp-num">{i + 1}</span><h3>{t}</h3><p className="small muted">{x}</p></li>)}
-        </ol>
-      </section>
-
-      <section className="lp-section">
-        <div className="lp-head"><span className="eyebrow">Was dich erwartet</span><h2>Alles, was in dieser Phase <em>zählt</em></h2></div>
+      <section className="lp-section" id="ziel">
+        <div className="lp-head"><span className="eyebrow">Das Ziel</span><h2>Gut informiert durch die <em>Wechseljahre</em></h2>
+          <p className="lp-lead">Hitzewallungen, Schlafprobleme, Stimmungsschwankungen, Brain Fog: Viele Frauen erleben die Wechseljahre, ohne zu wissen, was gerade in ihrem Körper passiert und was ihnen wirklich hilft. Second Bloom soll das ändern.</p></div>
         <div className="lp-feat">
-          {FEATURES.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
+          {GOALS.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
         </div>
       </section>
 
-      <section className="lp-section lp-about">
+      <section className="lp-section">
+        <div className="lp-head"><span className="eyebrow">Was geplant ist</span><h2>Eine Begleiterin für <em>jeden Tag</em></h2>
+          <p className="lp-lead">Jeden Tag ein kurzer Check-in, daraus ein passender Plan für Essen, Bewegung und Kopf. Dazu Wissen, das du verstehst, und dein Verlauf über die Wochen.</p></div>
+        <div className="lp-feat">
+          {PLANNED.map(([tone, t, x]) => <div key={t} className={`lp-card lp-${tone}`}><span className="lp-dot" /><h3>{t}</h3><p className="small muted">{x}</p></div>)}
+        </div>
+      </section>
+
+      <section className="lp-section lp-about" id="sara">
         <img src="/sara.webp" alt="Sara Casellini-Machado Sousa" className="lp-photo" width={360} height={360} />
         <div className="stack" style={{ gap: 14 }}>
           <span className="eyebrow">Wer hinter Second Bloom steht</span>
@@ -66,9 +73,23 @@ export default async function Home({ searchParams }) {
           <p className="lp-role">Fachärztin für Gynäkologie und Geburtshilfe</p>
           <p>Geboren in Lissabon, aufgewachsen in Basel, wo sie Humanmedizin studierte. Ihre Ausbildung zur Fachärztin absolvierte sie in Grabs und Chur. Heute lebt sie mit ihrem Mann und den zwei Kindern in Liechtenstein und gehört seit 2023 zum Team der Praxis Gynorina.</p>
           <blockquote className="lp-cite">„Es ist mir wichtig, Frauen auf ihrem persönlichen Lebens- und Gesundheitsweg zu begleiten. Vertrauen steht dabei immer an erster Stelle.“</blockquote>
-          <p className="small muted">Sara berät auf Deutsch, Portugiesisch, Englisch, Spanisch und Französisch. Deshalb spricht auch Second Bloom diese fünf Sprachen.</p>
+          <p className="small muted">Sara berät auf Deutsch, Portugiesisch, Englisch, Spanisch und Französisch. Deshalb wird auch Second Bloom diese fünf Sprachen sprechen.</p>
           <div className="chips" translate="no">{LANGS.map((l) => <span key={l} className="lp-chip">{l}</span>)}</div>
         </div>
+      </section>
+
+      <section className="lp-section lp-wait" id="warteliste">
+        <div className="lp-head"><span className="eyebrow">Warteliste</span><h2>Sei von Anfang an <em>dabei</em></h2>
+          <p className="lp-lead">Trag dich ein, und wir sagen dir Bescheid, sobald Second Bloom startet. Nur diese eine Nachricht, kein Newsletter.</p></div>
+        <Form action={joinWaitlist} submit="Auf die Warteliste" kind="accent block" className="form lp-form">
+          <div className="row2">
+            <label>Vorname (optional)<input type="text" name="name" autoComplete="given-name" maxLength={60} /></label>
+            <label>E-Mail<input type="email" name="email" autoComplete="email" required maxLength={200} /></label>
+          </div>
+          <label className="lp-hp" aria-hidden="true">Website<input type="text" name="website" tabIndex={-1} autoComplete="off" /></label>
+          <label className="check"><input type="checkbox" name="consent" /> <span>Ich möchte per E-Mail informiert werden, wenn Second Bloom startet. Ich habe die <Link href="/datenschutz#warteliste" target="_blank">Datenschutzerklärung</Link> gelesen und kann mich jederzeit wieder austragen.</span></label>
+        </Form>
+        <p className="small muted" style={{ textAlign: "center" }}><Link href="/warteliste/abmelden">Von der Warteliste austragen</Link></p>
       </section>
 
       <section className="lp-section lp-trust">
@@ -77,15 +98,6 @@ export default async function Home({ searchParams }) {
           ["Privat", "Deine Daten gehören dir: geschützt gespeichert, keine Werbung, kein Verkauf, jederzeit löschbar."],
           ["Ehrlich", "Second Bloom ersetzt keine ärztliche Beratung. Die App hilft dir, gut informiert ins Gespräch zu gehen."],
         ].map(([t, x]) => <div key={t}><h3>{t}</h3><p className="small muted">{x}</p></div>)}
-      </section>
-
-      <section className="lp-cta">
-        <h2>Bereit für deine <em>zweite Blüte</em>?</h2>
-        <p className="muted">In zwei Minuten eingerichtet. Ohne Werbung.</p>
-        <div className="row wrap" style={{ justifyContent: "center" }}>
-          <Link className="btn accent" href="/register">Konto erstellen</Link>
-          <Link className="btn line" href="/demo">Erst die Demo ansehen</Link>
-        </div>
       </section>
     </SiteShell>
   );

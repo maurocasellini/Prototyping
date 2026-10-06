@@ -1,5 +1,6 @@
 import SiteShell from "@/components/SiteShell";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Impressum · Second Bloom" };
 
 // Platzhalter: vor dem Start mit den echten Angaben der Betreiberin füllen (Pflichtangaben nach Art. 3 Abs. 1 lit. s UWG

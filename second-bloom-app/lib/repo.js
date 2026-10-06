@@ -62,9 +62,25 @@ export async function deleteUser(id) {
 }
 
 // ---------- Einstellungen ----------
-const SETTINGS = { registrationOpen: true, apps: {} };
+// launched: false = Stufe 1 (nur Landingpage mit Warteliste), true = App öffentlich (Registrierung, Demo-Links)
+const SETTINGS = { registrationOpen: true, launched: false, apps: {} };
+export const isLive = (s) => s?.launched === true;
 export const getSettings = () => read("settings.json", SETTINGS);
 export const updateSettings = (fn) => update("settings.json", SETTINGS, fn);
+
+// ---------- Warteliste (Stufe 1) ----------
+export const getWaitlist = () => read("waitlist.json", []);
+export async function addToWaitlist(entry) {
+  let added = false;
+  await update("waitlist.json", [], (list) => {
+    if (list.some((x) => x.email === entry.email)) return list;
+    added = true;
+    list.push(entry);
+    return list.slice(-20000);
+  });
+  return added;
+}
+export const removeFromWaitlist = (email) => update("waitlist.json", [], (list) => list.filter((x) => x.email !== email));
 
 // ---------- App-Zustand ----------
 export const getState = (userId) => read(U(userId, "state"), null);

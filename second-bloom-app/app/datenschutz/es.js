@@ -22,6 +22,7 @@ const TOC = [
   ["dauer", "Plazo de conservación"],
   ["cookies", "Cookies y almacenamiento local"],
   ["demo", "Demo sin cuenta"],
+  ["warteliste", "Lista de espera"],
   ["sicherheit", "Seguridad de los datos"],
   ["rechte", "Tus derechos"],
   ["beschwerde", "Reclamación ante una autoridad de control"],
@@ -154,7 +155,10 @@ export default function PrivacyES() {
           <h2 id="demo">16. Demo sin cuenta</h2>
           <p>En la <Link href="/demo">demo</Link> pública no guardamos nada en nuestro servidor. Tus entradas permanecen en el almacenamiento local de tu navegador hasta que las elimines allí. Los valores del dispositivo de la demo son datos de ejemplo ficticios. Si utilizas una función de IA en la demo, se aplica el apartado 9 por analogía. Te recomendamos no introducir datos de salud reales en la demo.</p>
 
-          <h2 id="sicherheit">17. Seguridad de los datos</h2>
+          <h2 id="warteliste">17. Lista de espera</h2>
+          <p>Si te apuntas en la lista de espera desde la página de inicio, guardamos tu dirección de correo electrónico, tu nombre (opcional), el idioma elegido y la fecha y versión de tu consentimiento. Usamos estos datos únicamente para informarte una vez del lanzamiento de Second Bloom. La base jurídica es tu consentimiento (art. 6, apdo. 1, letra a) del RGPD; art. 31, apdo. 1 de la LPD). No hay boletín, ni cesión a terceros, ni análisis. Puedes <Link href="/warteliste/abmelden">darte de baja aquí</Link> en cualquier momento o escribirnos; entonces eliminamos la inscripción de inmediato. Eliminamos toda la lista de espera como máximo seis meses después del lanzamiento.</p>
+
+          <h2 id="sicherheit">18. Seguridad de los datos</h2>
           <p>Adoptamos medidas técnicas y organizativas conforme al art. 32 del RGPD y al art. 8 de la LPD, entre ellas:</p>
           <ul>
             <li>Transmisión cifrada (HTTPS/TLS) en todas las conexiones.</li>
@@ -167,7 +171,7 @@ export default function PrivacyES() {
           </ul>
           <p>Si, a pesar de todo, se produjera una violación de la seguridad de tus datos, la notificaremos a la autoridad de control competente y te informaremos cuando así lo exija la ley (arts. 33 y 34 del RGPD, art. 24 de la LPD).</p>
 
-          <h2 id="rechte">18. Tus derechos</h2>
+          <h2 id="rechte">19. Tus derechos</h2>
           <ul>
             <li><b>Acceso</b> a los datos almacenados sobre ti (art. 15 del RGPD, art. 25 de la LPD). La forma más rápida es la exportación en Cuenta.</li>
             <li><b>Rectificación</b> de datos inexactos (art. 16 del RGPD, art. 32 de la LPD). La mayoría de los datos los modificas directamente en la app.</li>
@@ -179,7 +183,7 @@ export default function PrivacyES() {
           </ul>
           <p>Para cualquier solicitud basta con un correo electrónico a <P>datenschutz@…</P>. Por lo general respondemos en el plazo de un mes y, por seguridad, podemos pedirte que acredites que eres la persona interesada.</p>
 
-          <h2 id="beschwerde">19. Reclamación ante una autoridad de control</h2>
+          <h2 id="beschwerde">20. Reclamación ante una autoridad de control</h2>
           <p>Tienes derecho a presentar una reclamación ante una autoridad de control de protección de datos (art. 77 del RGPD), en particular en tu país de residencia. Son competentes, por ejemplo:</p>
           <ul>
             <li>Liechtenstein: Autoridad de Protección de Datos de Liechtenstein (Datenschutzstelle Liechtenstein), Vaduz, <a href="https://www.datenschutzstelle.li" target="_blank" rel="noreferrer">datenschutzstelle.li</a></li>
@@ -187,19 +191,19 @@ export default function PrivacyES() {
             <li>Alemania y Austria: la autoridad de control de tu estado federado o la Autoridad de Protección de Datos de Austria (Datenschutzbehörde)</li>
           </ul>
 
-          <h2 id="pflicht">20. Obligación de facilitar datos</h2>
+          <h2 id="pflicht">21. Obligación de facilitar datos</h2>
           <p>Para crear una cuenta necesitamos tu nombre, correo electrónico, contraseña, fecha de nacimiento (para comprobar la edad) y tu fase, así como tu aceptación de la política de privacidad y tu consentimiento para el tratamiento de los datos de salud. Todos los demás datos y la conexión de un reloj son opcionales; las funciones de IA puedes desactivarlas. Sin ellos, algunas funciones no estarán disponibles o solo lo estarán de forma limitada.</p>
 
-          <h2 id="alter">21. Edad mínima</h2>
+          <h2 id="alter">22. Edad mínima</h2>
           <p>Second Bloom está dirigida a personas adultas. Su uso solo está permitido a partir de los 18 años. Al registrarte indicas tu fecha de nacimiento; no se crea ninguna cuenta para personas menores de 18 años.</p>
 
-          <h2 id="werbung">22. Sin publicidad, sin venta, sin seguimiento</h2>
+          <h2 id="werbung">23. Sin publicidad, sin venta, sin seguimiento</h2>
           <p>No mostramos publicidad, no vendemos datos, no creamos perfiles publicitarios y no utilizamos herramientas de análisis de terceros. Tus datos no se utilizan para entrenar modelos de IA.</p>
 
-          <h2 id="medizin">23. No es un producto sanitario</h2>
+          <h2 id="medizin">24. No es un producto sanitario</h2>
           <p>Second Bloom es un acompañante de estilo de vida. La app no realiza diagnósticos, no sustituye el consejo médico y no ofrece recomendaciones terapéuticas, en particular sobre la terapia hormonal de la menopausia, medicamentos o suplementos alimenticios. Si tienes molestias, consulta a tu médica o a tu médico; en caso de crisis aguda, llama a los números de emergencia indicados en la app.</p>
 
-          <h2 id="aenderungen">24. Cambios en esta política</h2>
+          <h2 id="aenderungen">25. Cambios en esta política</h2>
           <p>Adaptamos esta política cuando cambian la app o la situación jurídica. Aquí encontrarás siempre la versión vigente. En caso de cambios sustanciales que requieran un nuevo consentimiento, te lo preguntaremos en la app antes de que el cambio se aplique a ti.</p>
 
           <div className="card flat" style={{ marginTop: 24 }}>
