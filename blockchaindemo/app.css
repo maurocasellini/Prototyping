@@ -258,3 +258,7 @@ dialog::backdrop { background: rgb(10 15 25 / .5); }
 }
 .all-tools { color: var(--accent); text-decoration: none; font-weight: 500; }
 .all-tools:hover { text-decoration: underline; }
+
+/* Light / dark toggle (shared/theme.js) */
+.theme-toggle { display: inline-grid; place-items: center; width: 32px; height: 30px; padding: 0; color: var(--muted); border: 1px solid var(--line); background: transparent; border-radius: var(--r); cursor: pointer; }
+.theme-toggle:hover { color: var(--fg); }

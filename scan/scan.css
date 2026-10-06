@@ -11,7 +11,8 @@
 .filters .label { margin-right: 6px; }
 .filters button { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 8px 12px; color: var(--muted); }
 .filters button.active { background: var(--navy); border-color: var(--navy); color: var(--on-navy); }
-@media (prefers-color-scheme: dark) { .filters button.active { background: var(--accent); border-color: var(--accent); color: #fff; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filters button.active { background: var(--accent); border-color: var(--accent); color: #fff; } }
+:root[data-theme="dark"] .filters button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; padding: 8px 0 28px; }
 @media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }

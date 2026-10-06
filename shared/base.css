@@ -8,10 +8,10 @@
   --radius: 2px;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #1d2336; --panel: #242b41; --sand: #2d3550; --text: #f1f1ec; --muted: #a9adbb; --line: #3a4260;
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d2336; --panel: #242b41; --sand: #2d3550; --text: #f1f1ec; --muted: #a9adbb; --line: #3a4260;
+    --accent: #c47d45; --accent-2: #d58f57; --navy: #151a2a; --navy-2: #242b41; --err: #e07a62; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #1d2336; --panel: #242b41; --sand: #2d3550; --text: #f1f1ec; --muted: #a9adbb; --line: #3a4260;
     --accent: #c47d45; --accent-2: #d58f57; --navy: #151a2a; --navy-2: #242b41; --err: #e07a62; color-scheme: dark; }
-}
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 html { -webkit-text-size-adjust: 100%; }
@@ -54,7 +54,8 @@ label.check input { margin-top: 4px; accent-color: var(--accent); }
 .logo-word { font-family: var(--serif); font-size: 21px; letter-spacing: -.005em; white-space: nowrap; }
 .logo-word b { font-weight: 500; }
 .logo-word em { color: var(--accent); }
-@media (prefers-color-scheme: dark) { .logo-img { box-shadow: 0 0 0 1px var(--line); } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .logo-img { box-shadow: 0 0 0 1px var(--line); } }
+:root[data-theme="dark"] .logo-img { box-shadow: 0 0 0 1px var(--line); }
 .local-badge { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
   border-left: 1px solid var(--line); padding-left: 14px; white-space: nowrap; }
 .local-badge::before { content: "— "; color: var(--accent); }
@@ -141,3 +142,15 @@ main { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 28px 80px; fle
 .foot-brand img { height: 21px; width: auto; display: block; }
 .foot-id > span { border-left: 1px solid #4a5372; padding-left: 14px; }
 @media (max-width: 640px) { .cmv-logo { height: 32px; } }
+
+/* Light / dark toggle in the header */
+.theme-toggle { display: inline-grid; place-items: center; width: 32px; height: 30px; padding: 0; flex: none; color: var(--muted); border: 1px solid var(--line); background: transparent; }
+.theme-toggle:hover { color: var(--text); border-color: var(--text); }
+/* CM Ventures logo: the light version on dark backgrounds */
+.cmv-logo.on-dark { display: none; }
+:root[data-theme="dark"] .cmv-logo.on-light { display: none; }
+:root[data-theme="dark"] .cmv-logo.on-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cmv-logo.on-light { display: none; }
+  :root:not([data-theme="light"]) .cmv-logo.on-dark { display: block; }
+}

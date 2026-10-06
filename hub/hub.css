@@ -5,7 +5,8 @@
 a.app:hover { background: var(--sand); }
 .app img { width: 52px; height: 52px; border-radius: 11px; margin-bottom: 10px; transition: transform .2s; }
 a.app:hover img { transform: translateY(-2px); }
-@media (prefers-color-scheme: dark) { .app img { box-shadow: 0 0 0 1px var(--line); } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .app img { box-shadow: 0 0 0 1px var(--line); } }
+:root[data-theme="dark"] .app img { box-shadow: 0 0 0 1px var(--line); }
 .app strong { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.2; }
 .app span { color: var(--muted); font-size: 14.5px; flex: 1; }
 .app small { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 8px; }
