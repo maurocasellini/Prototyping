@@ -26,6 +26,7 @@ The same list is shown at https://tools.cmventures.xyz/#licenses.
 | libheif-js | 1.23.5 | LGPL-3.0 | Image Toolkit | https://github.com/catdad-experiments/libheif-js |
 | exifr | 7.1.3 | MIT | Image Toolkit | https://github.com/MikeKovarik/exifr |
 | IS-Net background removal model (IMG.LY) | 1.4.5 | AGPL-3.0 | Image Toolkit | https://github.com/imgly/background-removal-js |
+| YuNet face detection model (OpenCV Zoo) | 2023mar | MIT | Image Toolkit | https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet |
 | Bergamot Translator | 0.4.9 | MPL-2.0 | Translator | https://github.com/browsermt/bergamot-translator |
 | Firefox Translations models (de, fr, it, es ↔ en) | 0.3.3 | MPL-2.0 | Translator | https://github.com/mozilla/firefox-translations-models |
 | qrcode-generator | 2.0.4 | MIT | QR Codes | https://github.com/kazuhikoarase/qrcode-generator |

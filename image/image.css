@@ -20,6 +20,8 @@
 .item .res b { display: block; font-size: 15px; }
 .item .res .gain { color: var(--ok); }
 .item .res .loss { color: var(--accent); }
+.item .res .faces { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+#faces-field small { display: block; margin-top: 8px; font-size: 13px; }
 .item .actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 6px; }
 .item .actions button { padding: 5px 9px; font-size: 13px; }
 .item .spinner { width: 20px; height: 20px; border-width: 2px; margin-left: auto; }

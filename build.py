@@ -100,6 +100,23 @@ BERGAMOT = [
     ("enes", "vocab", "vocab.esen.spm", 825463, "909b1eea1face0d7f90a474fe29a8c0fef8d104b6e41e65616f864c964ba8845"),
 ]
 
+# Single files from outside npm: app → [(url, sha256, destination below <app>/vendor/)]
+FILES = {
+    "image": [
+        # YuNet face detector (OpenCV Zoo, MIT) – for "make faces unrecognisable"
+        ("https://huggingface.co/opencv/face_detection_yunet/resolve/3cc26e7f1014a5ee5d74a42acee58bafc9d0a310/face_detection_yunet_2023mar.onnx",
+         "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4", "models/yunet.onnx"),
+        ("https://huggingface.co/opencv/face_detection_yunet/resolve/3cc26e7f1014a5ee5d74a42acee58bafc9d0a310/LICENSE",
+         "c83b8120c50ccbd4c4f96edf53141bdd566ebb8f8e9227e415326aa1b1aba958", "models/LICENSE-yunet.txt"),
+    ],
+}
+
+# Files from elsewhere in this repository: app → [(source, destination below <app>/vendor/)]
+LOCAL = {
+    "video": [("pdf/web/pdf-fonts/LiberationSans-Bold.ttf", "fonts/LiberationSans-Bold.ttf"),   # burned-in subtitles
+              ("pdf/web/pdf-fonts/LICENSE-Liberation.txt", "fonts/LICENSE-Liberation.txt")],
+}
+
 FFMPEG = [
     ("ffmpeg", "package/dist/esm/", "ffmpeg/"),
     ("ffmpeg", "package/package.json", "ffmpeg/package.json"),
@@ -364,6 +381,19 @@ def build(app):
             with open(target, "wb") as fh:
                 fh.write(data)
         version.update(PACKAGES[pkg][1].encode())
+    for url, digest, dest in FILES.get(app, []):
+        data = fetch_verified(url, digest)
+        target = os.path.join(out, "vendor", dest)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "wb") as fh:
+            fh.write(data)
+        version.update(digest.encode())
+    for src, dest in LOCAL.get(app, []):
+        target = os.path.join(out, "vendor", dest)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        shutil.copyfile(os.path.join(HERE, src), target)
+        with open(target, "rb") as fh:
+            version.update(fh.read())
     if app == "translate":
         add_bergamot(out)
     if os.path.isdir(os.path.join(out, "vendor")):

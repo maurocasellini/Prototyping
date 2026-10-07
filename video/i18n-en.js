@@ -9,10 +9,10 @@ window.I18N_EN = {
     'Das Video wird nicht kopiert und nicht hochgeladen. FFmpeg liest es direkt von deinem Gerät und schreibt das Ergebnis wieder dorthin.': 'The video is not copied and not uploaded. FFmpeg reads it directly from your device and writes the result back there.',
     'Was geladen wird': 'What gets downloaded',
     'Einmalig ca. 32 MB für FFmpeg. Weil dein Gerät rechnet, dauern lange Videos etwas – dafür musst du nichts hochladen und nichts herunterladen.': 'About 32 MB once for FFmpeg. Because your device does the work, long videos take a while – but you don’t have to upload or download anything.',
-  'Video Toolkit': 'Video Toolkit', 'Video-Toolkit': 'Video toolkit', 'Kürzen · Verkleinern · GIF · Ton': 'Trim · Shrink · GIF · Audio',
+  'Video Toolkit': 'Video Toolkit', 'Video-Toolkit': 'Video toolkit', 'Kürzen · Verkleinern · Untertitel · GIF · Ton': 'Trim · Shrink · Subtitles · GIF · Audio',
   'Videos teilen,': 'Share videos', 'ohne sie hochzuladen': 'without uploading them',
-  'Clip kürzen, für WhatsApp oder E-Mail verkleinern, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.':
-    'Trim a clip, shrink it for WhatsApp or email, turn it into a GIF or save just the audio as MP3. FFmpeg runs right in your browser.',
+  'Clip kürzen, für WhatsApp oder E-Mail verkleinern, Untertitel einbrennen, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.':
+    'Trim a clip, shrink it for WhatsApp or email, burn in subtitles, turn it into a GIF or save just the audio as MP3. FFmpeg runs right in your browser.',
   'Video wählen': 'Choose video', 'MP4, MOV (iPhone), WebM, MKV, AVI': 'MP4, MOV (iPhone), WebM, MKV, AVI',
   'Zielgrösse für WhatsApp & E-Mail': 'Target size for WhatsApp & email', 'FFmpeg als WebAssembly – nichts verlässt dein Gerät': 'FFmpeg as WebAssembly – nothing leaves your device',
   'Video hierher ziehen': 'Drop a video here', 'oder': 'or', 'auswählen': 'browse', 'Video': 'Video',
@@ -33,13 +33,20 @@ window.I18N_EN = {
   'Das Video-Toolkit läuft vollständig in deinem Browser. Videos werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet – die Seite darf technisch keine Verbindung zu anderen Servern aufbauen (Content Security Policy).':
     'The video toolkit runs entirely in your browser. Videos are only processed in your device’s memory and never sent to a server – the page is technically not allowed to connect to other servers (Content Security Policy).',
   'Open Source': 'Open source',
-  'FFmpeg (LGPL/GPL) als WebAssembly über ffmpeg.wasm (MIT), mit x264, LAME und weiteren Codecs. Die Engine (ca. 32 MB) wird beim ersten Mal geladen und danach im Browser gespeichert.':
-    'FFmpeg (LGPL/GPL) as WebAssembly via ffmpeg.wasm (MIT), with x264, LAME and other codecs. The engine (about 32 MB) is downloaded the first time and then kept in the browser.',
+  'FFmpeg (LGPL/GPL) als WebAssembly über ffmpeg.wasm (MIT), mit x264, LAME, libass und weiteren Codecs. Schrift für Untertitel: Liberation Sans (SIL OFL). Die Engine (ca. 32 MB) wird beim ersten Mal geladen und danach im Browser gespeichert.':
+    'FFmpeg (LGPL/GPL) as WebAssembly via ffmpeg.wasm (MIT), with x264, LAME, libass and other codecs. Subtitle font: Liberation Sans (SIL OFL). The engine (about 32 MB) is downloaded the first time and then kept in the browser.',
   'Grenzen': 'Limits',
   'Die Umwandlung läuft auf dem Prozessor deines Geräts und ist langsamer als spezialisierte Apps. Sehr grosse Videos (über ca. 1 GB) können den Speicher des Browsers übersteigen.':
     'Conversion runs on your device’s processor and is slower than specialized apps. Very large videos (over about 1 GB) can exceed the browser’s memory.',
+  'Untertitel einbrennen': 'Burn in subtitles', 'Untertitel (.srt) fest ins Bild einbrennen': 'Burn subtitles (.srt) into the picture',
+  'Untertitel-Datei': 'Subtitle file', '.srt oder .vtt wählen': 'Choose .srt or .vtt', 'Noch keine Untertitel?': 'No subtitles yet?',
+  'erstellt sie aus der Tonspur – als .srt speichern und hier wählen.': 'creates them from the audio – save as .srt and choose it here.',
+  'Schriftgrösse': 'Font size', 'Klein': 'Small', 'Mittel': 'Medium', 'Gross': 'Large', 'Stil': 'Style',
+  'Weiss mit schwarzem Rand': 'White with black outline', 'Weiss auf dunklem Balken': 'White on dark box', 'Gelb mit schwarzem Rand': 'Yellow with black outline',
+  'In dieser Datei wurden keine Untertitel gefunden.': 'No subtitles found in this file.', 'Bitte zuerst eine Untertitel-Datei wählen.': 'Please choose a subtitle file first.',
 };
 window.I18N_RULES = [
+  [/ · (\d+) Zeilen$/, ' · $1 lines'],
   [/^Wird umgewandelt … (\d+) %/, 'Converting … $1 %'], [/ · noch ca\. /, ' · about '], [/wird analysiert …/, 'analyzing …'],
   [/^Umwandlung fehlgeschlagen: /, 'Conversion failed: '],
 ];

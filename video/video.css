@@ -27,3 +27,5 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .summary b { color: var(--ok); }
 .result video, .result img { width: 100%; background: #000; }
 .result audio { width: 100%; }
+.sub-pick { width: 100%; justify-content: center; text-transform: none; letter-spacing: 0; font-family: var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.opts .note a { color: var(--accent); }

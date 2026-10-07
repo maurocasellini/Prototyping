@@ -20,7 +20,7 @@ and dark mode.
 
 | Area | Tools |
 |---|---|
-| Edit & sign | **Edit PDF** (text, date, images, check marks/crosses, white-out, highlight, shapes, redaction), **Sign PDF** (draw, type or upload a signature – saved in the browser for next time), **Make it look scanned**, watermark, page numbers, crop, flatten, metadata |
+| Edit & sign | **Edit PDF** (text, date, images, check marks/crosses, white-out, highlight, shapes, redaction), **Sign PDF** (draw, type or upload a signature – saved in the browser for next time), **Fill in forms** (type straight into the PDF’s fields, optionally flatten), **Make it look scanned**, watermark, page numbers, crop, flatten, metadata |
 | Organize | Merge (PDFs and images), split, remove pages, extract pages, organize (drag to reorder, rotate, duplicate, insert blank pages – across several PDFs), rotate |
 | Optimize | **Compress to a target size** (e.g. 50 MB → 5 MB) or in three fixed levels, repair, grayscale |
 | Convert | Images (JPG, PNG, WebP …) → PDF, PDF → JPG/PNG, extract text, extract images |

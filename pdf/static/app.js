@@ -166,9 +166,13 @@ function openTool(id) {
   $('#result').classList.add('hidden');
   $('#compare-out').classList.add('hidden');
   $('#organizer').classList.toggle('hidden', t.custom !== 'organize');
-  $('#run').textContent = { compare: 'Vergleichen', organize: 'PDF erstellen' }[t.custom] || t.title;
+  $('#former').classList.toggle('hidden', t.custom !== 'form');
+  $('#former').innerHTML = '';
+  state.form = null;
+  $('#run').textContent = { compare: 'Vergleichen', organize: 'PDF erstellen', form: 'PDF speichern' }[t.custom] || t.title;
   buildOptions(t);
   renderFiles();
+  if (t.custom === 'form' && state.files.length) loadForm();
 }
 
 async function addFiles(list) {
@@ -184,6 +188,7 @@ async function addFiles(list) {
   } catch (e) { toast(e.message, 'error'); }
   busy(false);
   renderFiles();
+  if (t.custom === 'form') loadForm();
 }
 
 const dz = $('#dropzone');
@@ -212,7 +217,7 @@ function renderFiles() {
         h('span', {}, [f.pages ? `${f.pages} Seite${f.pages > 1 ? 'n' : ''}` : '', fmtSize(f.size)].filter(Boolean).join(' · ')),
         f.encrypted && state.tool !== 'unlock' ? h('a', { class: 'link', href: '#/tool/unlock', onclick: () => { state.carry = [f]; } }, 'Passwortgeschützt – zuerst entsperren') : null),
       t.sortable ? h('span', { class: 'grip', title: 'Ziehen zum Sortieren' }, '⋮⋮') : null,
-      h('button', { class: 'x', title: 'Entfernen', onclick: () => { state.files.splice(i, 1); if (t.custom === 'organize') buildOrder(); renderFiles(); } }, '×'));
+      h('button', { class: 'x', title: 'Entfernen', onclick: () => { state.files.splice(i, 1); if (t.custom === 'organize') buildOrder(); if (t.custom === 'form') loadForm(); renderFiles(); } }, '×'));
     if (t.sortable) dragSort(card, i, state.files, renderFiles);
     list.append(card);
   });
@@ -412,6 +417,10 @@ $('#run').addEventListener('click', async () => {
   if (!state.files.length) return toast('Bitte zuerst eine Datei hinzufügen.', 'error');
   const params = readParams(t);
   if (t.custom === 'organize') params.order = state.order;
+  if (t.custom === 'form') {
+    if (!state.form || !state.form.length) return toast('Dieses PDF hat keine ausfüllbaren Felder.', 'error');
+    params.values = readForm();
+  }
   busy(true);
   try {
     const res = await api.run(state.tool, state.files, params);
@@ -420,6 +429,71 @@ $('#run').addEventListener('click', async () => {
   } catch (e) { toast(e.message, 'error'); }
   busy(false);
 });
+
+// ---------------------------------------------------------------- Fill in forms
+// The page is shown as an image; every form field becomes a real input at the same spot.
+async function loadForm() {
+  const box = $('#former');
+  box.innerHTML = '';
+  state.form = null;
+  const f = state.files[0];
+  if (!f) return;
+  busy(true, 'Formularfelder werden gelesen …');
+  try { state.form = (await api.run('form_fields', [f], {})).fields; }
+  catch (e) { toast(e.message, 'error'); state.form = []; }
+  busy(false);
+  if (!state.form.length) {
+    box.append(h('div', { class: 'form-empty' },
+      h('strong', {}, 'Dieses PDF hat keine ausfüllbaren Felder.'),
+      h('p', { class: 'muted' }, 'Mit „PDF bearbeiten“ kannst du trotzdem Text, Häkchen und Datum auf die Seite setzen.'),
+      h('a', { class: 'btn', href: '#/tool/edit', onclick: () => { state.carry = [f]; } }, 'In „PDF bearbeiten“ öffnen')));
+    return;
+  }
+  const editable = state.form.filter((x) => !x.readonly).length;
+  box.append(h('p', { class: 'form-intro' }, `${editable} ${editable === 1 ? 'Feld' : 'Felder'} zum Ausfüllen – direkt in die Seite tippen.`));
+  for (const pno of [...new Set(state.form.map((x) => x.page))]) {
+    const [pw, ph] = (f.sizes && f.sizes[pno]) || [595, 842];
+    const page = h('div', { class: 'form-page', 'data-no-i18n': true, style: { aspectRatio: `${pw} / ${ph}` } },
+      h('img', { src: thumb(f.id, pno, 1400), alt: '' }),
+      h('span', { class: 'form-pno' }, `${pno + 1}`));
+    // read-only fields stay as they are in the page image
+    for (const fl of state.form.filter((x) => x.page === pno && !x.readonly)) page.append(formField(fl, pw));
+    box.append(h('div', { class: 'form-scroll' }, page));
+  }
+}
+
+function formField(fl, pw) {
+  const pos = { left: fl.x * 100 + '%', top: fl.y * 100 + '%', width: fl.w * 100 + '%', height: fl.h * 100 + '%' };
+  // font size in points → share of the page width (cqw = 1 % of the page element's width)
+  const pt = fl.size || Math.max(6, Math.min(12, fl.h * 842 * 0.62));
+  const font = `${(pt / pw) * 100}cqw`;
+  const common = { 'data-id': fl.id, title: fl.label || fl.name, disabled: fl.readonly };
+  let el;
+  if (fl.kind === 'text') {
+    el = fl.multiline ? h('textarea', common) : h('input', { ...common, type: 'text' });
+    el.value = fl.value || '';
+    if (fl.maxlen) el.maxLength = fl.maxlen;
+  } else if (fl.kind === 'check' || fl.kind === 'radio') {
+    el = h('input', { ...common, type: fl.kind === 'check' ? 'checkbox' : 'radio', name: fl.kind === 'radio' ? 'r_' + fl.name : null });
+    el.checked = !!fl.value;
+  } else {
+    const opts = fl.options.includes(fl.value) || !fl.value ? fl.options : [fl.value, ...fl.options];
+    el = h('select', common, h('option', { value: '' }, ''), opts.map((o) => h('option', { value: o }, o)));
+    el.value = fl.value || '';
+  }
+  el.classList.add('ff', 'ff-' + fl.kind);
+  Object.assign(el.style, pos, { fontSize: font });
+  return el;
+}
+
+function readForm() {
+  const values = {};
+  for (const el of $$('#former [data-id]')) {
+    if (el.disabled) continue;
+    values[el.dataset.id] = el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value;
+  }
+  return values;
+}
 
 function showResult(box, res) {
   box.classList.remove('hidden');

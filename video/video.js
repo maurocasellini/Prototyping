@@ -3,7 +3,7 @@
 const { $, toast, download, share, fmtSize } = window.CMV;
 const t = (s) => window.i18n(s);
 
-let file = null, info = { duration: 0, w: 0, h: 0 }, result = null, running = false, action = 'shrink';
+let file = null, info = { duration: 0, w: 0, h: 0 }, result = null, running = false, action = 'shrink', cues = null;
 let ffmpeg = null, logs = [];
 
 // ---------------------------------------------------------------- FFmpeg
@@ -106,7 +106,43 @@ document.querySelectorAll('#action button').forEach((b) => b.addEventListener('c
   document.querySelectorAll('#action button').forEach((x) => x.classList.toggle('active', x === b));
   $('#opt-shrink').hidden = action !== 'shrink';
   $('#opt-gif').hidden = action !== 'gif';
+  $('#opt-subs').hidden = action !== 'subs';
 }));
+
+// ---------------------------------------------------------------- Subtitles (.srt / .vtt)
+function parseSubs(text) {
+  const time = (x) => {
+    const m = x.trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{2})[.,](\d{1,3})$/);
+    return m ? secs(m[1] || 0, m[2], m[3]) + +m[4].padEnd(3, '0') / 1000 : NaN;
+  };
+  const out = [];
+  for (const block of text.replace(/\r/g, '').replace(/^\uFEFF/, '').split(/\n{2,}/)) {
+    const lines = block.split('\n');
+    const i = lines.findIndex((l) => l.includes('-->'));
+    if (i < 0) continue;
+    const [a, b] = lines[i].split('-->');
+    const start = time(a), end = time(b.trim().split(/\s+/)[0]);
+    const body = lines.slice(i + 1).join('\n').replace(/<[^>]+>/g, '').trim();
+    if (body && start >= 0 && end > start) out.push({ start, end, text: body });
+  }
+  return out;
+}
+$('#sub-file').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f) return;
+  cues = parseSubs(await f.text());
+  if (!cues.length) { cues = null; $('#sub-name').textContent = t('.srt oder .vtt wählen'); toast(t('In dieser Datei wurden keine Untertitel gefunden.'), true); return; }
+  $('#sub-name').textContent = `${f.name} · ${cues.length} ${t('Zeilen')}`;
+});
+// SRT for FFmpeg, shifted to the start of the trimmed part
+function srt(offset) {
+  const ts = (x) => {
+    const ms = Math.round(Math.max(0, x) * 1000), h = Math.floor(ms / 3600000), m = Math.floor(ms / 60000) % 60, sec = Math.floor(ms / 1000) % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')},${String(ms % 1000).padStart(3, '0')}`;
+  };
+  return cues.filter((c) => c.end > offset).map((c, i) => `${i + 1}\n${ts(c.start - offset)} --> ${ts(c.end - offset)}\n${c.text}\n`).join('\n');
+}
 $('#target').addEventListener('change', () => { if ($('#target').value === 'small') $('#res').value = '480'; });
 
 // output size: shorter side = res (keeps portrait videos upright), even numbers for H.264
@@ -127,6 +163,17 @@ function command(input) {
     const w = +$('#gif-w').value, fps = +$('#gif-fps').value;
     return { dur, out: `${base}.gif`, type: 'image/gif',
       args: [...head, '-vf', `fps=${fps},scale=${w}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`, '-loop', '0', 'out.gif'] };
+  }
+  if (action === 'subs') {
+    if (!cues) throw new Error(t('Bitte zuerst eine Untertitel-Datei wählen.'));
+    const size = scaled(+$('#sub-res').value);
+    const st = $('#sub-style').value;
+    const style = ['FontName=Liberation Sans', 'Bold=1', `FontSize=${$('#sub-size').value}`, 'MarginV=18', 'Shadow=0',
+      st === 'box' ? 'BorderStyle=3,Outline=1,BackColour=&H60000000,OutlineColour=&H60000000' : 'BorderStyle=1,Outline=1.6,OutlineColour=&H00000000',
+      st === 'yellow' ? 'PrimaryColour=&H0000E6FF' : 'PrimaryColour=&H00FFFFFF'].join(',');
+    const vf = [...(size ? [`scale=${size[0]}:${size[1]}`] : []), `subtitles=/work/subs.srt:fontsdir=/work/fonts:charenc=UTF-8:force_style='${style}'`].join(',');
+    return { dur, out: `${base} (Untertitel).mp4`, type: 'video/mp4', subs: srt(full ? 0 : a),
+      args: [...head, '-vf', vf, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', 'out.mp4'] };
   }
   if (action === 'mp3') {
     return { dur, out: `${base}.mp3`, type: 'audio/mpeg', args: [...head, '-vn', '-c:a', 'libmp3lame', '-b:a', '192k', 'out.mp3'] };
@@ -154,6 +201,19 @@ function command(input) {
     args: [...head, ...(size ? ['-vf', `scale=${size[0]}:${size[1]}`] : []), ...v, '-c:a', 'aac', '-b:a', `${aBit}k`, '-movflags', '+faststart', 'out.mp4'] };
 }
 
+// font + subtitle file inside FFmpeg's in-memory file system (libass has no system fonts here)
+let fontReady = false;
+async function prepareSubs(f, text) {
+  if (!fontReady) {
+    await f.createDir('/work').catch(() => {});
+    await f.createDir('/work/fonts').catch(() => {});
+    const font = new Uint8Array(await (await fetch('vendor/fonts/LiberationSans-Bold.ttf')).arrayBuffer());
+    await f.writeFile('/work/fonts/LiberationSans-Bold.ttf', font);
+    fontReady = true;
+  }
+  await f.writeFile('/work/subs.srt', new TextEncoder().encode(text));
+}
+
 // ---------------------------------------------------------------- Run
 function progress(label, frac) {
   window.CMV.busy(label, frac);
@@ -167,6 +227,7 @@ $('#go').addEventListener('click', async () => {
     const f = await engine(() => progress(t('Video-Engine wird geladen (ca. 32 MB) …'), null));
     const input = await mount(f);
     const job = command(input);
+    if (job.subs != null) await prepareSubs(f, job.subs);
     const started = performance.now();
     onLog = (m) => {
       const tm = m.match(/time=(\d+):(\d+):([\d.]+)/);

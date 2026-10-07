@@ -36,7 +36,7 @@ NAME_EN = {"_zusammengefuegt": "_merged", "_geteilt": "_split", "_bereinigt": "_
            "_unterschrieben_scan": "_signed_scanned", "_scan": "_scanned", "_graustufen": "_grayscale", "_bilder": "_images",
            "_nummeriert": "_numbered", "_wasserzeichen": "_watermarked", "_zugeschnitten": "_cropped",
            "_geschuetzt": "_protected", "_entsperrt": "_unlocked", "_geschwaerzt": "_redacted", "_repariert": "_repaired",
-           "_flach": "_flattened", "_bearbeitet": "_edited", "konvertiert": "converted"}
+           "_flach": "_flattened", "_ausgefuellt": "_filled", "_bearbeitet": "_edited", "konvertiert": "converted"}
 
 
 def localize_name(name, lang):
@@ -648,6 +648,70 @@ def flatten(files, p):
     return pdf_result(doc, f"{stem(f['name'])}_flach.pdf", "Formulare & Kommentare fest eingebrannt")
 
 
+WIDGET_KIND = {pymupdf.PDF_WIDGET_TYPE_TEXT: "text", pymupdf.PDF_WIDGET_TYPE_CHECKBOX: "check",
+               pymupdf.PDF_WIDGET_TYPE_RADIOBUTTON: "radio", pymupdf.PDF_WIDGET_TYPE_COMBOBOX: "choice",
+               pymupdf.PDF_WIDGET_TYPE_LISTBOX: "choice"}
+
+
+def form_fields(files, p):
+    """All fillable fields with their position (as fraction of the page) – for the form view."""
+    f = files[0]
+    doc = open_pdf(f)
+    fields = []
+    for pno, page in enumerate(doc):
+        W, H = page.rect.width, page.rect.height
+        for w in page.widgets():
+            kind = WIDGET_KIND.get(w.field_type)
+            if not kind:
+                continue
+            r = w.rect
+            item = {"id": str(w.xref), "page": pno, "kind": kind, "name": w.field_name or "",
+                    "label": w.field_label or "", "x": r.x0 / W, "y": r.y0 / H, "w": r.width / W, "h": r.height / H,
+                    "readonly": bool(w.field_flags & pymupdf.PDF_FIELD_IS_READ_ONLY), "size": w.text_fontsize or 0}
+            if kind == "text":
+                item["value"] = w.field_value or ""
+                item["multiline"] = bool(w.field_flags & pymupdf.PDF_TX_FIELD_IS_MULTILINE)
+                item["maxlen"] = w.text_maxlen or 0
+            elif kind in ("check", "radio"):
+                on = w.on_state()
+                item["value"] = bool(w.field_value) and w.field_value not in ("Off", False) and (kind == "check" or w.field_value == on)
+            else:
+                item["options"] = [o if isinstance(o, str) else o[-1] for o in (w.choice_values or [])]
+                item["value"] = w.field_value or ""
+            fields.append(item)
+    return {"json": {"fields": fields, "pages": doc.page_count}}
+
+
+def fill_form(files, p):
+    f = files[0]
+    doc = open_pdf(f)
+    values = p.get("values") or {}
+    n = 0
+    for page in doc:
+        widgets = [w for w in page.widgets() if str(w.xref) in values]
+        # radio buttons: switch the group off first, then the chosen one on
+        for w in widgets:
+            if w.field_type == pymupdf.PDF_WIDGET_TYPE_RADIOBUTTON and not values[str(w.xref)]:
+                w.field_value = False
+                w.update()
+        for w in widgets:
+            v = values[str(w.xref)]
+            if w.field_type == pymupdf.PDF_WIDGET_TYPE_RADIOBUTTON:
+                if not v:
+                    continue
+                w.field_value = w.on_state()
+            elif w.field_type == pymupdf.PDF_WIDGET_TYPE_CHECKBOX:
+                w.field_value = w.on_state() if v else "Off"
+            else:
+                w.field_value = str(v)
+            w.update()
+            n += 1
+    if p.get("flatten"):
+        doc.bake(annots=False, widgets=True)
+    info = f"{n} Felder ausgefüllt" + (" und fest eingebrannt" if p.get("flatten") else "")
+    return pdf_result(doc, f"{stem(f['name'])}_ausgefuellt.pdf", info)
+
+
 def metadata(files, p):
     f = files[0]
     doc = open_pdf(f)
@@ -937,6 +1001,7 @@ TOOLS = {
     "repair": repair, "flatten": flatten, "metadata": metadata, "extract_text": extract_text,
     "compare": compare, "office_to_pdf": office_to_pdf, "pdf_to_word": pdf_to_word,
     "pdf_to_office": pdf_to_office, "edit": apply_edits,
+    "form_fields": form_fields, "fill": fill_form,
 }
 
 

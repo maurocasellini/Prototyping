@@ -40,6 +40,11 @@
     'Am häufigsten gebraucht': 'Most used', 'Bearbeiten & Unterschreiben': 'Edit & sign', 'Organisieren': 'Organize',
     'Optimieren': 'Optimize', 'In PDF umwandeln': 'Convert to PDF', 'Aus PDF umwandeln': 'Convert from PDF', 'Sicherheit & Prüfen': 'Security & review',
     // Tools
+    'Formular ausfüllen': 'Fill in form', 'PDF-Formulare direkt in den Feldern ausfüllen – Text, Häkchen und Auswahllisten.': 'Fill in PDF forms right in their fields – text, check boxes and drop-downs.',
+    'Danach fest einbrennen (Felder nicht mehr änderbar)': 'Flatten afterwards (fields can no longer be changed)',
+    'Formularfelder werden gelesen …': 'Reading form fields …', 'Dieses PDF hat keine ausfüllbaren Felder.': 'This PDF has no fillable fields.',
+    'Mit „PDF bearbeiten“ kannst du trotzdem Text, Häkchen und Datum auf die Seite setzen.': 'With “Edit PDF” you can still place text, check marks and dates on the page.',
+    'In „PDF bearbeiten“ öffnen': 'Open in “Edit PDF”',
     'PDF bearbeiten': 'Edit PDF', 'Text, Bilder, Häkchen, Formen, Abdecken und Schwärzen – direkt auf der Seite.': 'Text, images, check marks, shapes, white-out and redaction – right on the page.',
     'PDF unterschreiben': 'Sign PDF', 'Unterschrift zeichnen, tippen oder als Bild einfügen – optional als „Scan“ ausgeben.': 'Draw, type or upload your signature – optionally export it as a “scan”.',
     'Wie gescannt': 'Make it look scanned', 'Lässt das PDF aussehen, als wäre es ausgedruckt und eingescannt worden (leicht schief, Rauschen, Papierton).': 'Makes the PDF look printed and scanned (slightly skewed, noise, paper tone).',
@@ -180,6 +185,9 @@
 
   // Texts with numbers/names: rules applied to the whole text
   const RULES = [
+    [/^(\d+) Felder? zum Ausfüllen – direkt in die Seite tippen\.$/, (m, n) => `${n} field${n === '1' ? '' : 's'} to fill in – type straight into the page.`],
+    [/^(\d+) Felder ausgefüllt und fest eingebrannt$/, '$1 fields filled in and flattened'],
+    [/^(\d+) Felder ausgefüllt$/, '$1 fields filled in'],
     [/^(\d+) Unterschied\(e\) gefunden$/, '$1 difference(s) found'],
     [/^· Übereinstimmung ([\d.]+) %$/, '· $1% match'],
     [/^… (\d+) gleiche Zeilen …$/, '… $1 identical lines …'],
@@ -253,7 +261,7 @@
     if (cur !== want) n.nodeValue = want;
   }
   function doAttrs(el) {
-    if (el.closest('.ed-overlay')) return;
+    if (el.closest('.ed-overlay, [data-no-i18n]')) return;
     for (const a of ATTRS) {
       if (!el.hasAttribute(a)) continue;
       const cur = el.getAttribute(a);

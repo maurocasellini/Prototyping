@@ -10,8 +10,8 @@ WebAssembly.
 | PDF Toolkit | `pdf.cmventures.xyz` | [`pdf/`](pdf) | MuPDF / PyMuPDF on Pyodide |
 | Doc Scanner | `scan.cmventures.xyz` | [`scan/`](scan) | OpenCV.js, Tesseract.js (OCR), pdf-lib |
 | Voice to Text | `voice.cmventures.xyz` | [`voice/`](voice) | Whisper via Transformers.js / ONNX Runtime, FFmpeg.wasm |
-| Image Toolkit | `image.cmventures.xyz` | [`image/`](image) | Squoosh codecs (MozJPEG, WebP, AVIF, OxiPNG), libheif, exifr, IS-Net via ONNX Runtime |
-| Video Toolkit | `video.cmventures.xyz` | [`video/`](video) | FFmpeg.wasm (x264, LAME, GIF) |
+| Image Toolkit | `image.cmventures.xyz` | [`image/`](image) | Squoosh codecs (MozJPEG, WebP, AVIF, OxiPNG), libheif, exifr, IS-Net and YuNet via ONNX Runtime |
+| Video Toolkit | `video.cmventures.xyz` | [`video/`](video) | FFmpeg.wasm (x264, LAME, libass for subtitles) |
 | Translator | `translate.cmventures.xyz` | [`translate/`](translate) | Mozilla Bergamot + Firefox Translations models (de, en, fr, it, es) |
 | QR Codes | `qr.cmventures.xyz` | [`qr/`](qr) | qrcode-generator, own SVG renderer |
 | CM Ventures Blockchain Demo | `blockchaindemo.cmventures.xyz` | [`blockchaindemo/`](blockchaindemo) | none – own SHA-256, WebCrypto ECDSA |

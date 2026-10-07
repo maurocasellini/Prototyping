@@ -53,9 +53,16 @@ window.I18N_EN = {
   'Speicher': 'Storage',
   'Nach dem ersten Besuch werden die Programmdateien im Browser zwischengespeichert, damit der Scanner auch offline funktioniert. Deine Dokumente werden nicht gespeichert.':
     'After the first visit the program files are cached in the browser so the scanner also works offline. Your documents are not stored.',
+  'Live-Scan': 'Live scan', 'Live-Scan: Auslöser erkennt das Blatt selbst': 'Live scan: captures as soon as the page is steady',
+  'Kamera wird gestartet …': 'Starting camera …', 'Bild-Software wird geladen …': 'Loading image software …',
+  'Blatt ins Bild halten': 'Hold the page in view', 'Blatt erkannt': 'Page detected', 'Ruhig halten …': 'Hold still …',
+  'Nächste Seite hinlegen': 'Place the next page', 'Blatt erkannt – jetzt auslösen': 'Page detected – tap to capture',
+  'Kein Zugriff auf die Kamera. Bitte im Browser erlauben – oder „Foto aufnehmen“ verwenden.': 'No camera access. Please allow it in the browser – or use “Take photo”.',
+  'Auto': 'Auto', 'Jetzt aufnehmen': 'Capture now', 'Licht': 'Light',
 };
 window.I18N_RULES = [
   [/^Seite (\d+) \/ (\d+)/, 'Page $1 / $2'],
+  [/^Seite (\d+) ✓/, 'Page $1 ✓'],
   [/ Seiten$/, ' pages'], [/ Seite$/, ' page'],
   [/ Wörter erkannt/, ' words recognized'], [/Kein Text erkannt/, 'No text recognized'],
   [/^Seite konnte nicht verarbeitet werden: /, 'Page could not be processed: '],

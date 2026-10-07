@@ -510,6 +510,180 @@
     $('#res-dl').classList.add('primary');
   }
 
+  // ---------------------------------------------------------------- Live scan (camera)
+  // The page is detected in the video several times per second. When it has been held still for a moment
+  // the frame is captured; the next capture waits until the page was moved or replaced.
+  const cam = $('#cam'), video = $('#cam-video'), camSvg = $('#cam-svg'), hint = $('#cam-hint');
+  const LIVE_SIDE = 640, STEADY_MS = 900, STILL = 0.02, MOVED = 0.07, CHANGED = 14;
+  let stream = null, camTimer = 0, camPages = [];
+  let live = null;   // { quad, steadySince, armed, ref, refSig, lastShot, seen }
+
+  const camSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  if (camSupported) {
+    document.querySelectorAll('.cam-open').forEach((b) => { b.classList.remove('hidden'); b.addEventListener('click', openCam); });
+    document.querySelectorAll('.photo-pick').forEach((b) => b.classList.remove('primary'));
+  }
+
+  const quadDist = (a, b) => Math.max(...a.map((p, i) => Math.hypot(p.x - b[i].x, p.y - b[i].y)));
+
+  function frameCanvas(maxSide) {
+    const w0 = video.videoWidth, h0 = video.videoHeight;
+    const s = Math.min(1, maxSide / Math.max(w0, h0));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w0 * s); c.height = Math.round(h0 * s);
+    c.getContext('2d', { willReadFrequently: true }).drawImage(video, 0, 0, c.width, c.height);
+    return c;
+  }
+  // 16×16 grayscale fingerprint of the frame: tells a new page from the one just captured
+  function signature(c) {
+    const s = document.createElement('canvas');
+    s.width = s.height = 16;
+    const g = s.getContext('2d', { willReadFrequently: true });
+    g.drawImage(c, 0, 0, 16, 16);
+    const d = g.getImageData(0, 0, 16, 16).data, out = new Float32Array(256);
+    for (let i = 0; i < 256; i++) out[i] = (d[i * 4] + d[i * 4 + 1] + d[i * 4 + 2]) / 3;
+    return out;
+  }
+  const sigDiff = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += Math.abs(a[i] - b[i]); return s / a.length; };
+
+  async function openCam() {
+    warmUp();
+    camPages = [];
+    updateThumb();
+    hint.textContent = t('Kamera wird gestartet …');
+    cam.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 3840 }, height: { ideal: 2160 } },
+      });
+    } catch (e) {
+      closeCam(false);
+      toast(t('Kein Zugriff auf die Kamera. Bitte im Browser erlauben – oder „Foto aufnehmen“ verwenden.'), true);
+      return;
+    }
+    video.srcObject = stream;
+    try { await video.play(); } catch { /* autoplay is allowed for muted inline video */ }
+    const track = stream.getVideoTracks()[0];
+    const caps = track.getCapabilities ? track.getCapabilities() : {};
+    $('#cam-torch').classList.toggle('hidden', !caps.torch);
+    $('#cam-torch').classList.remove('on');
+    if (caps.focusMode && caps.focusMode.includes('continuous')) track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
+    live = { quad: null, steadySince: 0, armed: true, ref: null, refSig: null, lastShot: 0, seen: false };
+    hint.textContent = t('Bild-Software wird geladen …');
+    camLoop();
+  }
+
+  function closeCam(finish = true) {
+    clearTimeout(camTimer);
+    camTimer = 0;
+    live = null;
+    if (stream) stream.getTracks().forEach((tr) => tr.stop());
+    stream = null;
+    video.srcObject = null;
+    camSvg.innerHTML = '';
+    cam.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (!finish) return;
+    const added = camPages.splice(0);
+    if (!added.length) return;
+    showPages();
+    drawGrid();
+    Promise.all(added.map((p) => p.ready)).then(() => added.forEach(enqueue));
+  }
+
+  async function camLoop() {
+    if (!live) return;
+    if (video.readyState >= 2 && video.videoWidth) {
+      const c = frameCanvas(LIVE_SIDE);
+      const px = c.getContext('2d').getImageData(0, 0, c.width, c.height);
+      let corners = null;
+      try { ({ corners } = await cv('detect', { data: px.data, width: c.width, height: c.height }, [px.data.buffer])); }
+      catch (e) { if (live) hint.textContent = t('Kantenerkennung nicht verfügbar: ') + e.message; }
+      if (live) onLive(corners, c);
+    }
+    if (live) camTimer = setTimeout(camLoop, 60);
+  }
+
+  function onLive(q, frame) {
+    const now = performance.now();
+    const L = live;
+    L.seen = true;
+    if (!q) {
+      L.quad = null; L.steadySince = 0; L.armed = true;
+      drawLive(null, false);
+      hint.textContent = t('Blatt ins Bild halten');
+      return;
+    }
+    if (L.quad && quadDist(q, L.quad) < STILL) { if (!L.steadySince) L.steadySince = now; }
+    else L.steadySince = 0;
+    L.quad = q;
+    if (!L.armed && L.ref && (quadDist(q, L.ref) > MOVED || sigDiff(signature(frame), L.refSig) > CHANGED)) L.armed = true;
+    const steady = L.steadySince && now - L.steadySince > STEADY_MS;
+    drawLive(q, L.armed && !!L.steadySince);
+    if (!L.armed) hint.textContent = t('Nächste Seite hinlegen');
+    else if (!$('#cam-auto').checked) hint.textContent = t('Blatt erkannt – jetzt auslösen');
+    else if (steady && now - L.lastShot > 1200) capture(q);
+    else hint.textContent = L.steadySince ? t('Ruhig halten …') : t('Blatt erkannt');
+  }
+
+  function drawLive(q, steady) {
+    if (!q) { camSvg.innerHTML = ''; return; }
+    const r = cam.querySelector('.cam-stage').getBoundingClientRect();
+    const vw = video.videoWidth, vh = video.videoHeight;
+    const s = Math.min(r.width / vw, r.height / vh);
+    const w = vw * s, h = vh * s, x0 = (r.width - w) / 2, y0 = (r.height - h) / 2;
+    camSvg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    camSvg.innerHTML = `<polygon class="${steady ? 'steady' : ''}" points="${q.map((p) => `${x0 + p.x * w},${y0 + p.y * h}`).join(' ')}"/>`;
+  }
+
+  function capture(q) {
+    if (!video.videoWidth) return;
+    const L = live;
+    const src = frameCanvas(SRC_MAX);
+    const fresh = q || (L && L.quad);
+    const page = { id: ++seq, src, corners: fresh ? fresh.map((p) => ({ ...p })) : null, rotate: 0, out: null, busy: true };
+    pages.push(page);
+    camPages.push(page);
+    if (L) {
+      L.armed = false; L.ref = fresh; L.refSig = signature(src); L.lastShot = performance.now(); L.steadySince = 0;
+      hint.textContent = `${t('Seite')} ${camPages.length} ✓`;
+    }
+    const fl = $('#cam-flash');
+    fl.classList.add('on');
+    requestAnimationFrame(() => requestAnimationFrame(() => fl.classList.remove('on')));
+    if (navigator.vibrate) navigator.vibrate(30);
+    updateThumb(src);
+    // Refine the corners on the full-resolution frame (more precise than the small live image)
+    page.ready = detect(page).then((c) => {
+      if (c && (!page.corners || quadDist(c, page.corners) < 0.06)) page.corners = c;
+      else if (!page.corners) page.corners = c || INSET;
+    }).catch(() => { if (!page.corners) page.corners = INSET; });
+  }
+
+  function updateThumb(src) {
+    const th = $('#cam-thumb');
+    if (!camPages.length) { th.removeAttribute('data-n'); th.style.backgroundImage = ''; return; }
+    th.dataset.n = camPages.length;
+    if (src) th.style.backgroundImage = `url(${toCanvas(src, 120).toDataURL('image/jpeg', 0.7)})`;
+  }
+
+  $('#cam-shot').addEventListener('click', () => capture(live && live.quad));
+  $('#cam-done').addEventListener('click', () => closeCam(true));
+  $('#cam-torch').addEventListener('click', () => {
+    const track = stream && stream.getVideoTracks()[0];
+    if (!track) return;
+    const on = !$('#cam-torch').classList.contains('on');
+    track.applyConstraints({ advanced: [{ torch: on }] }).then(() => $('#cam-torch').classList.toggle('on', on)).catch(() => {});
+  });
+  $('#cam-auto').addEventListener('change', () => { if (live) live.steadySince = 0; });
+  document.addEventListener('keydown', (e) => {
+    if (cam.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeCam(true);
+    if (e.key === ' ') { e.preventDefault(); $('#cam-shot').click(); }
+  });
+
   document.addEventListener('langchange', drawGrid);
   route();
   window.CMV.registerSW();

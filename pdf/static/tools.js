@@ -6,8 +6,8 @@ const OFFICE = '.doc,.docx,.odt,.rtf,.txt,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.odp,.
 const PAGES_FIELD = { name: 'pages', label: 'Seiten', type: 'text', placeholder: 'leer = alle, z. B. 1-3, 5, 8-ende' };
 
 const CATEGORIES = [
-  { name: 'Am häufigsten gebraucht', tools: ['compress', 'merge', 'sign', 'edit', 'remove', 'scan'] },
-  { name: 'Bearbeiten & Unterschreiben', tools: ['edit', 'sign', 'scan', 'watermark', 'page_numbers', 'crop', 'flatten', 'metadata'] },
+  { name: 'Am häufigsten gebraucht', tools: ['compress', 'merge', 'sign', 'fill', 'edit', 'remove'] },
+  { name: 'Bearbeiten & Unterschreiben', tools: ['edit', 'sign', 'fill', 'scan', 'watermark', 'page_numbers', 'crop', 'flatten', 'metadata'] },
   { name: 'Organisieren', tools: ['merge', 'split', 'remove', 'extract', 'organize', 'rotate'] },
   { name: 'Optimieren', tools: ['compress', 'repair', 'ocr', 'grayscale'] },
   { name: 'In PDF umwandeln', tools: ['images_to_pdf', 'office_to_pdf'] },
@@ -23,6 +23,11 @@ const TOOLS = {
   sign: {
     title: 'PDF unterschreiben', icon: '✍️', color: '#0f766e', view: 'editor', openSignature: true,
     desc: 'Unterschrift zeichnen, tippen oder als Bild einfügen – optional als „Scan“ ausgeben.',
+  },
+  fill: {
+    title: 'Formular ausfüllen', keywords: 'formular felder antrag anmeldung ausfuellen fill form', icon: '🧾', color: '#0369a1', accept: PDF, custom: 'form',
+    desc: 'PDF-Formulare direkt in den Feldern ausfüllen – Text, Häkchen und Auswahllisten.',
+    fields: [{ name: 'flatten', label: 'Danach fest einbrennen (Felder nicht mehr änderbar)', type: 'checkbox', default: false }],
   },
   scan: {
     title: 'Wie gescannt', icon: '🖨️', color: '#57534e', accept: PDF,
@@ -237,6 +242,7 @@ const TOOLS = {
 const DOC = ['M6 2.5h8.5L19 7v14.5H6z', 'M14.5 2.5V7H19'];
 const ICONS = {
   edit: ['M5 21.5V2.5h9.5L19 7v3', 'M14.5 2.5V7H19', 'M5 21.5h5', 'M12.5 21.5l.6-2.9 6.4-6.4 2.3 2.3-6.4 6.4z'],
+  fill: [...DOC, 'M8.5 10h7', 'M8.5 13.5h7', 'M8.5 17l1.5 1.5 3-3'],
   sign: ['M3 16c1.8-5.5 3.6-8.6 4.8-8 1.5.8-2.2 8.3-.3 8.5 1.6.2 2.8-4.6 4.2-4.5 1.3.1.6 4 2.4 4 1.4 0 2.2-2 3.3-2 .9 0 1.4 1 2.6 1', 'M3 20.5h18'],
   scan: [...DOC, 'M2.5 13.5h19', 'M9 9.5h6', 'M9 17.5h4'],
   watermark: ['M12 3s6.5 7.2 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10.2 12 3 12 3z', 'M9 15.5a3 3 0 0 0 3 3'],

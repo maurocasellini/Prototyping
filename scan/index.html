@@ -35,7 +35,11 @@
       <h1>Papier rein, <em>sauberes PDF</em> raus.</h1>
       <p>Blatt fotografieren – die Kanten werden automatisch erkannt, das Bild entzerrt und wie ein Scan aufbereitet. Auf Wunsch mit Texterkennung, damit das PDF durchsuchbar ist.</p>
       <div class="hero-actions">
-        <label class="btn primary pick">
+        <button type="button" class="btn primary cam-open hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><path d="M8 8h8v8H8z"/></svg>
+          Live-Scan
+        </button>
+        <label class="btn primary pick photo-pick">
           <input type="file" accept="image/*" capture="environment" hidden data-pick>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.6"/></svg>
           Foto aufnehmen
@@ -47,6 +51,7 @@
         </label>
       </div>
       <ul class="facts">
+        <li>Live-Scan: Auslöser erkennt das Blatt selbst</li>
         <li>Kanten­erkennung &amp; Entzerrung mit OpenCV</li>
         <li>Texterkennung (OCR) Deutsch &amp; Englisch</li>
         <li>Fotos verlassen nie dein Gerät</li>
@@ -78,7 +83,11 @@
         <h2 id="pages-title">1 Seite</h2>
       </div>
       <div class="add-row">
-        <label class="btn primary pick">
+        <button type="button" class="btn primary cam-open hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4"/><path d="M8 8h8v8H8z"/></svg>
+          Live-Scan
+        </button>
+        <label class="btn primary pick photo-pick">
           <input type="file" accept="image/*" capture="environment" hidden data-pick>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.6"/></svg>
           Seite fotografieren
@@ -157,6 +166,24 @@
     <p>Nach dem ersten Besuch werden die Programmdateien im Browser zwischengespeichert, damit der Scanner auch offline funktioniert. Deine Dokumente werden nicht gespeichert.</p>
   </section>
 </main>
+
+<!-- Live camera: detects the page continuously and captures when it is held still -->
+<div id="cam" class="cam hidden" role="dialog" aria-label="Live-Scan">
+  <div id="cam-stage" class="cam-stage">
+    <video id="cam-video" playsinline muted autoplay></video>
+    <svg id="cam-svg" class="cam-svg"></svg>
+    <div id="cam-flash" class="cam-flash"></div>
+    <div id="cam-hint" class="cam-hint">Kamera wird gestartet …</div>
+    <button type="button" id="cam-torch" class="cam-torch hidden" title="Licht" aria-label="Licht">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+    </button>
+  </div>
+  <div class="cam-bar">
+    <label class="cam-auto"><input id="cam-auto" type="checkbox" checked> <span>Auto</span></label>
+    <button type="button" id="cam-shot" class="cam-shot" title="Jetzt aufnehmen" aria-label="Jetzt aufnehmen"></button>
+    <button type="button" id="cam-done" class="cam-done"><span id="cam-thumb" class="cam-thumb"></span><span>Fertig</span></button>
+  </div>
+</div>
 
 <!-- Crop editor -->
 <div id="crop" class="crop hidden" role="dialog" aria-label="Ecken anpassen">

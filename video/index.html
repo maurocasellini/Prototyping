@@ -30,9 +30,9 @@
   <section id="start" class="view">
     <div class="hero">
       <div class="eyebrow accent">Video-Toolkit</div>
-      <div class="eyebrow">Kürzen · Verkleinern · GIF · Ton</div>
+      <div class="eyebrow">Kürzen · Verkleinern · Untertitel · GIF · Ton</div>
       <h1>Videos teilen, <em>ohne sie hochzuladen</em>.</h1>
-      <p>Clip kürzen, für WhatsApp oder E-Mail verkleinern, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.</p>
+      <p>Clip kürzen, für WhatsApp oder E-Mail verkleinern, Untertitel einbrennen, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.</p>
       <div class="hero-actions">
         <label class="btn primary">
           <input type="file" accept="video/*,.mov,.mkv,.avi,.webm" hidden data-pick>
@@ -43,6 +43,7 @@
       <ul class="facts">
         <li>MP4, MOV (iPhone), WebM, MKV, AVI</li>
         <li>Zielgrösse für WhatsApp &amp; E-Mail</li>
+        <li>Untertitel (.srt) fest ins Bild einbrennen</li>
         <li>FFmpeg als WebAssembly – nichts verlässt dein Gerät</li>
       </ul>
     </div>
@@ -88,6 +89,7 @@
         <div class="field"><span>Was möchtest du?</span>
           <div class="seg col" id="action" role="radiogroup">
             <button type="button" data-v="shrink" class="active">Verkleinern / kürzen (MP4)</button>
+            <button type="button" data-v="subs">Untertitel einbrennen</button>
             <button type="button" data-v="gif">GIF erstellen</button>
             <button type="button" data-v="mp3">Nur Ton (MP3)</button>
             <button type="button" data-v="mute">Ton entfernen</button>
@@ -109,6 +111,21 @@
               <option value="720" selected>720p</option>
               <option value="480">480p</option>
             </select>
+          </label>
+        </div>
+        <div id="opt-subs" class="opts" hidden>
+          <div class="field"><span>Untertitel-Datei</span>
+            <label class="btn sub-pick"><input id="sub-file" type="file" accept=".srt,.vtt,text/vtt,application/x-subrip" hidden><span id="sub-name">.srt oder .vtt wählen</span></label>
+          </div>
+          <p class="note">Noch keine Untertitel? <a data-tool-link="voice">Voice to Text</a> erstellt sie aus der Tonspur – als .srt speichern und hier wählen.</p>
+          <label class="field"><span>Schriftgrösse</span>
+            <select id="sub-size"><option value="16">Klein</option><option value="20" selected>Mittel</option><option value="26">Gross</option></select>
+          </label>
+          <label class="field"><span>Stil</span>
+            <select id="sub-style"><option value="outline">Weiss mit schwarzem Rand</option><option value="box">Weiss auf dunklem Balken</option><option value="yellow">Gelb mit schwarzem Rand</option></select>
+          </label>
+          <label class="field"><span>Auflösung</span>
+            <select id="sub-res"><option value="0">Wie Original</option><option value="1080" selected>1080p</option><option value="720">720p</option></select>
           </label>
         </div>
         <div id="opt-gif" class="opts" hidden>
@@ -142,7 +159,7 @@
     <h2>Hinweise zum Tool</h2>
     <p>Das Video-Toolkit läuft vollständig in deinem Browser. Videos werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet – die Seite darf technisch keine Verbindung zu anderen Servern aufbauen (Content Security Policy).</p>
     <h3>Open Source</h3>
-    <p>FFmpeg (LGPL/GPL) als WebAssembly über ffmpeg.wasm (MIT), mit x264, LAME und weiteren Codecs. Die Engine (ca. 32 MB) wird beim ersten Mal geladen und danach im Browser gespeichert.</p>
+    <p>FFmpeg (LGPL/GPL) als WebAssembly über ffmpeg.wasm (MIT), mit x264, LAME, libass und weiteren Codecs. Schrift für Untertitel: Liberation Sans (SIL OFL). Die Engine (ca. 32 MB) wird beim ersten Mal geladen und danach im Browser gespeichert.</p>
     <h3>Grenzen</h3>
     <p>Die Umwandlung läuft auf dem Prozessor deines Geräts und ist langsamer als spezialisierte Apps. Sehr grosse Videos (über ca. 1 GB) können den Speicher des Browsers übersteigen.</p>
   </section>

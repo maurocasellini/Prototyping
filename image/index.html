@@ -32,7 +32,7 @@
       <div class="eyebrow accent">Bild-Toolkit</div>
       <div class="eyebrow">Umwandeln · Verkleinern · Freistellen</div>
       <h1>Bilder kleiner, sauberer, <em>ohne Spuren</em>.</h1>
-      <p>iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen oder den Hintergrund freistellen – alles direkt auf deinem Gerät.</p>
+      <p>iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen, Gesichter verpixeln oder den Hintergrund freistellen – alles direkt auf deinem Gerät.</p>
       <div class="hero-actions">
         <label class="btn primary">
           <input type="file" accept="image/*,.heic,.heif" multiple hidden data-pick>
@@ -44,6 +44,7 @@
         <li>HEIC, JPG, PNG, WebP, AVIF, GIF</li>
         <li>Squoosh-Codecs: MozJPEG, WebP, AVIF, OxiPNG</li>
         <li>Standort &amp; Kameradaten werden immer entfernt</li>
+        <li>Gesichter automatisch verpixeln</li>
       </ul>
     </div>
     <label class="drop" id="drop">
@@ -57,7 +58,7 @@
     <h2>Bilder bearbeiten, ohne sie herzugeben.</h2>
     <div class="how-grid">
       <div class="how-card"><span class="n">01</span><h3>Kleiner speichern</h3><p>Die Bildformate (JPG, WebP, AVIF, PNG) werden mit den Werkzeugen aus Squoosh gespeichert – einem Projekt von Google, das Bilder besonders klein macht, ohne dass man es sieht. iPhone-Fotos (HEIC) liest das Programm libheif.</p></div>
-      <div class="how-card"><span class="n">02</span><h3>Spuren entfernen</h3><p>Fotos enthalten oft versteckte Angaben: wo sie aufgenommen wurden (GPS), mit welchem Handy und wann. Das Tool zeigt dir diese Angaben an und speichert das Bild ohne sie neu.</p></div>
+      <div class="how-card"><span class="n">02</span><h3>Spuren entfernen</h3><p>Fotos enthalten oft versteckte Angaben: wo sie aufgenommen wurden (GPS), mit welchem Handy und wann. Das Tool zeigt dir diese Angaben an und speichert das Bild ohne sie neu. Auf Wunsch macht es auch Gesichter unkenntlich – erkannt von YuNet, einem winzigen Modell aus dem OpenCV-Projekt.</p></div>
       <div class="how-card"><span class="n">03</span><h3>Hintergrund freistellen</h3><p>Dafür nutzt das Tool ein KI-Modell (IS-Net, bereitgestellt von IMG.LY), das erkennt, was Motiv und was Hintergrund ist. Es wird erst geladen, wenn du die Funktion nutzt (ca. 45 MB), und läuft dann auf deinem Gerät.</p></div>
     </div>
     <p class="how-note">Keines deiner Bilder wird hochgeladen – auch nicht für das Freistellen, für das viele Online-Dienste deine Fotos auf ihre Server laden.</p>
@@ -113,6 +114,15 @@
           </div>
           <input id="bgcolor" type="color" value="#242b41" hidden>
         </div>
+        <label class="check"><input id="faces" type="checkbox"> <span><b>Gesichter unkenntlich machen</b><br><small class="muted">Erkennt Gesichter automatisch – vor dem Teilen von Fotos mit Kindern oder Passanten. Lädt beim ersten Mal ca. 15 MB.</small></span></label>
+        <div class="field" id="faces-field" hidden><span>Wie?</span>
+          <div class="seg" id="facemode" role="radiogroup">
+            <button type="button" data-v="pixel" class="active">Verpixeln</button>
+            <button type="button" data-v="blur">Weichzeichnen</button>
+            <button type="button" data-v="bar">Abdecken</button>
+          </div>
+          <small class="muted">Bitte das Ergebnis kurz prüfen – sehr kleine oder abgewandte Gesichter können übersehen werden.</small>
+        </div>
         <p class="note">Metadaten wie GPS-Standort, Kamera und Aufnahmezeit werden beim Speichern immer entfernt.</p>
         <button id="go" class="btn primary big">Bilder umwandeln</button>
         <div id="done" class="done hidden">
@@ -130,7 +140,7 @@
     <h2>Hinweise zum Tool</h2>
     <p>Das Bild-Toolkit läuft vollständig in deinem Browser. Bilder werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet – die Seite darf technisch keine Verbindung zu anderen Servern aufbauen (Content Security Policy).</p>
     <h3>Open Source</h3>
-    <p>Codecs aus Squoosh (Google, Apache 2.0) über jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Metadaten lesen: exifr (MIT). Freistellen: IS-Net-Modell von IMG.LY (AGPL), ausgeführt mit ONNX Runtime Web (MIT).</p>
+    <p>Codecs aus Squoosh (Google, Apache 2.0) über jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Metadaten lesen: exifr (MIT). Freistellen: IS-Net-Modell von IMG.LY (AGPL), Gesichtserkennung: YuNet aus OpenCV Zoo (MIT), beide ausgeführt mit ONNX Runtime Web (MIT).</p>
     <h3>Metadaten</h3>
     <p>Beim Umwandeln wird nur das Bild selbst neu gespeichert. EXIF-, GPS- und andere Metadaten werden dabei nicht übernommen – die Bilder lassen sich bedenkenlos weitergeben.</p>
   </section>

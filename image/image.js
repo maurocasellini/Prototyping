@@ -4,7 +4,7 @@
   const { $, toast, busy, download, fmtSize } = window.CMV;
   const t = (s) => window.i18n(s);
   const items = [];            // { id, file, name, bmp: canvas, w, h, meta, thumb, out: { blob, url, w, h, name } }
-  const opts = { format: 'orig', quality: 80, size: 0, bg: false, bgmode: 'none', bgcolor: '#242b41' };
+  const opts = { format: 'orig', quality: 80, size: 0, bg: false, bgmode: 'none', bgcolor: '#242b41', faces: false, facemode: 'pixel' };
   let seq = 0, running = false;
 
   // ---------------------------------------------------------------- Worker
@@ -123,7 +123,8 @@
       if (it.busy) res = '<div class="spinner"></div>';
       else if (it.out) {
         const d = it.out.blob.size / it.file.size - 1;
-        res = `<b>${fmtSize(it.out.blob.size)}</b><span class="${d <= 0 ? 'gain' : 'loss'}">${d <= 0 ? '−' : '+'}${Math.abs(Math.round(d * 100))} %</span> · ${it.out.w}×${it.out.h}
+        const faces = it.out.faces == null ? '' : `<div class="faces">${it.out.faces === 1 ? t('1 Gesicht unkenntlich') : it.out.faces ? `${it.out.faces} ${t('Gesichter unkenntlich')}` : t('Kein Gesicht gefunden')}</div>`;
+        res = `<b>${fmtSize(it.out.blob.size)}</b><span class="${d <= 0 ? 'gain' : 'loss'}">${d <= 0 ? '−' : '+'}${Math.abs(Math.round(d * 100))} %</span> · ${it.out.w}×${it.out.h}${faces}
           <div class="actions"><button type="button" data-a="cmp">${t('Vergleich')}</button><button type="button" data-a="dl">${t('Laden')}</button></div>`;
       }
       el.innerHTML = `<button type="button" class="th" data-a="cmp" title="${t('Vergleich')}"><img alt="" src="${it.out ? it.out.url : it.thumb}"></button>
@@ -158,6 +159,8 @@
   }
   seg('format', 'format', () => { $('#q-field').hidden = opts.format === 'png'; });
   seg('bgmode', 'bgmode', () => { $('#bgcolor').hidden = opts.bgmode !== 'color'; });
+  seg('facemode', 'facemode');
+  $('#faces').addEventListener('change', (e) => { opts.faces = e.target.checked; $('#faces-field').hidden = !opts.faces; resetResults(); });
   $('#quality').addEventListener('input', (e) => { opts.quality = +e.target.value; $('#q-out').textContent = e.target.value; resetResults(); });
   $('#size').addEventListener('change', (e) => { opts.size = +e.target.value; resetResults(); });
   $('#bg').addEventListener('change', (e) => { opts.bg = e.target.checked; $('#bg-field').hidden = !opts.bg; resetResults(); });
@@ -167,6 +170,61 @@
     for (const it of items) if (it.out) { URL.revokeObjectURL(it.out.url); it.out = null; }
     $('#done').classList.add('hidden');
     render();
+  }
+
+  // ---------------------------------------------------------------- Faces
+  // The detector sees 640×640 px: the whole photo plus overlapping tiles, so small faces are found too.
+  async function findFaces(c) {
+    const W = c.width, H = c.height, regions = [[0, 0, W, H]];
+    const grid = (n) => {
+      const rw = Math.min(W, Math.round((W / n) * 1.3)), rh = Math.min(H, Math.round((H / n) * 1.3));
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++)
+        regions.push([Math.round(((W - rw) * i) / (n - 1)), Math.round(((H - rh) * j) / (n - 1)), rw, rh]);
+    };
+    if (Math.max(W, H) > 900) grid(2);
+    if (Math.max(W, H) > 2400) grid(3);
+    const tiles = [], transfer = [];
+    for (const [x, y, rw, rh] of regions) {
+      const scale = 640 / Math.max(rw, rh), w = Math.max(1, Math.round(rw * scale)), h = Math.max(1, Math.round(rh * scale));
+      const tc = canvasOf(w, h), tg = tc.getContext('2d', { willReadFrequently: true });
+      tg.imageSmoothingQuality = 'high';
+      tg.drawImage(c, x, y, rw, rh, 0, 0, w, h);
+      const data = tg.getImageData(0, 0, w, h).data;
+      tiles.push({ data, w, h, x, y, scale });
+      transfer.push(data.buffer);
+    }
+    return call('faces', { tiles }, transfer);
+  }
+
+  function hideFaces(c, faces, mode) {
+    const g = c.getContext('2d');
+    for (const f of faces) {
+      // a little larger than the detected box: hair, ears and chin
+      const w = f.w * 1.35, h = f.h * 1.45;
+      const x = Math.max(0, Math.round(f.x + f.w / 2 - w / 2)), y = Math.max(0, Math.round(f.y + f.h * 0.45 - h / 2));
+      const rw = Math.min(c.width - x, Math.round(w)), rh = Math.min(c.height - y, Math.round(h));
+      if (rw < 2 || rh < 2) continue;
+      g.save();
+      if (mode === 'bar') {
+        g.fillStyle = '#111';
+        g.fillRect(x, y, rw, rh);
+      } else {
+        const cells = mode === 'pixel' ? 9 : 5;     // the blur goes through a tiny version and back up, smoothly
+        const sw = Math.max(1, Math.round(Math.min(rw, (cells * rw) / Math.min(rw, rh)))), sh = Math.max(1, Math.round((sw * rh) / rw));
+        const small = canvasOf(sw, sh), sg = small.getContext('2d');
+        sg.imageSmoothingQuality = 'high';
+        sg.drawImage(c, x, y, rw, rh, 0, 0, sw, sh);
+        if (mode === 'blur') {
+          g.beginPath();
+          g.ellipse(x + rw / 2, y + rh / 2, rw / 2, rh / 2, 0, 0, Math.PI * 2);
+          g.clip();
+          g.imageSmoothingEnabled = true;
+          g.imageSmoothingQuality = 'high';
+        } else g.imageSmoothingEnabled = false;
+        g.drawImage(small, 0, 0, sw, sh, x, y, rw, rh);
+      }
+      g.restore();
+    }
   }
 
   // ---------------------------------------------------------------- Processing
@@ -186,7 +244,12 @@
     if (opts.size && Math.max(w, h) > opts.size) { const s = opts.size / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
     const c = resize(it.bmp, w, h);
     const g = c.getContext('2d', { willReadFrequently: true });
-    let transparent = false;
+    let transparent = false, faces = null;
+    if (opts.faces) {
+      const found = await findFaces(c);
+      hideFaces(c, found, opts.facemode);
+      faces = found.length;
+    }
     if (opts.bg) {
       const small = resize(it.bmp, 1024, 1024);
       const px = small.getContext('2d').getImageData(0, 0, 1024, 1024);
@@ -224,7 +287,7 @@
     const buf = await call('encode', { data: data.data, width: w, height: h, format: fmt, quality: opts.quality }, [data.data.buffer]);
     const blob = new Blob([buf], { type: fmt === 'jpeg' ? 'image/jpeg' : 'image/' + fmt });
     const base = it.name.replace(/\.[^.]+$/, '');
-    return { blob, url: URL.createObjectURL(blob), w, h, name: `${base}.${EXT[fmt]}` };
+    return { blob, url: URL.createObjectURL(blob), w, h, name: `${base}.${EXT[fmt]}`, faces };
   }
 
   $('#go').addEventListener('click', async () => {
@@ -233,6 +296,7 @@
     resetResults();
     let before = 0, after = 0;
     try {
+      if (opts.faces) busy(t('Gesichtserkennung wird geladen …'));
       if (opts.bg) { busy(t('KI-Modell wird geladen …'), 0); await call('warm', {}); }
       for (let i = 0; i < items.length; i++) {
         const it = items[i];

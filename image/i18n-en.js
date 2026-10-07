@@ -6,13 +6,12 @@ window.I18N_EN = {
     'Kleiner speichern': 'Saving them smaller',
     'Die Bildformate (JPG, WebP, AVIF, PNG) werden mit den Werkzeugen aus Squoosh gespeichert – einem Projekt von Google, das Bilder besonders klein macht, ohne dass man es sieht. iPhone-Fotos (HEIC) liest das Programm libheif.': 'The image formats (JPG, WebP, AVIF, PNG) are saved with the tools from Squoosh – a Google project that makes images particularly small without visible loss. iPhone photos (HEIC) are read by a program called libheif.',
     'Spuren entfernen': 'Removing traces',
-    'Fotos enthalten oft versteckte Angaben: wo sie aufgenommen wurden (GPS), mit welchem Handy und wann. Das Tool zeigt dir diese Angaben an und speichert das Bild ohne sie neu.': 'Photos often contain hidden information: where they were taken (GPS), with which phone and when. The tool shows you this information and saves the image again without it.',
+  'Fotos enthalten oft versteckte Angaben: wo sie aufgenommen wurden (GPS), mit welchem Handy und wann. Das Tool zeigt dir diese Angaben an und speichert das Bild ohne sie neu. Auf Wunsch macht es auch Gesichter unkenntlich – erkannt von YuNet, einem winzigen Modell aus dem OpenCV-Projekt.': 'Photos often contain hidden details: where they were taken (GPS), with which phone and when. The tool shows you these details and saves the image again without them. If you like, it also makes faces unrecognisable – detected by YuNet, a tiny model from the OpenCV project.',
     'Hintergrund freistellen': 'Removing the background',
     'Dafür nutzt das Tool ein KI-Modell (IS-Net, bereitgestellt von IMG.LY), das erkennt, was Motiv und was Hintergrund ist. Es wird erst geladen, wenn du die Funktion nutzt (ca. 45 MB), und läuft dann auf deinem Gerät.': 'For this the tool uses an AI model (IS-Net, provided by IMG.LY) that recognizes what is subject and what is background. It is only downloaded when you use the feature (about 45 MB) and then runs on your device.',
   'Image Toolkit': 'Image Toolkit', 'Bild-Toolkit': 'Image toolkit', 'Umwandeln · Verkleinern · Freistellen': 'Convert · Resize · Cut out',
   'Bilder kleiner, sauberer,': 'Images smaller, cleaner,', 'ohne Spuren': 'without traces',
-  'iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen oder den Hintergrund freistellen – alles direkt auf deinem Gerät.':
-    'Convert iPhone photos (HEIC) to JPG, shrink images for email and web, remove location and camera data or cut out the background – all right on your device.',
+  'iPhone-Fotos (HEIC) in JPG umwandeln, Bilder für E-Mail und Web verkleinern, Standort- und Kameradaten entfernen, Gesichter verpixeln oder den Hintergrund freistellen – alles direkt auf deinem Gerät.': 'Convert iPhone photos (HEIC) to JPG, shrink images for email and web, remove location and camera data, pixelate faces or cut out the background – all right on your device.',
   'Bilder wählen': 'Choose images', 'HEIC, JPG, PNG, WebP, AVIF, GIF': 'HEIC, JPG, PNG, WebP, AVIF, GIF',
   'Squoosh-Codecs: MozJPEG, WebP, AVIF, OxiPNG': 'Squoosh codecs: MozJPEG, WebP, AVIF, OxiPNG',
   'Standort & Kameradaten werden immer entfernt': 'Location & camera data are always removed',
@@ -33,11 +32,16 @@ window.I18N_EN = {
   'Das Bild-Toolkit läuft vollständig in deinem Browser. Bilder werden nur im Arbeitsspeicher deines Geräts verarbeitet und nie an einen Server gesendet – die Seite darf technisch keine Verbindung zu anderen Servern aufbauen (Content Security Policy).':
     'The image toolkit runs entirely in your browser. Images are only processed in your device’s memory and never sent to a server – the page is technically not allowed to connect to other servers (Content Security Policy).',
   'Open Source': 'Open source',
-  'Codecs aus Squoosh (Google, Apache 2.0) über jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Metadaten lesen: exifr (MIT). Freistellen: IS-Net-Modell von IMG.LY (AGPL), ausgeführt mit ONNX Runtime Web (MIT).':
-    'Codecs from Squoosh (Google, Apache 2.0) via jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Reading metadata: exifr (MIT). Background removal: IS-Net model by IMG.LY (AGPL), run with ONNX Runtime Web (MIT).',
+  'Codecs aus Squoosh (Google, Apache 2.0) über jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Metadaten lesen: exifr (MIT). Freistellen: IS-Net-Modell von IMG.LY (AGPL), Gesichtserkennung: YuNet aus OpenCV Zoo (MIT), beide ausgeführt mit ONNX Runtime Web (MIT).': 'Codecs from Squoosh (Google, Apache 2.0) via jSquash: MozJPEG, libwebp, libavif, OxiPNG. HEIC: libheif (LGPL). Reading metadata: exifr (MIT). Background removal: IS-Net model by IMG.LY (AGPL), face detection: YuNet from OpenCV Zoo (MIT), both run with ONNX Runtime Web (MIT).',
   'Metadaten': 'Metadata',
   'Beim Umwandeln wird nur das Bild selbst neu gespeichert. EXIF-, GPS- und andere Metadaten werden dabei nicht übernommen – die Bilder lassen sich bedenkenlos weitergeben.':
     'Converting saves only the image itself. EXIF, GPS and other metadata are not carried over – the images are safe to share.',
+  'Gesichter unkenntlich machen': 'Make faces unrecognisable',
+  'Erkennt Gesichter automatisch – vor dem Teilen von Fotos mit Kindern oder Passanten. Lädt beim ersten Mal ca. 15 MB.': 'Detects faces automatically – before sharing photos of children or passers-by. Downloads about 15 MB the first time.',
+  'Wie?': 'How?', 'Verpixeln': 'Pixelate', 'Weichzeichnen': 'Blur', 'Abdecken': 'Cover',
+  'Bitte das Ergebnis kurz prüfen – sehr kleine oder abgewandte Gesichter können übersehen werden.': 'Please check the result – very small or turned-away faces can be missed.',
+  'Gesichter automatisch verpixeln': 'Pixelate faces automatically', 'Gesichtserkennung wird geladen …': 'Loading face detection …',
+  '1 Gesicht unkenntlich': '1 face hidden', 'Gesichter unkenntlich': 'faces hidden', 'Kein Gesicht gefunden': 'No face found',
 };
 window.I18N_RULES = [
   [/^Bild (\d+) \/ (\d+)/, 'Image $1 / $2'], [/ Bilder$/, ' images'],
