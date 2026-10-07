@@ -53,7 +53,8 @@ function quadFromContour(cv, cnt) {
   for (const f of [0.01, 0.02, 0.03, 0.045, 0.06, 0.08]) {
     const ap = new cv.Mat();
     cv.approxPolyDP(hull, ap, f * peri, true);
-    if (ap.rows === 4) {
+    const n = ap.rows;
+    if (n === 4) {
       const pts = [];
       for (let i = 0; i < 4; i++) pts.push({ x: ap.data32S[i * 2], y: ap.data32S[i * 2 + 1] });
       ap.delete();
@@ -61,7 +62,7 @@ function quadFromContour(cv, cnt) {
       break;
     }
     ap.delete();
-    if (ap.rows < 4) break;
+    if (n < 4) break;
   }
   hull.delete();
   return best;
