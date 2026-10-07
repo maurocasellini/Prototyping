@@ -169,6 +169,7 @@ VENDOR = {
         ("bergamot", "package/worker/bergamot-translator-worker.wasm", "bergamot/worker/bergamot-translator-worker.wasm"),
         ("bergamot", "package/package.json", "bergamot/package.json"),
     ],
+    "safe": [],
     "image": [
         ("jsq-jpeg", "package/", "jsquash/jpeg/"),
         ("jsq-webp", "package/", "jsquash/webp/"),
@@ -191,7 +192,7 @@ VENDOR = {
 # Bare module imports in npm files → relative paths inside vendor/
 IMPORT_MAP = {"wasm-feature-detect": "wasm-feature-detect/index.js"}
 # Published apps
-APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo", "image", "video", "translate", "qr"]
+APPS = ["hub", "pdf", "scan", "voice", "blockchaindemo", "image", "video", "translate", "qr", "safe"]
 
 # Files above this size are served in parts (CDN limits); vendor/split.json lists them
 SPLIT_AT = 45 * 1024 * 1024

@@ -13,6 +13,7 @@ WebAssembly.
 | Image Toolkit | `image.cmventures.xyz` | [`image/`](image) | Squoosh codecs (MozJPEG, WebP, AVIF, OxiPNG), libheif, exifr, IS-Net and YuNet via ONNX Runtime |
 | Video Toolkit | `video.cmventures.xyz` | [`video/`](video) | FFmpeg.wasm (x264, LAME, libass for subtitles) |
 | Translator | `translate.cmventures.xyz` | [`translate/`](translate) | Mozilla Bergamot + Firefox Translations models (de, en, fr, it, es) |
+| File Safe | `safe.cmventures.xyz` | [`safe/`](safe) | Web Crypto API (AES-256-GCM, PBKDF2) – no third-party code |
 | QR Codes | `qr.cmventures.xyz` | [`qr/`](qr) | qrcode-generator, own SVG renderer |
 | CM Ventures Blockchain Demo | `blockchaindemo.cmventures.xyz` | [`blockchaindemo/`](blockchaindemo) | none – own SHA-256, WebCrypto ECDSA |
 
@@ -28,7 +29,7 @@ WebAssembly.
 ## Structure
 
 ```
-hub/ pdf/ scan/ voice/ image/ video/ translate/ qr/   one folder per tool
+hub/ pdf/ scan/ voice/ image/ video/ translate/ qr/ safe/   one folder per tool
 blockchaindemo/           blockchain simulation for teaching (no engines, no vendor files)
 shared/                   design (base.css, fonts), DE/EN translation (i18n.js), helpers, service worker
 build.py                  builds dist/<tool>/ – downloads pinned npm packages, verifies SHA-256, self-hosts them;

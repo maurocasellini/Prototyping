@@ -35,6 +35,7 @@ window.I18N_EN = {
   'Video-Toolkit': 'Video Toolkit', 'FFmpeg · x264': 'FFmpeg · x264',
   'Videos kürzen, für WhatsApp oder E-Mail verkleinern, Untertitel einbrennen, in GIF umwandeln.': 'Trim videos, shrink them for WhatsApp or email, burn in subtitles, convert to GIF.',
   'Übersetzer': 'Translator',
+  'Dateien und Nachrichten mit Passwort verschlüsseln, bevor du sie per E-Mail oder WhatsApp verschickst.': 'Encrypt files and messages with a password before sending them by email or WhatsApp.',
   'Texte und Untertitel übersetzen – Deutsch, Englisch, Französisch, Italienisch, Spanisch. Offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and subtitles – German, English, French, Italian, Spanish. Offline, without sending anything to a service.',
   'Texte und Dokumente übersetzen – offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and documents – offline, without sending anything to a service.',
   'QR-Codes': 'QR codes',

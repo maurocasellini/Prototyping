@@ -54,3 +54,17 @@ input[type=color] { width: 100%; height: 38px; padding: 2px; border: 1px solid v
 .cmp-bar .label { color: #a9adbb; }
 .cmp-bar input { flex: 1; }
 .cmp-bar .btn { color: var(--on-navy); border-color: #4a5372; }
+
+/* Correct face areas by hand */
+.fe-top { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; padding: 14px 16px 8px; }
+.fe-top .label { color: #c47d45; }
+.fe-hint { font-size: 14px; color: #a9adbb; }
+.fe-stage { height: min(68vh, 740px); display: grid; place-items: center; padding: 0 16px; }
+.fe-wrap { position: relative; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+.fe-wrap img { display: block; width: 100%; height: 100%; pointer-events: none; }
+.fe-box { position: absolute; padding: 0; border: 2px solid #c47d45; background: rgba(196, 125, 69, .28); border-radius: 0; cursor: pointer; }
+.fe-box:hover { background: rgba(200, 60, 60, .45); border-color: #e06060; }
+.fe-box.drawing { border-style: dashed; pointer-events: none; }
+.faced .cmp-bar .spacer { flex: 1; }
+.faced .cmp-bar .primary { color: #fff; }
+@media (max-width: 640px) { .fe-hint { font-size: 13px; } .fe-stage { padding: 0 8px; } }

@@ -42,6 +42,9 @@ window.I18N_EN = {
   'Bitte das Ergebnis kurz prüfen – sehr kleine oder abgewandte Gesichter können übersehen werden.': 'Please check the result – very small or turned-away faces can be missed.',
   'Gesichter automatisch verpixeln': 'Pixelate faces automatically', 'Gesichtserkennung wird geladen …': 'Loading face detection …',
   '1 Gesicht unkenntlich': '1 face hidden', 'Gesichter unkenntlich': 'faces hidden', 'Kein Gesicht gefunden': 'No face found',
+  'Gesichter': 'Faces', 'Gesichter prüfen': 'Check faces',
+  'Feld antippen = entfernen. Über ein übersehenes Gesicht ziehen oder darauf tippen = hinzufügen.': 'Tap an area = remove it. Drag across or tap a missed face = add one.',
+  'Übernehmen': 'Apply', 'Abbrechen': 'Cancel', '1 Bereich': '1 area', 'Bereiche': 'areas', 'Bild wird neu erstellt …': 'Recreating image …',
 };
 window.I18N_RULES = [
   [/^Bild (\d+) \/ (\d+)/, 'Image $1 / $2'], [/ Bilder$/, ' images'],

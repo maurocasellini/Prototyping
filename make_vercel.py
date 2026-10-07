@@ -8,7 +8,7 @@ DOMAIN = "cmventures.xyz"
 # subdomain → folder in dist/
 TOOLS = {
     "tools": "hub", "pdf": "pdf", "scan": "scan", "voice": "voice", "blockchaindemo": "blockchaindemo",
-    "image": "image", "video": "video", "translate": "translate", "qr": "qr",
+    "image": "image", "video": "video", "translate": "translate", "qr": "qr", "safe": "safe",
 }
 # cross-origin isolated (COOP + COEP) → SharedArrayBuffer for multi-threaded WebAssembly
 ISOLATED = ["voice", "image", "video", "translate"]

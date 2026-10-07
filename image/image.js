@@ -125,7 +125,7 @@
         const d = it.out.blob.size / it.file.size - 1;
         const faces = it.out.faces == null ? '' : `<div class="faces">${it.out.faces === 1 ? t('1 Gesicht unkenntlich') : it.out.faces ? `${it.out.faces} ${t('Gesichter unkenntlich')}` : t('Kein Gesicht gefunden')}</div>`;
         res = `<b>${fmtSize(it.out.blob.size)}</b><span class="${d <= 0 ? 'gain' : 'loss'}">${d <= 0 ? '−' : '+'}${Math.abs(Math.round(d * 100))} %</span> · ${it.out.w}×${it.out.h}${faces}
-          <div class="actions"><button type="button" data-a="cmp">${t('Vergleich')}</button><button type="button" data-a="dl">${t('Laden')}</button></div>`;
+          <div class="actions">${it.out.faces != null ? `<button type="button" data-a="faces">${t('Gesichter')}</button>` : ''}<button type="button" data-a="cmp">${t('Vergleich')}</button><button type="button" data-a="dl">${t('Laden')}</button></div>`;
       }
       el.innerHTML = `<button type="button" class="th" data-a="cmp" title="${t('Vergleich')}"><img alt="" src="${it.out ? it.out.url : it.thumb}"></button>
         <div class="meta"><div class="name" data-no-i18n>${esc(it.name)}</div>
@@ -146,6 +146,7 @@
       render();
     } else if (a === 'dl' && it.out) download(it.out.blob, it.out.name);
     else if (a === 'cmp') compare(it);
+    else if (a === 'faces') editFaces(it);
   }
 
   // ---------------------------------------------------------------- Options
@@ -196,13 +197,19 @@
     return call('faces', { tiles }, transfer);
   }
 
-  function hideFaces(c, faces, mode) {
+  // Area to hide for a detected face, as fractions of the image: a little larger than the box (hair, ears, chin)
+  function coverArea(f, W, H) {
+    const w = f.w * 1.35, h = f.h * 1.45;
+    const x = Math.max(0, f.x + f.w / 2 - w / 2), y = Math.max(0, f.y + f.h * 0.45 - h / 2);
+    return { x: x / W, y: y / H, w: Math.min(W - x, w) / W, h: Math.min(H - y, h) / H };
+  }
+
+  // areas: fractions of the image (so they survive a change of the output size)
+  function hideFaces(c, areas, mode) {
     const g = c.getContext('2d');
-    for (const f of faces) {
-      // a little larger than the detected box: hair, ears and chin
-      const w = f.w * 1.35, h = f.h * 1.45;
-      const x = Math.max(0, Math.round(f.x + f.w / 2 - w / 2)), y = Math.max(0, Math.round(f.y + f.h * 0.45 - h / 2));
-      const rw = Math.min(c.width - x, Math.round(w)), rh = Math.min(c.height - y, Math.round(h));
+    for (const a of areas) {
+      const x = Math.round(a.x * c.width), y = Math.round(a.y * c.height);
+      const rw = Math.min(c.width - x, Math.round(a.w * c.width)), rh = Math.min(c.height - y, Math.round(a.h * c.height));
       if (rw < 2 || rh < 2) continue;
       g.save();
       if (mode === 'bar') {
@@ -246,9 +253,10 @@
     const g = c.getContext('2d', { willReadFrequently: true });
     let transparent = false, faces = null;
     if (opts.faces) {
-      const found = await findFaces(c);
-      hideFaces(c, found, opts.facemode);
-      faces = found.length;
+      // areas corrected by hand are kept; otherwise detect
+      if (!it.faceEdited) it.faceAreas = (await findFaces(c)).map((f) => coverArea(f, w, h));
+      hideFaces(c, it.faceAreas, opts.facemode);
+      faces = it.faceAreas.length;
     }
     if (opts.bg) {
       const small = resize(it.bmp, 1024, 1024);
@@ -294,7 +302,6 @@
     if (running || !items.length) return;
     running = true;
     resetResults();
-    let before = 0, after = 0;
     try {
       if (opts.faces) busy(t('Gesichtserkennung wird geladen …'));
       if (opts.bg) { busy(t('KI-Modell wird geladen …'), 0); await call('warm', {}); }
@@ -304,24 +311,114 @@
         it.busy = true; render();
         try {
           it.out = await processOne(it);
-          before += it.file.size; after += it.out.blob.size;
         } catch (e) {
           console.error(e);
           toast(`${it.name}: ${e.message}`, true);
         } finally { it.busy = false; }
       }
       render();
-      const done = items.filter((x) => x.out);
-      if (done.length) {
-        const d = Math.round((1 - after / before) * 100);
-        $('#summary').innerHTML = `${done.length} ${done.length === 1 ? t('Bild') : t('Bilder')}: ${fmtSize(before)} → <b>${fmtSize(after)}</b>` + (d > 0 ? ` (−${d} %)` : '');
-        $('#done').classList.remove('hidden');
-        $('#zip').textContent = done.length === 1 ? t('Herunterladen') : t('Alle herunterladen (ZIP)');
-      }
+      summary();
     } finally {
       running = false;
       busy(false);
     }
+  });
+
+  function summary() {
+    const done = items.filter((x) => x.out);
+    if (!done.length) return;
+    const before = done.reduce((n, x) => n + x.file.size, 0), after = done.reduce((n, x) => n + x.out.blob.size, 0);
+    const d = Math.round((1 - after / before) * 100);
+    $('#summary').innerHTML = `${done.length} ${done.length === 1 ? t('Bild') : t('Bilder')}: ${fmtSize(before)} → <b>${fmtSize(after)}</b>` + (d > 0 ? ` (−${d} %)` : '');
+    $('#done').classList.remove('hidden');
+    $('#zip').textContent = done.length === 1 ? t('Herunterladen') : t('Alle herunterladen (ZIP)');
+  }
+
+  // ---------------------------------------------------------------- Correct the face areas by hand
+  // Tap an area to remove it, drag across a missed face to add one; then the image is processed again.
+  const fed = $('#faced'), feWrap = $('#fe-wrap');
+  let feItem = null, feAreas = [];
+  async function editFaces(it) {
+    feItem = it;
+    feAreas = (it.faceAreas || []).map((a) => ({ ...a }));
+    const img = $('#fe-img');
+    img.src = it.cmpUrl || (it.cmpUrl = URL.createObjectURL(await toBlob(resize(it.bmp, ...fit(it.w, it.h, 1600)), 'image/jpeg', 0.9)));
+    fed.showModal();
+    await img.decode().catch(() => {});
+    feLayout();
+  }
+  function feLayout() {
+    const st = $('#fe-stage').getBoundingClientRect(), r = feItem.w / feItem.h;
+    const w = Math.min(st.width, st.height * r), h = w / r;
+    Object.assign(feWrap.style, { width: w + 'px', height: h + 'px' });
+    feDraw();
+  }
+  function feDraw() {
+    feWrap.querySelectorAll('.fe-box').forEach((b) => b.remove());
+    feAreas.forEach((a, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fe-box';
+      b.title = t('Entfernen');
+      Object.assign(b.style, { left: a.x * 100 + '%', top: a.y * 100 + '%', width: a.w * 100 + '%', height: a.h * 100 + '%' });
+      b.addEventListener('pointerdown', (e) => e.stopPropagation());
+      b.addEventListener('click', () => { feAreas.splice(i, 1); feDraw(); });
+      feWrap.append(b);
+    });
+    const n = feAreas.length;
+    $('#fe-count').textContent = n === 1 ? t('1 Bereich') : `${n} ${t('Bereiche')}`;
+  }
+  let feDrag = null;
+  feWrap.addEventListener('pointerdown', (e) => {
+    const r = feWrap.getBoundingClientRect();
+    const p = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+    const el = document.createElement('div');
+    el.className = 'fe-box drawing';
+    feWrap.append(el);
+    feDrag = { p, el, r };
+    feWrap.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  const feRect = (e) => {
+    const { p, r } = feDrag, cl = (v) => Math.min(1, Math.max(0, v));
+    const q = { x: cl((e.clientX - r.left) / r.width), y: cl((e.clientY - r.top) / r.height) };
+    return { x: Math.min(p.x, q.x), y: Math.min(p.y, q.y), w: Math.abs(q.x - p.x), h: Math.abs(q.y - p.y) };
+  };
+  feWrap.addEventListener('pointermove', (e) => {
+    if (!feDrag) return;
+    const a = feRect(e);
+    Object.assign(feDrag.el.style, { left: a.x * 100 + '%', top: a.y * 100 + '%', width: a.w * 100 + '%', height: a.h * 100 + '%' });
+  });
+  const feEnd = (e) => {
+    if (!feDrag) return;
+    const a = feRect(e);
+    feDrag.el.remove();
+    feDrag = null;
+    // a plain tap (no drag) adds a face-sized area around the finger
+    if (a.w * feItem.w < 12 && a.h * feItem.h < 12) {
+      const s = 0.08 * Math.max(feItem.w, feItem.h);
+      const w = s / feItem.w, h = (s * 1.25) / feItem.h;
+      feAreas.push({ x: Math.max(0, a.x - w / 2), y: Math.max(0, a.y - h / 2), w: Math.min(w, 1), h: Math.min(h, 1) });
+    } else feAreas.push(a);
+    feDraw();
+  };
+  feWrap.addEventListener('pointerup', feEnd);
+  feWrap.addEventListener('pointercancel', () => { if (feDrag) { feDrag.el.remove(); feDrag = null; } });
+  window.addEventListener('resize', () => { if (fed.open) feLayout(); });
+  $('#fe-cancel').addEventListener('click', () => fed.close());
+  $('#fe-ok').addEventListener('click', async () => {
+    const it = feItem;
+    fed.close();
+    it.faceAreas = feAreas;
+    it.faceEdited = true;
+    it.busy = true; render();
+    busy(t('Bild wird neu erstellt …'));
+    try {
+      const out = await processOne(it);
+      if (it.out) URL.revokeObjectURL(it.out.url);
+      it.out = out;
+    } catch (e) { toast(`${it.name}: ${e.message}`, true); }
+    finally { it.busy = false; busy(false); render(); summary(); }
   });
 
   $('#zip').addEventListener('click', async () => {
