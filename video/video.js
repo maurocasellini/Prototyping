@@ -66,7 +66,7 @@ async function useFile(f) {
   for (const id of ['#t-start', '#t-end']) $(id).max = info.duration || 0;
   $('#t-start').value = 0;
   $('#t-end').value = info.duration || 0;
-  showTrim();
+  showSpeed();
 }
 document.querySelectorAll('[data-pick]').forEach((inp) => inp.addEventListener('change', () => { if (inp.files[0]) useFile(inp.files[0]); inp.value = ''; }));
 const drop = $('#drop');
@@ -91,7 +91,8 @@ const range = () => {
 };
 function showTrim() {
   const [a, b] = range();
-  $('#trim-out').textContent = `${fmtTime(a)} – ${fmtTime(b)} (${fmtTime(b - a)})`;
+  const sp = speed();
+  $('#trim-out').textContent = `${fmtTime(a)} – ${fmtTime(b)} (${fmtTime(b - a)}${sp !== 1 ? ` → ${fmtTime((b - a) / sp)}` : ''})`;
 }
 $('#t-start').addEventListener('input', () => { showTrim(); $('#player').currentTime = +$('#t-start').value; });
 $('#t-end').addEventListener('input', () => { showTrim(); $('#player').currentTime = +$('#t-end').value; });
@@ -99,6 +100,26 @@ document.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click
   $('#t-' + b.dataset.set).value = $('#player').currentTime;
   showTrim();
 }));
+
+// ---------------------------------------------------------------- Speed (0.25× … 10×)
+const SPEEDS = [0.25, 0.5, 0.75, 0.9, 1, 1.25, 1.5, 2, 3, 4, 5, 8, 10];
+const speed = () => SPEEDS[+$('#speed').value] || 1;
+function showSpeed() {
+  const sp = speed();
+  $('#speed-out').textContent = `${String(sp).replace('.', window.I18N && window.I18N.lang === 'en' ? '.' : ',')}×`;
+  $('#player').playbackRate = Math.min(16, Math.max(0.25, sp));   // live preview in the player
+  showTrim();
+}
+$('#speed').addEventListener('input', showSpeed);
+$('#player').addEventListener('loadedmetadata', () => { $('#player').playbackRate = speed(); });
+// audio tempo with the pitch kept: atempo steps between 0.5 and 2
+function atempo(sp) {
+  const out = [];
+  while (sp > 2) { out.push('atempo=2'); sp /= 2; }
+  while (sp < 0.5) { out.push('atempo=0.5'); sp /= 0.5; }
+  if (Math.abs(sp - 1) > 1e-6) out.push(`atempo=${+sp.toFixed(4)}`);
+  return out.join(',');
+}
 
 // ---------------------------------------------------------------- Options
 document.querySelectorAll('#action button').forEach((b) => b.addEventListener('click', () => {
@@ -156,13 +177,17 @@ function command(input) {
   const [a, b] = range();
   const full = !info.duration || (a <= 0.05 && b >= info.duration - 0.05);
   const cut = full ? [] : ['-ss', a.toFixed(2), '-to', b.toFixed(2)];
-  const dur = (full ? info.duration : b - a) || 1;
-  const base = file.name.replace(/\.[^.]+$/, '');
+  const sp = speed(), fast = sp !== 1;
+  const dur = ((full ? info.duration : b - a) || 1) / sp;    // length of the result (progress, target size)
+  const base = file.name.replace(/\.[^.]+$/, '') + (fast ? ` (${sp}x)` : '');
   const head = ['-hide_banner', ...cut, '-i', input];
+  const pts = fast ? [`setpts=PTS/${sp}`] : [];
+  const af = fast ? ['-af', atempo(sp)] : [];
+  const vf = (list) => (list.length ? ['-vf', list.join(',')] : []);
   if (action === 'gif') {
     const w = +$('#gif-w').value, fps = +$('#gif-fps').value;
     return { dur, out: `${base}.gif`, type: 'image/gif',
-      args: [...head, '-vf', `fps=${fps},scale=${w}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`, '-loop', '0', 'out.gif'] };
+      args: [...head, '-vf', `${fast ? pts[0] + ',' : ''}fps=${fps},scale=${w}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`, '-loop', '0', 'out.gif'] };
   }
   if (action === 'subs') {
     if (!cues) throw new Error(t('Bitte zuerst eine Untertitel-Datei wählen.'));
@@ -171,15 +196,18 @@ function command(input) {
     const style = ['FontName=Liberation Sans', 'Bold=1', `FontSize=${$('#sub-size').value}`, 'MarginV=18', 'Shadow=0',
       st === 'box' ? 'BorderStyle=3,Outline=1,BackColour=&H60000000,OutlineColour=&H60000000' : 'BorderStyle=1,Outline=1.6,OutlineColour=&H00000000',
       st === 'yellow' ? 'PrimaryColour=&H0000E6FF' : 'PrimaryColour=&H00FFFFFF'].join(',');
-    const vf = [...(size ? [`scale=${size[0]}:${size[1]}`] : []), `subtitles=/work/subs.srt:fontsdir=/work/fonts:charenc=UTF-8:force_style='${style}'`].join(',');
+    // subtitles are drawn before the speed change, so they stay in sync with the picture
+    const filters = [...(size ? [`scale=${size[0]}:${size[1]}`] : []), `subtitles=/work/subs.srt:fontsdir=/work/fonts:charenc=UTF-8:force_style='${style}'`, ...pts];
     return { dur, out: `${base} (Untertitel).mp4`, type: 'video/mp4', subs: srt(full ? 0 : a),
-      args: [...head, '-vf', vf, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', 'out.mp4'] };
+      args: [...head, ...vf(filters), ...af, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', 'out.mp4'] };
   }
   if (action === 'mp3') {
-    return { dur, out: `${base}.mp3`, type: 'audio/mpeg', args: [...head, '-vn', '-c:a', 'libmp3lame', '-b:a', '192k', 'out.mp3'] };
+    return { dur, out: `${base}.mp3`, type: 'audio/mpeg', args: [...head, '-vn', ...af, '-c:a', 'libmp3lame', '-b:a', '192k', 'out.mp3'] };
   }
   if (action === 'mute') {
     const ext = (file.name.match(/\.(mp4|mov|m4v|webm|mkv)$/i) || [, 'mp4'])[1].toLowerCase();
+    // a different speed needs re-encoding; otherwise the picture is copied as it is
+    if (fast) return { dur, out: `${base} (ohne Ton).mp4`, type: 'video/mp4', args: [...head, '-an', ...vf(pts), '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', 'out.mp4'] };
     return { dur, out: `${base} (ohne Ton).${ext}`, type: file.type || 'video/mp4', args: [...head, '-an', '-c:v', 'copy', `out.${ext}`] };
   }
   // shrink → H.264 / AAC MP4
@@ -198,7 +226,7 @@ function command(input) {
     if (target === 'small') aBit = 80;
   }
   return { dur, out: `${base} (klein).mp4`, type: 'video/mp4',
-    args: [...head, ...(size ? ['-vf', `scale=${size[0]}:${size[1]}`] : []), ...v, '-c:a', 'aac', '-b:a', `${aBit}k`, '-movflags', '+faststart', 'out.mp4'] };
+    args: [...head, ...vf([...(size ? [`scale=${size[0]}:${size[1]}`] : []), ...pts]), ...af, ...v, '-c:a', 'aac', '-b:a', `${aBit}k`, '-movflags', '+faststart', 'out.mp4'] };
 }
 
 // font + subtitle file inside FFmpeg's in-memory file system (libass has no system fonts here)
@@ -287,6 +315,7 @@ $('#other').addEventListener('click', () => {
   file = null; show('start');
 });
 
+document.addEventListener('langchange', showSpeed);
 route();
 window.CMV.registerSW();
 window.__video = { get result() { return result; }, get running() { return running; }, get info() { return info; } };

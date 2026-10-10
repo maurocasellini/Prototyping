@@ -29,3 +29,10 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .result audio { width: 100%; }
 .sub-pick { width: 100%; justify-content: center; text-transform: none; letter-spacing: 0; font-family: var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .opts .note a { color: var(--accent); }
+.speed-row { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.speed-row input { width: 100%; margin: 8px 0 2px; accent-color: var(--accent); }
+.speed-marks { position: relative; height: 14px; margin: 0 8px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.speed-marks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+/* slider steps 0…12: 0.25× = 0, 1× = 4, 2× = 7, 10× = 12 */
+.speed-marks span:nth-child(1) { left: 0; } .speed-marks span:nth-child(2) { left: 33.33%; }
+.speed-marks span:nth-child(3) { left: 58.33%; } .speed-marks span:nth-child(4) { left: 100%; }

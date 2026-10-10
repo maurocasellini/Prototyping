@@ -44,6 +44,7 @@ window.I18N_EN = {
   'Schriftgrösse': 'Font size', 'Klein': 'Small', 'Mittel': 'Medium', 'Gross': 'Large', 'Stil': 'Style',
   'Weiss mit schwarzem Rand': 'White with black outline', 'Weiss auf dunklem Balken': 'White on dark box', 'Gelb mit schwarzem Rand': 'Yellow with black outline',
   'In dieser Datei wurden keine Untertitel gefunden.': 'No subtitles found in this file.', 'Bitte zuerst eine Untertitel-Datei wählen.': 'Please choose a subtitle file first.',
+  'Tempo': 'Speed',
 };
 window.I18N_RULES = [
   [/ · (\d+) Zeilen$/, ' · $1 lines'],
