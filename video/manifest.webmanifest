@@ -1,7 +1,7 @@
 {
   "name": "Video Toolkit",
   "short_name": "Video",
-  "description": "Videos kürzen, verkleinern und umwandeln – im Browser, ohne Upload.",
+  "description": "Videos kürzen, verkleinern, Tempo ändern und umwandeln – im Browser, ohne Upload.",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

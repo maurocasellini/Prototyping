@@ -33,7 +33,7 @@ window.I18N_EN = {
   'Bild-Toolkit': 'Image Toolkit',
   'HEIC → JPG, verkleinern, Standort-Daten entfernen, Gesichter verpixeln, Hintergrund freistellen.': 'HEIC → JPG, resize, remove location data, pixelate faces, remove backgrounds.',
   'Video-Toolkit': 'Video Toolkit', 'FFmpeg · x264': 'FFmpeg · x264',
-  'Videos kürzen, für WhatsApp oder E-Mail verkleinern, Untertitel einbrennen, in GIF umwandeln.': 'Trim videos, shrink them for WhatsApp or email, burn in subtitles, convert to GIF.',
+  'Videos kürzen, verkleinern, schneller oder langsamer machen, Untertitel einbrennen, in GIF umwandeln.': 'Trim videos, shrink them, speed them up or slow them down, burn in subtitles, convert to GIF.',
   'Übersetzer': 'Translator',
   'Dateien und Nachrichten mit Passwort verschlüsseln, bevor du sie per E-Mail oder WhatsApp verschickst.': 'Encrypt files and messages with a password before sending them by email or WhatsApp.',
   'Texte und Untertitel übersetzen – Deutsch, Englisch, Französisch, Italienisch, Spanisch. Offline, ohne dass etwas an einen Dienst geht.': 'Translate texts and subtitles – German, English, French, Italian, Spanish. Offline, without sending anything to a service.',

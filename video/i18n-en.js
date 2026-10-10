@@ -9,10 +9,11 @@ window.I18N_EN = {
     'Das Video wird nicht kopiert und nicht hochgeladen. FFmpeg liest es direkt von deinem Gerät und schreibt das Ergebnis wieder dorthin.': 'The video is not copied and not uploaded. FFmpeg reads it directly from your device and writes the result back there.',
     'Was geladen wird': 'What gets downloaded',
     'Einmalig ca. 32 MB für FFmpeg. Weil dein Gerät rechnet, dauern lange Videos etwas – dafür musst du nichts hochladen und nichts herunterladen.': 'About 32 MB once for FFmpeg. Because your device does the work, long videos take a while – but you don’t have to upload or download anything.',
-  'Video Toolkit': 'Video Toolkit', 'Video-Toolkit': 'Video toolkit', 'Kürzen · Verkleinern · Untertitel · GIF · Ton': 'Trim · Shrink · Subtitles · GIF · Audio',
+  'Video Toolkit': 'Video Toolkit', 'Video-Toolkit': 'Video toolkit', 'Kürzen · Verkleinern · Tempo · Untertitel · GIF · Ton': 'Trim · Shrink · Speed · Subtitles · GIF · Audio',
+  'Zeitlupe & Zeitraffer: 0,25× bis 10×': 'Slow motion & time-lapse: 0.25× to 10×',
   'Videos teilen,': 'Share videos', 'ohne sie hochzuladen': 'without uploading them',
-  'Clip kürzen, für WhatsApp oder E-Mail verkleinern, Untertitel einbrennen, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.':
-    'Trim a clip, shrink it for WhatsApp or email, burn in subtitles, turn it into a GIF or save just the audio as MP3. FFmpeg runs right in your browser.',
+  'Clip kürzen, für WhatsApp oder E-Mail verkleinern, schneller oder langsamer machen (0,25× bis 10×), Untertitel einbrennen, in ein GIF verwandeln oder nur den Ton als MP3 speichern. FFmpeg läuft dafür direkt in deinem Browser.':
+    'Trim a clip, shrink it for WhatsApp or email, speed it up or slow it down (0.25× to 10×), burn in subtitles, turn it into a GIF or save just the audio as MP3. FFmpeg runs right in your browser.',
   'Video wählen': 'Choose video', 'MP4, MOV (iPhone), WebM, MKV, AVI': 'MP4, MOV (iPhone), WebM, MKV, AVI',
   'Zielgrösse für WhatsApp & E-Mail': 'Target size for WhatsApp & email', 'FFmpeg als WebAssembly – nichts verlässt dein Gerät': 'FFmpeg as WebAssembly – nothing leaves your device',
   'Video hierher ziehen': 'Drop a video here', 'oder': 'or', 'auswählen': 'browse', 'Video': 'Video',
