@@ -108,9 +108,12 @@ function showSpeed() {
   const sp = speed();
   $('#speed-out').textContent = `${String(sp).replace('.', window.I18N && window.I18N.lang === 'en' ? '.' : ',')}×`;
   $('#player').playbackRate = Math.min(16, Math.max(0.25, sp));   // live preview in the player
+  document.querySelectorAll('#speed-pick button').forEach((b) => b.classList.toggle('active', +b.dataset.i === +$('#speed').value));
   showTrim();
 }
+function setSpeed(i) { $('#speed').value = i; showSpeed(); }
 $('#speed').addEventListener('input', showSpeed);
+document.querySelectorAll('#speed-pick button').forEach((b) => b.addEventListener('click', () => setSpeed(+b.dataset.i)));
 $('#player').addEventListener('loadedmetadata', () => { $('#player').playbackRate = speed(); });
 // audio tempo with the pitch kept: atempo steps between 0.5 and 2
 function atempo(sp) {
@@ -128,6 +131,8 @@ document.querySelectorAll('#action button').forEach((b) => b.addEventListener('c
   $('#opt-shrink').hidden = action !== 'shrink';
   $('#opt-gif').hidden = action !== 'gif';
   $('#opt-subs').hidden = action !== 'subs';
+  $('#opt-speed').hidden = action !== 'speed';
+  if (action === 'speed' && speed() === 1) setSpeed(7);   // start with 2×
 }));
 
 // ---------------------------------------------------------------- Subtitles (.srt / .vtt)
@@ -200,6 +205,12 @@ function command(input) {
     const filters = [...(size ? [`scale=${size[0]}:${size[1]}`] : []), `subtitles=/work/subs.srt:fontsdir=/work/fonts:charenc=UTF-8:force_style='${style}'`, ...pts];
     return { dur, out: `${base} (Untertitel).mp4`, type: 'video/mp4', subs: srt(full ? 0 : a),
       args: [...head, ...vf(filters), ...af, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', 'out.mp4'] };
+  }
+  if (action === 'speed') {
+    if (!fast) throw new Error(t('Bitte ein anderes Tempo als 1× wählen.'));
+    const audio = $('#speed-audio').checked;
+    return { dur, out: `${base}.mp4`, type: 'video/mp4',
+      args: [...head, ...vf(pts), ...(audio ? [...af, '-c:a', 'aac', '-b:a', '128k'] : ['-an']), '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', 'out.mp4'] };
   }
   if (action === 'mp3') {
     return { dur, out: `${base}.mp3`, type: 'audio/mpeg', args: [...head, '-vn', ...af, '-c:a', 'libmp3lame', '-b:a', '192k', 'out.mp3'] };

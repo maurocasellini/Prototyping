@@ -94,6 +94,7 @@
         <div class="field"><span>Was möchtest du?</span>
           <div class="seg col" id="action" role="radiogroup">
             <button type="button" data-v="shrink" class="active">Verkleinern / kürzen (MP4)</button>
+            <button type="button" data-v="speed">Geschwindigkeit ändern</button>
             <button type="button" data-v="subs">Untertitel einbrennen</button>
             <button type="button" data-v="gif">GIF erstellen</button>
             <button type="button" data-v="mp3">Nur Ton (MP3)</button>
@@ -117,6 +118,17 @@
               <option value="480">480p</option>
             </select>
           </label>
+        </div>
+        <div id="opt-speed" class="opts" hidden>
+          <div class="field"><span>Tempo</span>
+            <div class="speed-pick" id="speed-pick">
+              <button type="button" data-i="0">0,25×</button><button type="button" data-i="1">0,5×</button><button type="button" data-i="2">0,75×</button>
+              <button type="button" data-i="6">1,5×</button><button type="button" data-i="7">2×</button><button type="button" data-i="9">4×</button>
+              <button type="button" data-i="11">8×</button><button type="button" data-i="12">10×</button>
+            </div>
+          </div>
+          <label class="check"><input id="speed-audio" type="checkbox" checked> <span>Ton behalten (Tonhöhe bleibt gleich)</span></label>
+          <p class="note">Zwischenstufen über den Tempo-Regler unter dem Video. Ab 4× ist der Ton kaum noch verständlich – dann besser ohne Ton.</p>
         </div>
         <div id="opt-subs" class="opts" hidden>
           <div class="field"><span>Untertitel-Datei</span>

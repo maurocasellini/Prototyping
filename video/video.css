@@ -36,3 +36,8 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 /* slider steps 0…12: 0.25× = 0, 1× = 4, 2× = 7, 10× = 12 */
 .speed-marks span:nth-child(1) { left: 0; } .speed-marks span:nth-child(2) { left: 33.33%; }
 .speed-marks span:nth-child(3) { left: 58.33%; } .speed-marks span:nth-child(4) { left: 100%; }
+.speed-pick { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
+.speed-pick button { border: none; border-radius: 0; padding: 11px 4px; font-family: var(--mono); font-size: 12px; color: var(--muted); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.speed-pick button:nth-child(4n) { border-right: none; }
+.speed-pick button:nth-child(n+5) { border-bottom: none; }
+.speed-pick button.active { background: var(--accent); color: #fff; }

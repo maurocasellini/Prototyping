@@ -44,9 +44,12 @@ window.I18N_EN = {
   'Schriftgrösse': 'Font size', 'Klein': 'Small', 'Mittel': 'Medium', 'Gross': 'Large', 'Stil': 'Style',
   'Weiss mit schwarzem Rand': 'White with black outline', 'Weiss auf dunklem Balken': 'White on dark box', 'Gelb mit schwarzem Rand': 'Yellow with black outline',
   'In dieser Datei wurden keine Untertitel gefunden.': 'No subtitles found in this file.', 'Bitte zuerst eine Untertitel-Datei wählen.': 'Please choose a subtitle file first.',
-  'Tempo': 'Speed',
+  'Tempo': 'Speed', 'Geschwindigkeit ändern': 'Change speed', 'Ton behalten (Tonhöhe bleibt gleich)': 'Keep sound (pitch stays the same)',
+  'Zwischenstufen über den Tempo-Regler unter dem Video. Ab 4× ist der Ton kaum noch verständlich – dann besser ohne Ton.': 'Steps in between via the speed slider below the video. From 4× the sound is hardly understandable – better without sound then.',
+  'Bitte ein anderes Tempo als 1× wählen.': 'Please choose a speed other than 1×.',
 };
 window.I18N_RULES = [
+  [/^(\d+),(\d+)×$/, '$1.$2×'],
   [/ · (\d+) Zeilen$/, ' · $1 lines'],
   [/^Wird umgewandelt … (\d+) %/, 'Converting … $1 %'], [/ · noch ca\. /, ' · about '], [/wird analysiert …/, 'analyzing …'],
   [/^Umwandlung fehlgeschlagen: /, 'Conversion failed: '],
